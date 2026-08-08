@@ -1133,17 +1133,24 @@
             </div>
         </section>
 
-        <!-- قسم تنزيل كتطبيق على الجهاز (في أسفل الصفحة) -->
+        <!-- قسم تنزيل وتثبيت التطبيق على الجهاز (في أسفل الصفحة) -->
         <div class="card" style="text-align: center; border-right: none; border-top: 4px solid var(--accent-pink); background: linear-gradient(180deg, #ffffff 0%, var(--light-pink) 100%); margin-top: 40px;">
             <div class="card-title" style="justify-content: center;">
-                <i class="fa-solid fa-mobile-screen-button"></i> تنزيل كتطبيق على الجهاز
+                <i class="fa-solid fa-mobile-screen-button"></i> تنزيل وتثبيت التطبيق على الجهاز
             </div>
-            <p style="margin-bottom: 15px; color: var(--text-dark); line-height: 1.7;">
-                يمكنكِ تثبيت هذا الدليل كتطبيق مستقل على هاتفكِ الذكي أو جهازكِ اللوحي للوصول السريع ومتابعة التحديثات بسهولة.
+            <p style="margin-bottom: 20px; color: var(--text-dark); line-height: 1.7;">
+                يمكنكِ تثبيت هذا الدليل كتطبيق مستقل على هاتفكِ أو تحميل ملف الأندرويد المباشر (APK) لتثبيته فوراً:
             </p>
-            <button id="pwaInstallBtn" onclick="installPWA()" class="btn-action badge-pink" style="margin: 0 auto; padding: 10px 24px; font-size: 1rem; border: none; cursor: pointer;">
-                <i class="fa-solid fa-download"></i> تثبيت التطبيق الآن
-            </button>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <!-- زر التثبيت التقليدي عبر PWA -->
+                <button id="pwaInstallBtn" onclick="installPWA()" class="btn-action badge-pink" style="padding: 10px 20px; font-size: 0.95rem; border: none; cursor: pointer;">
+                    <i class="fa-solid fa-download"></i> تثبيت التطبيق (PWA)
+                </button>
+                <!-- زر التحميل المباشر لملف الـ APK -->
+                <a href="daleel-app.apk" download class="btn-action" style="padding: 10px 20px; font-size: 0.95rem; text-decoration: none; background-color: var(--primary-navy);">
+                    <i class="fa-solid fa-cloud-arrow-down"></i> تحميل ملف الـ APK مباشرة
+                </a>
+            </div>
         </div>
 
     </main>
