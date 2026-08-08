@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق دليل الموظفة 1448هـ - إدارة الإشراف النسائي بالدمام</title>
+
+    <!-- PWA Web App Support -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="دليل الموظفة">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Cairo) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-navy: #213253;      /* الأزرق الكحلي المستخرج من نص الشعار */
+            --secondary-navy: #35476e;    /* أزرق ثانوي للهوفر والعناصر الثانوية */
+            --accent-pink: #d8898e;       /* الوردي الزهري المعتمد من الشعار */
+            --light-pink: #fbebee;        /* خلفية وردية ناعمة للبطاقات والتمييز */
+            --sheets-green: #0f9d58;       /* لون لزر جداول البيانات */
+            --bg-light: #f5f7fa;          /* خلفية عامة مريحة للعين */
+            --text-dark: #213253;
+            --text-muted: #6a7895;
+            --white: #ffffff;
+            --shadow-sm: 0 2px 8px rgba(33, 50, 83, 0.08);
+            --shadow-md: 0 4px 15px rgba(33, 50, 83, 0.12);
+            --radius-lg: 14px;
+            --radius-md: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* ----------------------------------------------------
+           شاشة الترحيب والافتتاحية (Splash Screen)
+        ---------------------------------------------------- */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(180deg, #18253f 0%, #263859 60%, #e2e8f0 100%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            color: var(--white);
+            text-align: center;
+            padding: 20px;
+        }
+
+        #splash-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .splash-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 420px;
+            width: 100%;
+        }
+
+        .splash-logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .splash-title-right {
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+        }
+
+        .splash-title-right h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            line-height: 1.1;
+            color: #ffffff;
+            letter-spacing: -1px;
+        }
+
+        .splash-title-right h1 span {
+            color: var(--accent-pink);
+        }
+
+        .splash-title-right p {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 4px;
+        }
+
+        .splash-divider {
+            width: 2px;
+            height: 65px;
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .splash-title-left {
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+            font-size: 1.05rem;
+            font-weight: 800;
+            line-height: 1.3;
+            color: #ffffff;
+        }
+
+        .splash-badge {
+            background-color: #213253;
+            color: #ffffff;
+            padding: 8px 30px;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            margin-top: 15px;
+        }
+
+        .splash-welcome-text {
+            margin-top: 25px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #ffffff;
+            animation: pulseText 1.5s infinite alternate;
+        }
+
+        @keyframes pulseText {
+            from { opacity: 0.7; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1.02); }
+        }
+
+        .splash-loader {
+            margin-top: 30px;
+            width: 36px;
+            height: 36px;
+            border: 3px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            border-top-color: var(--accent-pink);
+            animation: spin 0.9s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ----------------------------------------------------
+           التصميم الأساسي للواجهة
+        ---------------------------------------------------- */
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            display: flex;
+            min-height: 100vh;
+            direction: rtl;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #1b2845 0%, #131c33 100%);
+            color: var(--white);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.15);
+        }
+
+        .sidebar-header {
+            padding: 20px 15px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* الشعار المصمم برمجياً بطريقة متجاوبة */
+        .brand-logo-card {
+            background: #ffffff;
+            padding: 14px 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            border: 2px solid var(--accent-pink);
+            margin-bottom: 10px;
+        }
+
+        .logo-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: right;
+        }
+
+        .logo-main-text {
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: var(--primary-navy);
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-main-text .dot-pink {
+            color: var(--accent-pink);
+        }
+
+        .logo-sub-year {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-top: 3px;
+            font-weight: 600;
+        }
+
+        .logo-divider-line {
+            width: 2px;
+            height: 38px;
+            background-color: var(--accent-pink);
+            border-radius: 2px;
+        }
+
+        .logo-left {
+            display: flex;
+            flex-direction: column;
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--primary-navy);
+            line-height: 1.25;
+            text-align: right;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            line-height: 1.3;
+            color: var(--white);
+            margin-top: 5px;
+        }
+
+        .sidebar-header p {
+            font-size: 0.8rem;
+            color: var(--accent-pink);
+            margin-top: 2px;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 15px 10px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            margin-bottom: 6px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-link i {
+            margin-left: 12px;
+            font-size: 1.1rem;
+            width: 22px;
+            text-align: center;
+            color: var(--accent-pink);
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: var(--secondary-navy);
+            color: var(--white);
+            border-right: 4px solid var(--accent-pink);
+        }
+
+        .nav-link.active i {
+            color: var(--accent-pink);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            margin-right: 280px;
+            flex-grow: 1;
+            padding: 30px;
+            width: calc(100% - 280px);
+            transition: all 0.3s ease;
+        }
+
+        /* Top Header & Search */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            padding: 16px 24px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-top: 3px solid var(--accent-pink);
+        }
+
+        .search-box {
+            position: relative;
+            flex-grow: 1;
+            max-width: 350px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+            background: #ffffff;
+            color: var(--primary-navy);
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-pink);
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            background: var(--primary-navy);
+            color: var(--white);
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn-action:hover {
+            background: var(--secondary-navy);
+            transform: translateY(-1px);
+        }
+
+        .btn-sheets {
+            background: var(--sheets-green) !important;
+        }
+
+        .btn-sheets:hover {
+            background: #0b7a43 !important;
+        }
+
+        /* Section Cards & Layout */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(5px);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 24px;
+            border-right: 4px solid var(--accent-pink);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-navy);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            color: var(--accent-pink);
+        }
+
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        /* Value Box */
+        .value-box {
+            background: var(--light-pink);
+            padding: 16px;
+            border-radius: var(--radius-md);
+            text-align: center;
+            border: 1px solid rgba(216, 137, 142, 0.3);
+        }
+
+        .value-box h4 {
+            color: var(--primary-navy);
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+        }
+
+        /* Custom Tables */
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background-color: var(--primary-navy);
+            color: var(--white);
+            padding: 12px 16px;
+            font-weight: 600;
+            border-bottom: 3px solid var(--accent-pink);
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        tr:nth-child(even) td {
+            background-color: rgba(251, 235, 238, 0.3);
+        }
+
+        tr:hover td {
+            background-color: var(--light-pink);
+        }
+
+        /* Badges & Links */
+        .badge {
+            background: var(--primary-navy);
+            color: var(--white);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .badge-pink {
+            background: var(--accent-pink);
+            color: var(--white);
+        }
+
+        .external-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--primary-navy);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 8px;
+            transition: opacity 0.2s, background-color 0.2s;
+        }
+
+        .external-btn:hover {
+            background: var(--secondary-navy);
+            opacity: 0.95;
+        }
+
+        /* Job Descriptions Accordion */
+        .accordion-item {
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            background: rgba(248, 250, 252, 0.95);
+            padding: 14px 18px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--primary-navy);
+        }
+
+        .accordion-header:hover {
+            background: var(--light-pink);
+        }
+
+        .accordion-body {
+            padding: 18px;
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-top: 1px solid #e2e8f0;
+            line-height: 1.7;
+            font-size: 0.92rem;
+        }
+
+        .accordion-body ul {
+            padding-right: 20px;
+        }
+
+        .accordion-body li {
+            margin-bottom: 8px;
+        }
+
+        /* Mobile Menu Button */
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--primary-navy);
+            cursor: pointer;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-right: 0;
+                width: 100%;
+                padding: 15px;
+            }
+            .mobile-toggle {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الشاشة الترحيبية والافتتاحية (Splash Screen) -->
+    <div id="splash-screen">
+        <div class="splash-content">
+            <div class="splash-logo-container">
+                <div class="splash-title-right">
+                    <h1>تَـحـفِـيـظ<span>.</span></h1>
+                    <h1>الـشَّـرقِـيَّـة</h1>
+                    <p>منذ ١٣٨٨ هـ</p>
+                </div>
+                <div class="splash-divider"></div>
+                <div class="splash-title-left">
+                    <span>إدارة الإشراف</span>
+                    <span>النسائي</span>
+                    <span>بالدمام</span>
+                </div>
+            </div>
+            
+            <div class="splash-badge">التعليم الحضوري</div>
+            <div class="splash-welcome-text">مرحباً بكِ ✨</div>
+            <div class="splash-loader"></div>
+        </div>
+    </div>
+
+    <!-- Sidebar Navbar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <!-- الشعار المصمم برمجياً ليظهر دائماً وبشكل نقي -->
+            <div class="brand-logo-card">
+                <div class="logo-right">
+                    <span class="logo-main-text">تَحفِيظ<span class="dot-pink">.</span></span>
+                    <span class="logo-main-text">الشَّرقِيَّة</span>
+                    <span class="logo-sub-year">منذ 1388 هـ</span>
+                </div>
+                <div class="logo-divider-line"></div>
+                <div class="logo-left">
+                    <span>إدارة الإشراف</span>
+                    <span>النـــســـائـــي</span>
+                    <span>بالــدمــام</span>
+                </div>
+            </div>
+
+            <h2>دليل الموظفة 1448هـ</h2>
+            <p>إدارة الإشراف النسائي بالدمام</p>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-item">
+                <a class="nav-link active" onclick="showTab('home', this)">
+                    <i class="fa-solid fa-house"></i> الرئيسية والجمعية
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="showTab('onsite', this)">
+                    <i class="fa-solid fa-building-user"></i> المجال الحضوري
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="showTab('virtual', this)">
+                    <i class="fa-solid fa-laptop-house"></i> المجال الافتراضي
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="showTab('financial', this)">
+                    <i class="fa-solid fa-file-invoice-dollar"></i> المستحقات والمالية
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="showTab('rewards', this)">
+                    <i class="fa-solid fa-award"></i> المحفزات والتطوع
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="showTab('policies', this)">
+                    <i class="fa-solid fa-shield-halved"></i> السياسات واللوائح
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="showTab('jobs', this)">
+                    <i class="fa-solid fa-id-card"></i> الأوصاف الوظيفية
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="showTab('links', this)">
+                    <i class="fa-solid fa-link"></i> القنوات والروابط
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <button class="mobile-toggle" onclick="toggleSidebar()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" onkeyup="searchGuide()" placeholder="ابحثي عن المسمى، الموعد، الرابط، أو الشروط...">
+            </div>
+            <div class="quick-actions">
+                <!-- زر جداول بيانات جوجل -->
+                <a href="https://docs.google.com/spreadsheets" target="_blank" class="btn-action btn-sheets">
+                    <i class="fa-solid fa-file-excel"></i> جداول البيانات
+                </a>
+                <a href="https://qer.me/d8GV4g" target="_blank" class="btn-action badge-pink">
+                    <i class="fa-solid fa-calendar-days"></i> المواعيد الهامة
+                </a>
+                <a href="https://ger.me/CtsW2r" target="_blank" class="btn-action">
+                    <i class="fa-solid fa-user-plus"></i> الرغبة بالعمل
+                </a>
+                <a href="https://t.me/qurandm_bot" target="_blank" class="btn-action">
+                    <i class="fa-solid fa-robot"></i> بوت التواصل
+                </a>
+            </div>
+        </div>
+
+        <!-- TAB 1: HOME & ABOUT -->
+        <section id="home" class="tab-content active">
+            <div class="card">
+                <div class="card-title">
+                    <i class="fa-solid fa-hand-holding-heart"></i>
+                    مرحباً بك في منظومة الجمعية الخيرية لتحفيظ القرآن الكريم بالمنطقة الشرقية
+                </div>
+                <p style="line-height: 1.8; color: var(--text-dark);">
+                    يسر إدارة الإشراف النسائي بالدمام تقديم هذا الدليل الشامل لعام 1448هـ، ليكون مرجعكِ الأيسر في معرفة كافة اللوائح، حقوق الموظفات، المستحقات المالية، المناهج التعليمية، والمواعيد الهامة.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-title"><i class="fa-solid fa-bullseye"></i> رسالتنا الأغلى</div>
+                    <p style="line-height: 1.8;">
+                        نحن جمعية خيرية تسعى لتعليم القرآن الكريم تلاوة وحفظاً وتجويداً وتتلقيناً، بتميز وإتقان، من خلال برامج متنوعة ومناهج علمية متخصصة، وكفاءات متميزة، وربط جميع فئات المجتمع بالقرآن.
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-title"><i class="fa-solid fa-star"></i> قيمنا الراسخة</div>
+                    <div class="grid-3" style="margin-top: 10px;">
+                        <div class="value-box"><h4>التعاون</h4></div>
+                        <div class="value-box"><h4>الانتماء</h4></div>
+                        <div class="value-box"><h4>القدوة</h4></div>
+                        <div class="value-box"><h4>الإحسان</h4></div>
+                        <div class="value-box"><h4>الاحتساب</h4></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-certificate"></i> شهادة الترخيص الرسمية</div>
+                <div class="grid-2">
+                    <div>
+                        <p><strong>اسم المنظمة:</strong> الجمعية الخيرية لتحفيظ القرآن الكريم بالمنطقة الشرقية</p>
+                        <p style="margin-top:8px;"><strong>جهة الإشراف:</strong> وزارة الشؤون الإسلامية والدعوة والإرشاد / المركز الوطني لتنمية القطاع غير الربحي</p>
+                        <p style="margin-top:8px;"><strong>الرقم الوطني الموحد:</strong> <span class="badge">7001084164</span></p>
+                    </div>
+                    <div>
+                        <p><strong>الرقم الضريبي للفواتير:</strong> <span class="badge badge-pink">310046488200003</span></p>
+                        <p style="margin-top:8px;"><strong>تاريخ انتهاء الترخيص:</strong> 09-07-2031م</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: ONSITE DOMAIN -->
+        <section id="onsite" class="tab-content">
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-school"></i> تفصيل المجال الحضوري</div>
+                <p style="margin-bottom: 15px;">يشمل العمل الذي يتطلب الحضور الميداني لموقع المنشأة التعليمية:</p>
+                <div class="grid-2">
+                    <div style="background: var(--light-pink); padding: 15px; border-radius: 8px;">
+                        <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-calendar-week"></i> نظام الدراسة الربعي (كل 3 أشهر)</h4>
+                        <p style="margin-top: 6px; font-size: 0.9rem;">ينطبق على البرامج القرآنية النوعية: (برنامج كيان، عنان، إتقان، مثان، أثمان، فريدات)</p>
+                    </div>
+                    <div style="background: var(--light-pink); padding: 15px; border-radius: 8px;">
+                        <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-graduation-cap"></i> نظام الفصول الدراسية (يحاكي التقويم الدراسي)</h4>
+                        <p style="margin-top: 6px; font-size: 0.9rem;">ينطبق على: المدارس النسائية، الفتيات والبراعم، الروضات القرآنية، برامج رياحين، والحلقات بالمدارس والمساجد.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-clock"></i> مواعيد وتوقيت الدوام الحضوري</div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>الفئة / الموقع</th>
+                                <th>أيام الدوام</th>
+                                <th>التوقيت (البدء والانتهاء)</th>
+                                <th>زمن الدوام</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>البرامج القرآنية</td>
+                                <td>الأحد - الثلاثاء - الأربعاء</td>
+                                <td>8:00 ص - 11:00 ص</td>
+                                <td>3 ساعات</td>
+                            </tr>
+                            <tr>
+                                <td>المدارس الصباحية (نسائية/فتيات)</td>
+                                <td>من الأحد إلى الخميس</td>
+                                <td>8:00 ص - 10:30 ص</td>
+                                <td>ساعتان ونصف</td>
+                            </tr>
+                            <tr>
+                                <td>المدارس المسائية</td>
+                                <td>الأحد - الثلاثاء - الأربعاء</td>
+                                <td>4:00 م - 6:30 م</td>
+                                <td>ساعتان ونصف</td>
+                            </tr>
+                            <tr>
+                                <td>رياحين (سبت أسبوعي)</td>
+                                <td>يوم السبت فقط</td>
+                                <td>9:00 ص - 11:30 ص</td>
+                                <td>ساعتان ونصف</td>
+                            </tr>
+                            <tr>
+                                <td>الروضات القرآنية للدارسات</td>
+                                <td>من الأحد إلى الخميس</td>
+                                <td>7:30 ص - 12:00 م</td>
+                                <td>4 ساعات ونصف</td>
+                            </tr>
+                            <tr>
+                                <td>حلقات الجوامع والمساجد</td>
+                                <td>وفق الجدول المحدد لكل جامع</td>
+                                <td>بعد العصر إلى قبل المغرب / 8 - 10 صباحاً</td>
+                                <td>ساعتان</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-user-check"></i> مجالات العمل وااشتراطات التوظيف الحضوري</div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>المسمى الوظيفي</th>
+                                <th>المؤهل العلمي الأدنى</th>
+                                <th>مقدار أجزاء الحفظ</th>
+                                <th>البرامج التأهيلية والخبرة المطلوب</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>القيادية (المديرة/الوكيلة)</td>
+                                <td>مؤهل جامعي</td>
+                                <td>10 أجزاء</td>
+                                <td>دورة بناء الصف الثاني + خبرة لا تقل عن 7 سنوات في التحفيظ</td>
+                            </tr>
+                            <tr>
+                                <td>مشرفة القياس</td>
+                                <td>مؤهل جامعي</td>
+                                <td>15 جزءاً</td>
+                                <td>دورة بناء الصف الثاني + خبرة لا تقل عن 4 سنوات في التحفيظ</td>
+                            </tr>
+                            <tr>
+                                <td>الإدارية</td>
+                                <td>مؤهل ثانوي</td>
+                                <td>5 أجزاء</td>
+                                <td>دورة بناء الصف الثاني للإداريات</td>
+                            </tr>
+                            <tr>
+                                <td>المعلمة</td>
+                                <td>ثانوي (جامعي للروضات)</td>
+                                <td>5 أجزاء</td>
+                                <td>دورة بناء الصف الثاني للمعلمات / أو خريجة مركز إعداد معلمات + رخصة المعلمة</td>
+                            </tr>
+                            <tr>
+                                <td>الحاضنة</td>
+                                <td>مؤهل ثانوي</td>
+                                <td>3 أجزاء</td>
+                                <td>دورة بناء الصف الثاني للحاضنات</td>
+                            </tr>
+                            <tr>
+                                <td>الحارسة / العاملة</td>
+                                <td>مؤهل ثانوي</td>
+                                <td>جزء واحد</td>
+                                <td>مقابلة شخصية + دورة بناء الصف الثاني للحارسات</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: VIRTUAL DOMAIN -->
+        <section id="virtual" class="tab-content">
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-laptop"></i> تفصيل المجال الافتراضي (عن بعد)</div>
+                <p>يشمل البرامج التعليمية التي تُدار بالكامل التقنية والمواسم التعليمية الأربعة:</p>
+                <div class="grid-2" style="margin-top: 15px;">
+                    <div style="background: var(--light-pink); padding: 15px; border-radius: 8px;">
+                        <h4 style="color: var(--primary-navy);">🗓️ الأشهر والمواسم التعليمية</h4>
+                        <ul style="padding-right: 20px; margin-top: 8px; font-size: 0.9rem;">
+                            <li><strong>الموسم 25:</strong> محرم - صفر</li>
+                            <li><strong>الموسم 26:</strong> ربيع الثاني - جمادى الأولى</li>
+                            <li><strong>الموسم 27:</strong> رجب - شعبان</li>
+                            <li><strong>الموسم 28:</strong> شوال - ذو القعدة</li>
+                        </ul>
+                    </div>
+                    <div style="background: var(--light-pink); padding: 15px; border-radius: 8px;">
+                        <h4 style="color: var(--primary-navy);">🌺 الواحات التعليمية المصاحبة</h4>
+                        <ul style="padding-right: 20px; margin-top: 8px; font-size: 0.9rem;">
+                            <li><strong>واحة ربيع أول:</strong> تتبع الموسم 25</li>
+                            <li><strong>واحة جمادى الآخرة:</strong> تتبع الموسم 26</li>
+                            <li><strong>واحة رمضان:</strong> تتبع الموسم 27</li>
+                            <li><strong>واحة ذو الحجة:</strong> تتبع الموسم 28</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-cubes"></i> الميادين والمبادرات الافتراضية</div>
+                <div class="grid-3">
+                    <div style="border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.8);">
+                        <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-layer-group" style="color:var(--accent-pink);"></i> الميادين (10 ميادين)</h4>
+                        <p style="font-size: 0.85rem; margin-top: 5px;">الحفظ المكثف (وجهان ونصف)، المخفف (وجه ونصف)، الفتيات، البراعم، التلقين، التلاوة، التجويد، التخريج، القياس، والمسابقات.</p>
+                    </div>
+                    <div style="border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.8);">
+                        <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-lightbulb" style="color:var(--accent-pink);"></i> المبادرات النوعية</h4>
+                        <p style="font-size: 0.85rem; margin-top: 5px;">التسبيع (مراجعة المصحف في 7 أيام)، مراقي، النظائر، الاتصال الهاتفي، الخاتمات، الوفاء، تصويب عم، تيسير، وإذكاء.</p>
+                    </div>
+                    <div style="border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.8);">
+                        <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-diagram-project" style="color:var(--accent-pink);"></i> المشاريع التعليمية</h4>
+                        <p style="font-size: 0.85rem; margin-top: 5px;">مشروع تعاهد (للموظفات)، مشروع العلا، مشروع الأترجة (حفظ في 10 سنوات)، مشروع كررها، ومتكأ.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: FINANCIAL & PAYROLL -->
+        <section id="financial" class="tab-content">
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-money-bill-wave"></i> جدول المستحقات المالية والساعات</div>
+                <p style="margin-bottom: 12px;">تفصيل أجور الساعات واليوميات لجميع العقود الجزئية والمرنة:</p>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>نوع العقد / المجال</th>
+                                <th>المسمى الوظيفي</th>
+                                <th>قيمة الأجر المستحق</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>عقد جزئي بالساعة (المدارس والبرامج)</td>
+                                <td>القيادية</td>
+                                <td><strong>46 ريالاً / ساعة</strong></td>
+                            </tr>
+                            <tr>
+                                <td>عقد جزئي بالساعة (المدارس والبرامج)</td>
+                                <td>مشرفة القياس / المعلمة</td>
+                                <td><strong>42 ريالاً / ساعة</strong></td>
+                            </tr>
+                            <tr>
+                                <td>عقد جزئي بالساعة (المدارس والبرامج)</td>
+                                <td>الإدارية / الحاضنة / العاملة</td>
+                                <td><strong>38 ريالاً / ساعة</strong></td>
+                            </tr>
+                            <tr>
+                                <td>عقد جزئي بالساعة (المدارس والبرامج)</td>
+                                <td>الحارسة</td>
+                                <td><strong>25 ريالاً / ساعة</strong></td>
+                            </tr>
+                            <tr>
+                                <td>عقود مرنة (الروضات القرآنية)</td>
+                                <td>القيادية</td>
+                                <td><strong>29.6 ريال / ساعة</strong></td>
+                            </tr>
+                            <tr>
+                                <td>عقود مرنة (الروضات القرآنية)</td>
+                                <td>المعلمة (أساسية أو مساعدة)</td>
+                                <td><strong>27.56 ريال / ساعة</strong></td>
+                            </tr>
+                            <tr>
+                                <td>عقود مرنة (الروضات القرآنية)</td>
+                                <td>الإدارية</td>
+                                <td><strong>20.23 ريال / ساعة</strong></td>
+                            </tr>
+                            <tr>
+                                <td>عقد باليومية (حلقات الجوامع والمساجد)</td>
+                                <td>المعلمة</td>
+                                <td><strong>60 ريالاً / اليوم</strong></td>
+                            </tr>
+                            <tr>
+                                <td>عقد باليومية (حلقات الجوامع والمساجد)</td>
+                                <td>الإدارية</td>
+                                <td><strong>55 ريالاً / اليوم</strong></td>
+                            </tr>
+                            <tr>
+                                <td>المجال الافتراضي (واحات المواسم)</td>
+                                <td>قيادية: 45 ريال | معلمة: 30 ريال | إدارية: 25 ريال</td>
+                                <td>حسب الفترة اليومية (أو تطوعي)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-receipt"></i> ضوابط الصرف والفواتير والمقهى</div>
+                <ul style="padding-right: 20px; line-height: 1.8;">
+                    <li><strong>الفواتير الرسمية:</strong> يجب أن تكون الفواتير إلكترونية ومكتوبة باللغة العربية ومفصلة، مع إضافة الرقم الضريبي للجمعية <code>310046488200003</code>.</li>
+                    <li><strong>المقهى التعليمي:</strong> يتم اعتماد اسم "مقهى" بدلاً من "مقصف"، وتتولى الإدارية البيع مع عدم الصرف مطلقاً من الإيراد اليومي نهائياً وتسليمه بالظرف المخصص.</li>
+                    <li><strong>ملاحظات المكافآت:</strong> في حال وجود أي نقص أو زيادة في المكافأة يتم التواصل مباشرة عبر قناة الموظفات.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- TAB 5: REWARDS & VOLUNTEERING -->
+        <section id="rewards" class="tab-content">
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-trophy"></i> محفزات ودروع التميز للموظفات</div>
+                <div class="grid-2">
+                    <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: rgba(255,255,255,0.8);">
+                        <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-medal" style="color:var(--accent-pink);"></i> وسام القياس</h4>
+                        <p style="font-size: 0.88rem; margin-top: 5px;">تمنح للموظفة التي تقيس 10 أجزاء جديدة خلال العام الدراسي وتسلم في ملتقى الأحبة أو ملتقى نور يتجدد.</p>
+                    </div>
+                    <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: rgba(255,255,255,0.8);">
+                        <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-award" style="color:var(--accent-pink);"></i> درع الإنجاز (نسبة 100%)</h4>
+                        <p style="font-size: 0.88rem; margin-top: 5px;">للمعلمات اللاتي حققت حلقاتهن نسبة 100% في دخول القياس أو النجاح أو التقويم المستمر.</p>
+                    </div>
+                    <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: rgba(255,255,255,0.8);">
+                        <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-hands-holding-child" style="color:var(--accent-pink);"></i> درع العطاء التطوعي</h4>
+                        <p style="font-size: 0.88rem; margin-top: 5px;">للمتطوعات اللاتي حققن 400 ساعة تطوعية فأكثر دون مقابل مالي خلال العام.</p>
+                    </div>
+                    <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: rgba(255,255,255,0.8);">
+                        <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-star" style="color:var(--accent-pink);"></i> شهادة شكر الانضباط</h4>
+                        <p style="font-size: 0.88rem; margin-top: 5px;">تمنح شهادة معتمدة إلكترونياً للموظفات اللاتي حضرن جميع أيام العمل دون غياب.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-heart-circle-check"></i> توثيق الساعات عبر المنصة الوطنية للعمل التطوعي</div>
+                <p style="line-height: 1.8;">يمكنكِ توثيق كافة ساعاتك التطوعية واعتماد شهاداتك الرسمية بإشراف رئيسة الموارد البشرية ومنسقة التطوع <strong>مريم الحربي (0500359742)</strong> متبعة الخطوات التالية:</p>
+                <ol style="padding-right: 25px; margin-top: 10px; line-height: 1.8;">
+                    <li>تسجيل الدخول في <a href="https://nvg.gov.sa/Account/Login" target="_blank">المنصة الوطنية للعمل التطوعي (nvg.gov.sa)</a>.</li>
+                    <li>البحث عن الفرصة التطوعية المتاحة للجمعية والتقديم عليها.</li>
+                    <li>تسجيل الحضور اليومي عبر رابط التحضير أولاً بأول.</li>
+                    <li>بعد انتهاء الفرصة وتقييمها تظهر الشهادة في ملف المتطوع مباشرة.</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- TAB 6: POLICIES -->
+        <section id="policies" class="tab-content">
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-file-contract"></i> الإقرار بالعلم بالسياسات واللوائح (13 وثيقة)</div>
+                <p style="margin-bottom: 12px;">يلزم جميع الموظفات الاطلاع والإقرار على الـ 13 سياسة المعتمدة بالجمعية:</p>
+                <div class="grid-2">
+                    <ul style="padding-right: 20px; line-height: 1.8; font-size: 0.9rem;">
+                        <li>1. الميثاق الأخلاقي.</li>
+                        <li>2. سياسة تعارض المصالح.</li>
+                        <li>3. سياسة الاحتفاظ بالوثائق وإتلافها.</li>
+                        <li>4. سياسة الإبلاغ عن المخالفات وحماية المبلّغين.</li>
+                        <li>5. سياسات رصد اشتباه غسل الأموال وتمويل الإرهاب.</li>
+                        <li>6. إجراءات مكافحة تمويل الإرهاب.</li>
+                        <li>7. سياسة البرامج التوعوية لمكافحة الإرهاب.</li>
+                    </ul>
+                    <ul style="padding-right: 20px; line-height: 1.8; font-size: 0.9rem;">
+                        <li>8. سياسة تنظيم العلاقة مع المستفيدين.</li>
+                        <li>9. سياسة إدارة المتطوعين.</li>
+                        <li>10. سياسة جمع التبرعات.</li>
+                        <li>11. سياسة خصوصية البيانات.</li>
+                        <li>12. سياسة خصوصية بيانات الداعمين.</li>
+                        <li>13. سياسة آليات الرقابة الداخلية.</li>
+                    </ul>
+                </div>
+                <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
+                    <a href="https://drive.google.com/file/d/1AGa9eIRU2ZLYQd4cUqcIPSr5pSDqX_IW/view?usp=sharing" target="_blank" class="external-btn">
+                        <i class="fa-solid fa-download"></i> تحميل ملف السياسات الكامل
+                    </a>
+                    <a href="https://forms.gle/JTDf3JxEgM95vzwAA" target="_blank" class="external-btn badge-pink">
+                        <i class="fa-solid fa-signature"></i> رابط الإقرار بالعلم (اختر إدارة 12)
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 7: JOB DESCRIPTIONS -->
+        <section id="jobs" class="tab-content">
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-clipboard-list"></i> الأوصاف الوظيفية التفصيلية</div>
+                <p style="margin-bottom: 15px;">اضغطي على المسمى الوظيفي لعرض المهام والمسؤوليات المعتمدة:</p>
+                
+                <!-- Accordion Items -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span><i class="fa-solid fa-user-tie"></i> 1. القيادية (المديرة / الوكيلة)</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-body">
+                        <ul>
+                            <li>إدارة أعمال المدرسة بكفاءة وفاعلية بما يحقق أهدافها وأهداف الجمعية.</li>
+                            <li>تحليل الوضع الحالي والاستشراف المستقبلي واعتماد الخطط التنفيذية.</li>
+                            <li>اعتماد الصرف حسب الصلاحية ومتابعة الموازنة المالية للمدرسة.</li>
+                            <li>الزيارات الصفية الميدانية ومراقبة الدوام اليومي للمعلمات والإداريات.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span><i class="fa-solid fa-chalkboard-user"></i> 2. معلمة الحلقة / المدارس</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-body">
+                        <ul>
+                            <li>تدريس النصاب المقرر من المنهج كاملاً والتسميع اليومي للدارسات (حفظ ومراجعة).</li>
+                            <li>التقويم والتحضير اليومي للدارسات في مستند المعلمة الإلكتروني.</li>
+                            <li>توجيه وتحفيز دارسات الحلقة لدخول قياس الأجزاء وامتحان الحافظات.</li>
+                            <li>المشاركة في جدول المناوبة اليومية وتطبيق ضوابط النظام والتناصح.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span><i class="fa-solid fa-file-lines"></i> 3. إدارية المستندات والإدارية الميدانية</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-body">
+                        <ul>
+                            <li>إدخال بيانات الدارسات والمعلمات إلكترونياً وتعبئة التقرير الشامل.</li>
+                            <li>متابعة رابط تحضير الموظفات يومياً وتسجيل دقائق الحضور برابط المسير.</li>
+                            <li>متابعة تسديد السهم التعليمي وتنظيم دخول الدارسات وضبط الهدوء والغياب.</li>
+                            <li>متابعة أعمال المقهى وإحصاء الدخل اليومي وتسجيله بالمستند المخصص.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span><i class="fa-solid fa-baby"></i> 4. معلمة الروضة والحاضنة</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-body">
+                        <ul>
+                            <li>تحفيظ الأطفال القرآن الكريم والتأكد من السلامة والبيئة الصحية النظيفة.</li>
+                            <li>الإشراف المباشر واللصيق أثناء الوجبات وعدم ترك الأطفال بمفردهم نهائياً.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 8: LINKS & TELEGRAM -->
+        <section id="links" class="tab-content">
+
+            <div class="card" style="border-right-color: var(--sheets-green); background: rgba(240, 249, 244, 0.95);">
+                <div class="card-title"><i class="fa-solid fa-file-excel" style="color:var(--sheets-green);"></i> جداول بيانات جوجل (Google Sheets)</div>
+                <p style="line-height: 1.7; margin-bottom: 12px;">يمكنكِ الانتقال المباشر لفتح جداول البيانات والمستندات الإلكترونية المعتمدة:</p>
+                <a href="https://docs.google.com/spreadsheets" target="_blank" class="external-btn" style="background: var(--sheets-green); color: white; padding: 8px 18px; font-size: 0.95rem;">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> فتح جداول البيانات
+                </a>
+            </div>
+
+            <div class="card" style="border-right-color: var(--accent-pink); background: var(--light-pink);">
+                <div class="card-title"><i class="fa-solid fa-calendar-star" style="color:var(--accent-pink);"></i> موقع المواعيد والأحداث الهامة</div>
+                <p style="line-height: 1.7; margin-bottom: 12px;">يمكنكِ الاطلاع على جميع الجدول الزمني والمواعيد الهامة المحدثة عبر الرابط التالي:</p>
+                <a href="https://qer.me/d8GV4g" target="_blank" class="external-btn badge-pink" style="padding: 8px 18px; font-size: 0.95rem;">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> الانتقال لموقع المواعيد الهامة
+                </a>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-paper-plane"></i> قنوات التليجرام والروابط الرسمية</div>
+                <div class="grid-2">
+                    <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: rgba(255,255,255,0.8);">
+                        <h4><i class="fa-brands fa-telegram" style="color: #0088cc;"></i> موظفات التحفيظ (هام جداً)</h4>
+                        <p style="font-size: 0.85rem; margin-top: 4px;">للتواصل المباشر والاستفسارات المالية.</p>
+                        <a href="https://t.me/quran_dm" target="_blank" class="external-btn">انضمي للقناة</a>
+                    </div>
+                    <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: rgba(255,255,255,0.8);">
+                        <h4><i class="fa-brands fa-telegram" style="color: #0088cc;"></i> قناة استعلام</h4>
+                        <p style="font-size: 0.85rem; margin-top: 4px;">للتعاميم والجداول والخطط التنفيذية.</p>
+                        <a href="https://t.me/About_quran_dm" target="_blank" class="external-btn">انضمي للقناة</a>
+                    </div>
+                    <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: rgba(255,255,255,0.8);">
+                        <h4><i class="fa-brands fa-telegram" style="color: #0088cc;"></i> قناة نماء (التميز المهني)</h4>
+                        <p style="font-size: 0.85rem; margin-top: 4px;">لمتابعة الدورات التدريبية والتسجيل بها.</p>
+                        <a href="https://t.me/joinchat/AAAAAEKRmeVVW3fahOKonA" target="_blank" class="external-btn">انضمي للقناة</a>
+                    </div>
+                    <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: rgba(255,255,255,0.8);">
+                        <h4><i class="fa-brands fa-telegram" style="color: #0088cc;"></i> قناة بشراكم (الاختبارات)</h4>
+                        <p style="font-size: 0.85rem; margin-top: 4px;">خاصة بنتائج الاختبارات والقياس.</p>
+                        <a href="https://t.me/+VxnApiM6GYcwOGNK" target="_blank" class="external-btn">انضمي للقناة</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-headset"></i> التواصل المباشر ورقم الجوال</div>
+                <p><strong>جوال وحدة الموارد البشرية:</strong> <span class="badge badge-pink" style="font-size: 1rem;">0555903248</span></p>
+                <p style="margin-top: 8px;"><strong>رابط طلب التعريف وشهادة الخبرة:</strong> <a href="https://forms.gle/kEFBCvjG8drmgAV38" target="_blank">forms.gle/kEFBCvjG8drmgAV38</a></p>
+                <p style="margin-top: 8px;"><strong>رابط التقييم والاستبيان:</strong> <a href="https://qer.me/G1d0xO" target="_blank">qer.me/G1d0xO</a></p>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // إخفاء الشاشة الترحيبية بعد 2.5 ثانية تلقائياً
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                if (splash) {
+                    splash.classList.add('fade-out');
+                }
+            }, 2500);
+        });
+
+        // Navigation Switcher
+        function showTab(tabId, element) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            if (element) element.classList.add('active');
+
+            // Close sidebar on mobile after selection
+            if (window.innerWidth <= 992) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        }
+
+        // Toggle Sidebar Mobile
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        // Accordion Toggle
+        function toggleAccordion(header) {
+            const body = header.nextElementSibling;
+            const icon = header.querySelector('.fa-chevron-down, .fa-chevron-up');
+            
+            if (body.style.display === "block") {
+                body.style.display = "none";
+                icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+            } else {
+                body.style.display = "block";
+                icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+            }
+        }
+
+        // Live Search Filter
+        function searchGuide() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.querySelectorAll('.card, .accordion-item');
+            
+            cards.forEach(card => {
+                let text = card.textContent.toLowerCase();
+                if (text.includes(input)) {
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+    </script>
+</body>
+</html>
