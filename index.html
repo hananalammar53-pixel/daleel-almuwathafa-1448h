@@ -581,6 +581,12 @@
                     <i class="fa-solid fa-link"></i> القنوات والروابط
                 </a>
             </li>
+            <!-- خيار الخروج / إغلاق لوحة التنقل -->
+            <li class="nav-item" style="margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                <a class="nav-link" onclick="toggleSidebar()" style="color: var(--accent-pink);">
+                    <i class="fa-solid fa-right-from-bracket"></i> الخروج من لوحة التنقل
+                </a>
+            </li>
         </ul>
     </nav>
 
@@ -1126,6 +1132,19 @@
             </div>
         </section>
 
+        <!-- قسم تنزيل كتطبيق على الجهاز (في أسفل الصفحة) -->
+        <div class="card" style="text-align: center; border-right: none; border-top: 4px solid var(--accent-pink); background: linear-gradient(180deg, #ffffff 0%, var(--light-pink) 100%); margin-top: 40px;">
+            <div class="card-title" style="justify-content: center;">
+                <i class="fa-solid fa-mobile-screen-button"></i> تنزيل كتطبيق على الجهاز
+            </div>
+            <p style="margin-bottom: 15px; color: var(--text-dark); line-height: 1.7;">
+                يمكنكِ تثبيت هذا الدليل كتطبيق مستقل على هاتفكِ الذكي أو جهازكِ اللوحي للوصول السريع ومتابعة التحديثات بسهولة.
+            </p>
+            <button id="pwaInstallBtn" onclick="installPWA()" class="btn-action badge-pink" style="margin: 0 auto; padding: 10px 24px; font-size: 1rem; border: none; cursor: pointer;">
+                <i class="fa-solid fa-download"></i> تثبيت التطبيق الآن
+            </button>
+        </div>
+
     </main>
 
     <script>
@@ -1153,7 +1172,7 @@
             }
         }
 
-        // Toggle Sidebar Mobile
+        // Toggle / Close Sidebar
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('open');
         }
@@ -1185,6 +1204,27 @@
                     card.style.display = "none";
                 }
             });
+        }
+
+        // PWA Installation Handling
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                alert('لتثبيت التطبيق على جهازك:\n\n• أجهزة الآيفون (Safari): اضغطي على زر المشاركة (Share) ثم اختاري "الإضافة إلى الشاشة الرئيسية".\n\n• أجهزة أندرويد (Chrome): اضغطي على قائمة الخيارات (⋮) أعلى المتصفح ثم اختاري "تثبيت التطبيق" أو "الإضافة إلى الشاشة الرئيسية".');
+            }
         }
     </script>
 </body>
