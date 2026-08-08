@@ -1,0 +1,28 @@
+{
+  "background_color": "#ffffff",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "دليل الموظفة",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "دليل الموظفة",
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "https://hananalammar53-pixel.github.io/daleel-almuwathafa-1448h/logo.png",
+      "type": "image/png",
+      "sizes": "1024x1024",
+      "isSquare": true,
+      "isPng": true,
+      "isWebp": false,
+      "isJpg": false,
+      "width": 1024,
+      "is512x512": false,
+      "is256x256": false,
+      "is192x192": false
+    }
+  ],
+  "id": "quran-employee-guide",
+  "description": "دليل شامل لموظفات الإشراف النسائي بالدمام لعام 1448هـ"
+}
