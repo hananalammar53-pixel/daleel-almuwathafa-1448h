@@ -171,23 +171,28 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        /* تعديل حاوية الشعار لتصبح دائرية */
         .brand-logo-card {
             background: #ffffff;
-            padding: 10px;
-            border-radius: 12px;
+            width: 140px;
+            height: 140px;
+            padding: 5px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            border: 2px solid var(--accent-pink);
-            margin-bottom: 10px;
+            border: 3px solid var(--accent-pink);
+            margin: 0 auto 12px auto;
+            overflow: hidden;
         }
 
+        /* تعديل صورة الشعار لتلائم الشكل الدائري */
         .sidebar-logo-img {
             width: 100%;
-            max-width: 210px;
-            height: auto;
-            border-radius: 6px;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
             display: block;
         }
 
@@ -568,7 +573,7 @@
     <!-- Sidebar Navbar -->
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <!-- الشعار الرسمي للتطبيق -->
+            <!-- الشعار الرسمي للتطبيق أصبح دائرية الآن -->
             <div class="brand-logo-card">
                 <img src="logo.png" alt="شعار تحفيظ الشرقية" class="sidebar-logo-img">
             </div>
