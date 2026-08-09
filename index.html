@@ -1,7 +1,29 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <link rel="manifest" href="manifest.json">
+    <!-- تم دمج توليد الـ Manifest تلقائياً هنا -->
+    <script>
+        const manifestData = {
+            "name": "تطبيق دليل الموظفة 1448هـ",
+            "short_name": "دليل الموظفة",
+            "start_url": ".",
+            "display": "standalone",
+            "background_color": "#ffffff",
+            "theme_color": "#213253",
+            "icons": [
+                { "src": "logo.png", "sizes": "192x192", "type": "image/png" },
+                { "src": "logo.png", "sizes": "512x512", "type": "image/png" }
+            ]
+        };
+        const stringManifest = JSON.stringify(manifestData);
+        const blobManifest = new Blob([stringManifest], {type: 'application/manifest+json'});
+        const manifestURL = URL.createObjectURL(blobManifest);
+        const linkTag = document.createElement('link');
+        linkTag.rel = 'manifest';
+        linkTag.href = manifestURL;
+        document.head.appendChild(linkTag);
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تطبيق دليل الموظفة 1448هـ - إدارة الإشراف النسائي بالدمام</title>
@@ -1142,9 +1164,9 @@
                 يمكنكِ تثبيت هذا الدليل كتطبيق مستقل على هاتفكِ أو تحميل ملف الأندرويد المباشر (APK) لتثبيته فوراً:
             </p>
             <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                <!-- زر التثبيت التقليدي عبر PWA -->
-                <button id="pwaInstallBtn" onclick="installPWA()" class="btn-action badge-pink" style="padding: 10px 20px; font-size: 0.95rem; border: none; cursor: pointer;">
-                    <i class="fa-solid fa-download"></i> تثبيت التطبيق (PWA)
+                <!-- زر التثبيت الذكي عبر PWA (مخفي افتراضياً ويظهر عند جاهزية المتصفح للتثبيت) -->
+                <button id="installAppBtn" onclick="installPWAApp()" class="btn-action badge-pink" style="display: none; padding: 10px 20px; font-size: 0.95rem; border: none; cursor: pointer;">
+                    <i class="fa-solid fa-download"></i> تثبيت التطبيق على شاشة الهاتف
                 </button>
                 <!-- زر التحميل المباشر لملف الـ APK -->
                 <a href="daleel-app.apk" download class="btn-action" style="padding: 10px 20px; font-size: 0.95rem; text-decoration: none; background-color: var(--primary-navy);">
@@ -1214,25 +1236,39 @@
             });
         }
 
-        // PWA Installation Handling
+        // PWA Installation Handling & Service Worker
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
+            const installBtn = document.getElementById('installAppBtn');
+            if(installBtn) installBtn.style.display = 'inline-flex';
         });
 
-        function installPWA() {
+        function installPWAApp() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted the install prompt');
-                    }
                     deferredPrompt = null;
                 });
             } else {
-                alert('لتثبيت التطبيق على جهازك:\n\n• أجهزة الآيفون (Safari): اضغطي على زر المشاركة (Share) ثم اختاري "الإضافة إلى الشاشة الرئيسية".\n\n• أجهزة أندرويد (Chrome): اضغطي على قائمة الخيارات (⋮) أعلى المتصفح ثم اختاري "تثبيت التطبيق" أو "الإضافة إلى الشاشة الرئيسية".');
+                alert("لتثبيت التطبيق على جهازك:\n\n• أجهزة الآيفون (Safari): اضغطي على زر المشاركة (Share) ثم اختاري 'الإضافة إلى الشاشة الرئيسية'.\n\n• أجهزة أندرويد (Chrome): اضغطي على قائمة الخيارات (⋮) أعلى المتصفح ثم اختاري 'تثبيت التطبيق' أو 'الإضافة إلى الشاشة الرئيسية'.");
             }
+        }
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                const swCode = `
+                    self.addEventListener('install', (e) => { self.skipWaiting(); });
+                    self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
+                    self.addEventListener('fetch', (e) => {
+                        e.respondWith(caches.match(e.request).then((response) => { return response || fetch(e.request); }));
+                    });
+                `;
+                const blob = new Blob([swCode], { type: 'text/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                navigator.serviceWorker.register(swUrl).catch(() => {});
+            });
         }
     </script>
 </body>
