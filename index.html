@@ -171,28 +171,23 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* تعديل حاوية الشعار لتصبح دائرية */
         .brand-logo-card {
             background: #ffffff;
-            width: 140px;
-            height: 140px;
-            padding: 5px;
-            border-radius: 50%;
+            padding: 10px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            border: 3px solid var(--accent-pink);
-            margin: 0 auto 12px auto;
-            overflow: hidden;
+            border: 2px solid var(--accent-pink);
+            margin-bottom: 10px;
         }
 
-        /* تعديل صورة الشعار لتلائم الشكل الدائري */
         .sidebar-logo-img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
+            max-width: 210px;
+            height: auto;
+            border-radius: 6px;
             display: block;
         }
 
@@ -308,6 +303,77 @@
             color: var(--text-muted);
         }
 
+        /* قائمة نتائج البحث الشامل المنسدلة */
+        .search-results-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            left: 0;
+            background: #ffffff;
+            border: 1px solid var(--accent-pink);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            max-height: 380px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .search-results-dropdown.active {
+            display: block;
+        }
+
+        .search-result-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .search-result-item:hover {
+            background: var(--light-pink);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-tab-badge {
+            font-size: 0.72rem;
+            background: var(--primary-navy);
+            color: var(--white);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 4px;
+        }
+
+        .search-result-title {
+            font-weight: 700;
+            color: var(--primary-navy);
+            font-size: 0.9rem;
+        }
+
+        .search-result-snippet {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* تأثير الوميض عند الانتقال للعنصر */
+        .highlight-flash {
+            animation: flashBg 2s ease;
+        }
+
+        @keyframes flashBg {
+            0% { background-color: rgba(216, 137, 142, 0.6); }
+            100% { background-color: transparent; }
+        }
+
         .quick-actions {
             display: flex;
             gap: 10px;
@@ -417,22 +483,23 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            text-align: right;
-            font-size: 0.9rem;
+            text-align: center;
+            font-size: 0.88rem;
         }
 
         th {
             background-color: var(--primary-navy);
             color: var(--white);
-            padding: 12px 16px;
+            padding: 12px 10px;
             font-weight: 600;
             border-bottom: 3px solid var(--accent-pink);
         }
 
         td {
-            padding: 12px 16px;
+            padding: 10px;
             border-bottom: 1px solid #e2e8f0;
             background: rgba(255, 255, 255, 0.8);
+            vertical-align: middle;
         }
 
         tr:nth-child(even) td {
@@ -441,6 +508,19 @@
 
         tr:hover td {
             background-color: var(--light-pink);
+        }
+
+        .date-hijri {
+            font-weight: 700;
+            color: var(--primary-navy);
+            display: block;
+        }
+
+        .date-greg {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            display: block;
+            margin-top: 2px;
         }
 
         /* Badges & Links */
@@ -573,7 +653,7 @@
     <!-- Sidebar Navbar -->
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <!-- الشعار الرسمي للتطبيق أصبح دائرية الآن -->
+            <!-- الشعار الرسمي للتطبيق -->
             <div class="brand-logo-card">
                 <img src="logo.png" alt="شعار تحفيظ الشرقية" class="sidebar-logo-img">
             </div>
@@ -590,6 +670,26 @@
             <li class="nav-item">
                 <a class="nav-link" onclick="showTab('onsite', this)">
                     <i class="fa-solid fa-building-user"></i> المجال الحضوري
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="showTab('curricula', this)">
+                    <i class="fa-solid fa-book-quran"></i> المناهج الدراسية
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="showTab('registration-payment', this)">
+                    <i class="fa-solid fa-file-signature"></i> التسجيل والسداد
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="showTab('circle-plan', this)">
+                    <i class="fa-solid fa-arrows-spin"></i> خطة سير الحلقة
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="showTab('exams-measurement', this)">
+                    <i class="fa-solid fa-square-poll-vertical"></i> الاختبارات والقياس
                 </a>
             </li>
             <li class="nav-item">
@@ -614,7 +714,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" onclick="showTab('jobs', this)">
-                    <i class="fa-solid fa-id-card"></i> الأوصاف الوظيفية (1-65)
+                    <i class="fa-solid fa-id-card"></i> الأوصاف الوظيفية التفصيلية
                 </a>
             </li>
             <li class="nav-item">
@@ -640,11 +740,13 @@
             </button>
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" onkeyup="searchGuide()" placeholder="ابحثي عن المسمى، الموعد، الرابط، أو الشروط...">
+                <input type="text" id="searchInput" onkeyup="searchGuide()" placeholder="ابحثي عن المسمى، الموعد، الرابط، أو الشروط..." autocomplete="off">
+                <!-- قائمة النتائج المنسدلة للبحث الشامل -->
+                <div id="searchResults" class="search-results-dropdown"></div>
             </div>
             <div class="quick-actions">
-                <!-- أزرار الوصول السريع -->
-                <a href="https://t.me/quran_dm/3005" target="_blank" class="btn-action badge-pink">
+                <!-- أزرار الوصول السريع المحدثة -->
+                <a href="https://t.me/quran_dm/3034" target="_blank" class="btn-action badge-pink">
                     <i class="fa-solid fa-book"></i> دليل الموظفة
                 </a>
                 <a href="https://docs.google.com/spreadsheets" target="_blank" class="btn-action btn-sheets">
@@ -656,8 +758,8 @@
                 <a href="https://qer.me/t4NMo7" target="_blank" class="btn-action badge-pink">
                     <i class="fa-solid fa-calendar-days"></i> تقويم 1448هـ
                 </a>
-                <a href="https://sites.google.com/view/quran-dm-emp/" target="_blank" class="btn-action">
-                    <i class="fa-solid fa-user-plus"></i> الرغبة بالعمل
+                <a href="https://qer.me/CtsW2r" target="_blank" class="btn-action">
+                    <i class="fa-solid fa-user-plus"></i> الرغبة بالعمل 1448هـ
                 </a>
                 <a href="https://t.me/qurandm_bot" target="_blank" class="btn-action">
                     <i class="fa-solid fa-robot"></i> بوت التواصل
@@ -670,10 +772,10 @@
             <div class="card">
                 <div class="card-title">
                     <i class="fa-solid fa-hand-holding-heart"></i>
-                    مرحباً بك في منظومة الجمعية الخيرية لتحفيظ القرآن الكريم بالمنطقة الشرقية
+                    مرحباً بكِ في منظومة الجمعية الخيرية لتحفيظ القرآن الكريم بالمنطقة الشرقية
                 </div>
                 <p style="line-height: 1.8; color: var(--text-dark);">
-                    يسر إدارة الإشراف النسائي بالدمام تقديم هذا الدليل الشامل لعام 1448هـ (الصفحات 1 - 65)، ليكون مرجعكِ الأيسر في معرفة كافة اللوائح، حقوق الموظفات، المستحقات المالية، جداول مواعيد الصرف، المناهج التعليمية، الأوصاف الوظيفية، والمواعيد الهامة.
+                    يسر إدارة الإشراف النسائي بالدمام تقديم هذا الدليل الشامل لعام 1448هـ ، ليكون مرجعكِ الأيسر في معرفة كافة اللوائح، حقوق الموظفات، المستحقات المالية، جداول مواعيد الصرف، المناهج التعليمية، الأوصاف الوظيفية، والمواعيد الهامة.
                 </p>
                 <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
                     <a href="https://t.me/quran_dm/3005" target="_blank" class="external-btn badge-pink">
@@ -686,7 +788,7 @@
                 <div class="card">
                     <div class="card-title"><i class="fa-solid fa-bullseye"></i> رسالتنا الأغلى</div>
                     <p style="line-height: 1.8;">
-                        نحن جمعية خيرية تسعى لتعليم القرآن الكريم تلاوة وحفظاً وتجويداً وتتلقيناً، بتميز وإتقان، من خلال برامج متنوعة ومناهج علمية متخصصة، وكفاءات متميزة، وربط جميع فئات المجتمع بالقرآن.
+                        جمعية خيرية تسعى لتعليم القرآن الكريم تلاوة وحفظاً وتجويداً وتلقيناً، بتميز وإتقان، من خلال برامج متنوعة ومناهج علمية متخصصة، وكفاءات متميزة، وربط جميع فئات المجتمع بالقرآن، راجين ثواب الله للمنفقين والقائمين عليها.
                     </p>
                 </div>
                 <div class="card">
@@ -702,16 +804,16 @@
             </div>
 
             <div class="card">
-                <div class="card-title"><i class="fa-solid fa-certificate"></i> شهادة الترخيص الرسمية</div>
+                <div class="card-title"><i class="fa-solid fa-certificate"></i> بيانات الترخيص والاعتماد المحدثة 1448هـ</div>
                 <div class="grid-2">
                     <div>
-                        <p><strong>اسم المنظمة:</strong> الجمعية الخيرية لتحفيظ القرآن الكريم بالمنطقة الشرقية</p>
-                        <p style="margin-top:8px;"><strong>جهة الإشراف:</strong> وزارة الشؤون الإسلامية والدعوة والإرشاد / المركز الوطني لتنمية القطاع غير الربحي</p>
+                        <p><strong>اسم الجمعية:</strong> الجمعية الخيرية لتحفيظ القرآن الكريم بالمنطقة الشرقية</p>
+                        <p style="margin-top:8px;"><strong>الجهة المشرفة:</strong> وزارة الشؤون الإسلامية والدعوة والإرشاد / المركز الوطني لتنمية القطاع غير الربحي</p>
                         <p style="margin-top:8px;"><strong>الرقم الوطني الموحد:</strong> <span class="badge">7001084164</span></p>
                     </div>
                     <div>
                         <p><strong>الرقم الضريبي للفواتير:</strong> <span class="badge badge-pink">310046488200003</span></p>
-                        <p style="margin-top:8px;"><strong>تاريخ انتهاء الترخيص:</strong> 09-07-2031م</p>
+                        <p style="margin-top:8px;"><strong>صلاحية الترخيص:</strong> يسري حتى <code>2031-07-09م</code></p>
                     </div>
                 </div>
             </div>
@@ -734,41 +836,43 @@
             </div>
 
             <div class="card">
-                <div class="card-title"><i class="fa-solid fa-school"></i> تفصيل المجال الحضوري</div>
-                <p style="margin-bottom: 15px;">يشمل العمل الذي يتطلب الحضور الميداني لموقع المنشأة التعليمية:</p>
+                <div class="card-title"><i class="fa-solid fa-school"></i> أنظمة الدراسة والبرامج المتاحة</div>
                 <div class="grid-2">
                     <div style="background: var(--light-pink); padding: 15px; border-radius: 8px;">
                         <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-calendar-week"></i> نظام الدراسة الربعي (كل 3 أشهر)</h4>
-                        <p style="margin-top: 6px; font-size: 0.9rem;">ينطبق على البرامج القرآنية النوعية: (برنامج كيان، عنان، إتقان، مثان، أثمان، فريدات)</p>
+                        <p style="margin-top: 6px; font-size: 0.9rem;"><strong>البرامج:</strong> كيان، عنان، إتقان، أثمان، مثان (برنامج مجاني)، فريدات النسائية (ختم القرآن في 8 سنوات).</p>
                     </div>
                     <div style="background: var(--light-pink); padding: 15px; border-radius: 8px;">
-                        <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-graduation-cap"></i> نظام الفصول الدراسية (يحاكي التقويم الدراسي)</h4>
-                        <p style="margin-top: 6px; font-size: 0.9rem;">ينطبق على: المدارس النسائية، الفتيات والبراعم، الروضات القرآنية، برامج رياحين، والحلقات بالمدارس والمساجد.</p>
+                        <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-graduation-cap"></i> نظام الفصول الدراسية (محاكي التعليم العام)</h4>
+                        <p style="margin-top: 6px; font-size: 0.9rem;"><strong>يشمل:</strong> المدارس النسائية (أساس وميسر)، الفتيات والبراعم، الروضات القرآنية (3-5 سنوات)، برنامج رياحين، والحلقات بالجامع والمساجد.</p>
                     </div>
+                </div>
+                <div style="margin-top: 15px; background: rgba(255,255,255,0.9); padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <p style="font-size: 0.9rem;"><strong>البرامج الدائمة الإضافية:</strong> برنامج "وتعاهدوا" (الجمعة أو السبت)، وبرنامج "إحكام" (يمتد لـ 3 أيام مساءً).</p>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-title"><i class="fa-solid fa-clock"></i> مواعيد وتوقيت الدوام الحضوري</div>
+                <div class="card-title"><i class="fa-solid fa-clock"></i> مواعيد وأيام الدوام الرسمي الحضوري</div>
                 <div class="table-responsive">
                     <table>
                         <thead>
                             <tr>
-                                <th>الفئة / الموقع</th>
+                                <th>الفئة / البرنامج</th>
                                 <th>أيام الدوام</th>
-                                <th>التوقيت (البدء والانتهاء)</th>
-                                <th>زمن الدوام</th>
+                                <th>التوقيت الرسمى</th>
+                                <th>الزمن</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>البرامج القرآنية</td>
-                                <td>الأحد - الثلاثاء - الأربعاء</td>
+                                <td>الأحد - الثلاثاء - الأربعاء (الاثنين والخميس حسب الحاجة)</td>
                                 <td>8:00 ص - 11:00 ص</td>
                                 <td>3 ساعات</td>
                             </tr>
                             <tr>
-                                <td>المدارس الصباحية (نسائية/فتيات)</td>
+                                <td>المدارس الصباحية</td>
                                 <td>من الأحد إلى الخميس</td>
                                 <td>8:00 ص - 10:30 ص</td>
                                 <td>ساعتان ونصف</td>
@@ -780,22 +884,22 @@
                                 <td>ساعتان ونصف</td>
                             </tr>
                             <tr>
-                                <td>رياحين (سبت أسبوعي)</td>
-                                <td>يوم السبت فقط</td>
-                                <td>9:00 ص - 11:30 ص</td>
-                                <td>ساعتان ونصف</td>
-                            </tr>
-                            <tr>
-                                <td>الروضات القرآنية للدارسات</td>
+                                <td>الروضات القرآنية</td>
                                 <td>من الأحد إلى الخميس</td>
                                 <td>7:30 ص - 12:00 م</td>
                                 <td>4 ساعات ونصف</td>
                             </tr>
                             <tr>
                                 <td>حلقات الجوامع والمساجد</td>
-                                <td>وفق الجدول المحدد لكل جامع</td>
-                                <td>بعد العصر إلى قبل المغرب / 8 - 10 صباحاً</td>
+                                <td>الأحد - الثلاثاء - الأربعاء</td>
+                                <td>من بعد العصر إلى قبيل المغرب</td>
                                 <td>ساعتان</td>
+                            </tr>
+                            <tr>
+                                <td>برنامج رياحين</td>
+                                <td>يوم السبت فقط</td>
+                                <td>9:00 ص - 11:30 ص</td>
+                                <td>ساعتان ونصف</td>
                             </tr>
                         </tbody>
                     </table>
@@ -803,14 +907,14 @@
             </div>
 
             <div class="card">
-                <div class="card-title"><i class="fa-solid fa-user-check"></i> مجالات العمل وااشتراطات التوظيف الحضوري</div>
+                <div class="card-title"><i class="fa-solid fa-user-check"></i> اشتراطات التوظيف (المجال الحضوري)</div>
                 <div class="table-responsive">
                     <table>
                         <thead>
                             <tr>
                                 <th>المسمى الوظيفي</th>
                                 <th>المؤهل العلمي الأدنى</th>
-                                <th>مقدار أجزاء الحفظ</th>
+                                <th>مقدار الحفظ</th>
                                 <th>البرامج التأهيلية والخبرة المطلوبة</th>
                             </tr>
                         </thead>
@@ -819,13 +923,13 @@
                                 <td>القيادية (المديرة/الوكيلة)</td>
                                 <td>مؤهل جامعي</td>
                                 <td>10 أجزاء</td>
-                                <td>دورة بناء الصف الثاني + خبرة لا تقل عن 7 سنوات في التحفيظ</td>
+                                <td>بناء الصف الثاني للقيادات + خبرة 7 سنوات بالتحفيظ</td>
                             </tr>
                             <tr>
                                 <td>مشرفة القياس</td>
                                 <td>مؤهل جامعي</td>
                                 <td>15 جزءاً</td>
-                                <td>دورة بناء الصف الثاني + خبرة لا تقل عن 4 سنوات في التحفيظ</td>
+                                <td>بناء الصف الثاني + خبرة 4 سنوات بالتحفيظ</td>
                             </tr>
                             <tr>
                                 <td>الإدارية</td>
@@ -835,9 +939,9 @@
                             </tr>
                             <tr>
                                 <td>المعلمة</td>
-                                <td>ثانوي (جامعي للروضات)</td>
+                                <td>ثانوي / جامعي</td>
                                 <td>5 أجزاء</td>
-                                <td>دورة بناء الصف الثاني للمعلمات / أو خريجة مركز إعداد معلمات + رخصة المعلمة</td>
+                                <td>بناء الصف الثاني / رخصة معلمة / مراكز إعداد المعلمات</td>
                             </tr>
                             <tr>
                                 <td>الحاضنة</td>
@@ -846,10 +950,16 @@
                                 <td>دورة بناء الصف الثاني للحاضنات</td>
                             </tr>
                             <tr>
-                                <td>الحارسة / مقدمة الخدمات</td>
+                                <td>الحارسة</td>
                                 <td>مؤهل ثانوي</td>
                                 <td>جزء واحد</td>
-                                <td>مقابلة شخصية + دورة بناء الصف الثاني للحارسات ومقدمات الخدمات</td>
+                                <td>دورة بناء الصف الثاني للحارسات</td>
+                            </tr>
+                            <tr>
+                                <td>العاملة (مقدمة خدمات)</td>
+                                <td>مؤهل ثانوي</td>
+                                <td>جزء واحد</td>
+                                <td>اجتياز المقابلة الشخصية</td>
                             </tr>
                         </tbody>
                     </table>
@@ -857,57 +967,1059 @@
             </div>
         </section>
 
-        <!-- TAB 3: VIRTUAL DOMAIN -->
-        <section id="virtual" class="tab-content">
+        <!-- TAB: CURRICULA (المناهج الدراسية) -->
+        <section id="curricula" class="tab-content">
             <div class="card">
-                <div class="card-title"><i class="fa-solid fa-laptop"></i> تفصيل المجال الافتراضي (عن بعد)</div>
-                <p>يشمل البرامج التعليمية التي تُدار بالكامل عن طريق التقنية والمواسم التعليمية الأربعة:</p>
-                <div class="grid-2" style="margin-top: 15px;">
-                    <div style="background: var(--light-pink); padding: 15px; border-radius: 8px;">
-                        <h4 style="color: var(--primary-navy);">🗓️ الأشهر والمواسم التعليمية</h4>
-                        <ul style="padding-right: 20px; margin-top: 8px; font-size: 0.9rem;">
-                            <li><strong>الموسم 25:</strong> محرم - صفر</li>
-                            <li><strong>الموسم 26:</strong> ربيع الثاني - جمادى الأولى</li>
-                            <li><strong>الموسم 27:</strong> رجب - شعبان</li>
-                            <li><strong>الموسم 28:</strong> شوال - ذو القعدة</li>
-                        </ul>
+                <div class="card-title"><i class="fa-solid fa-book-quran"></i> المناهج الدراسية والمقررات التعليمية</div>
+                <p style="line-height: 1.8; margin-bottom: 15px;">
+                    جدول كافة المسارات والمناهج الدراسية المعتمدة لعام 1448هـ، الموزعة على مختلف الفئات العمرية والبرامج.
+                </p>
+            </div>
+
+            <!-- 1. منهج الحفظ الأساس (مسار 7 سنوات) -->
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-bookmark"></i> منهج الحفظ الأساس (نظام حفظ القرآن كاملاً مسار 7 سنوات)</div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>السنة</th>
+                                <th>المقرر لكامل العام الدراسي</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>السنة الأولى</strong></td><td>سورة البقرة آية 1 إلى سورة النساء آية 87</td></tr>
+                            <tr><td><strong>السنة الثانية</strong></td><td>سورة النساء آية 88 إلى سورة الأعراف آية 206</td></tr>
+                            <tr><td><strong>السنة الثالثة</strong></td><td>سورة الأنفال آية 1 إلى سورة الرعد آية 43</td></tr>
+                            <tr><td><strong>السنة الرابعة</strong></td><td>سورة إبراهيم آية 1 إلى سورة الحج آية 78</td></tr>
+                            <tr><td><strong>السنة الخامسة</strong></td><td>سورة المؤمنون آية 1 إلى سورة الأحزاب آية 73</td></tr>
+                            <tr><td><strong>السنة السادسة</strong></td><td>سورة سبأ آية 1 إلى سورة محمد آية 38</td></tr>
+                            <tr><td><strong>السنة السابعة</strong></td><td>سورة الفتح آية 1 إلى سورة الناس آية 6</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 2. منهج الحفظ الميسر (مسار 15 سنة) -->
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-feather-pointed"></i> منهج الحفظ الميسر (نظام حفظ القرآن كاملاً مسار 15 سنة)</div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>السنة</th>
+                                <th>المقرر لكامل العام الدراسي</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>السنة الأولى</strong></td><td>سورة البقرة من آية 1 إلى آية 252</td></tr>
+                            <tr><td><strong>السنة الثانية</strong></td><td>سورة البقرة من آية 253 إلى سورة النساء آية 23</td></tr>
+                            <tr><td><strong>السنة الثالثة</strong></td><td>سورة النساء آية 24 إلى سورة المائدة آية 81</td></tr>
+                            <tr><td><strong>السنة الرابعة</strong></td><td>سورة المائدة آية 82 إلى سورة الأعراف آية 87</td></tr>
+                            <tr><td><strong>السنة الخامسة</strong></td><td>سورة الأعراف آية 88 إلى سورة التوبة آية 92</td></tr>
+                            <tr><td><strong>السنة السادسة</strong></td><td>سورة التوبة آية 93 إلى سورة يوسف آية 52</td></tr>
+                            <tr><td><strong>السنة الثامنة</strong></td><td>سورة الإسراء آية 1 إلى سورة طه آية 135</td></tr>
+                            <tr><td><strong>السنة التاسعة</strong></td><td>سورة الأنبياء آية 1 إلى سورة الفرقان آية 20</td></tr>
+                            <tr><td><strong>السنة العاشرة</strong></td><td>سورة الفرقان آية 21 إلى سورة العنكبوت آية 45</td></tr>
+                            <tr><td><strong>السنة الحادية عشر</strong></td><td>سورة العنكبوت آية 46 إلى سورة يس آية 27</td></tr>
+                            <tr><td><strong>السنة الثانية عشر</strong></td><td>سورة يس آية 28 إلى سورة فصلت آية 46</td></tr>
+                            <tr><td><strong>السنة الثالثة عشر</strong></td><td>سورة فصلت آية 47 إلى سورة الذاريات آية 30</td></tr>
+                            <tr><td><strong>السنة الرابعة عشر</strong></td><td>سورة الذاريات آية 31 إلى سورة التحريم آية 12</td></tr>
+                            <tr><td><strong>السنة الخامسة عشر</strong></td><td>سورة الملك آية 1 إلى سورة الناس آية 6</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 3. منهج التجويد -->
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-spell-check"></i> منهج التجويد</div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>المقرر لكامل العام الدراسي</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>كتاب المذكرة في التجويد للشيخ محمد نبهان المصري</td></tr>
+                            <tr><td>حفظ جزء عم — تلاوة الأجزاء من 30 إلى 27</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 4. منهج التلقين -->
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-ear-listen"></i> منهج التلقين (المسار الممتد)</div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>السنة</th>
+                                <th>المقرر لكامل العام الدراسي</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>الأولى</strong></td><td>من الفاتحة إلى الأعلى</td></tr>
+                            <tr><td><strong>الثانية</strong></td><td>من الطارق إلى النبأ</td></tr>
+                            <tr><td><strong>الثالثة</strong></td><td>من المرسلات إلى الجن</td></tr>
+                            <tr><td><strong>الرابعة</strong></td><td>من نوح إلى الملك</td></tr>
+                            <tr><td><strong>الخامسة</strong></td><td>من التحريم - الجمعة</td></tr>
+                            <tr><td><strong>السادسة</strong></td><td>من الصف إلى المجادلة</td></tr>
+                            <tr><td><strong>السابعة</strong></td><td>من الحديد إلى الرحمن</td></tr>
+                            <tr><td><strong>الثامنة</strong></td><td>من القمر إلى الذاريات</td></tr>
+                            <tr><td><strong>التاسعة</strong></td><td>من ق إلى الفتح</td></tr>
+                            <tr><td><strong>العاشرة</strong></td><td>من محمد إلى الأحقاف</td></tr>
+                            <tr><td><strong>الحادي عشر</strong></td><td>من الجاثية إلى الزخرف 45</td></tr>
+                            <tr><td><strong>الثاني عشر</strong></td><td>من الزخرف آية 46 إلى الشورى</td></tr>
+                            <tr><td><strong>الثالث عشر</strong></td><td>من فصلت إلى غافر آية 40</td></tr>
+                            <tr><td><strong>الرابع عشر</strong></td><td>من غافر آية 41 إلى الزمر آية 40</td></tr>
+                            <tr><td><strong>الخامس عشر</strong></td><td>من الزمر آية 41 إلى ص آية 88</td></tr>
+                            <tr><td><strong>السادس عشر</strong></td><td>من الصافات إلى يس آية 40</td></tr>
+                            <tr><td><strong>السابع عشر</strong></td><td>من يس 41 إلى سبأ آية 30</td></tr>
+                            <tr><td><strong>الثامن عشر</strong></td><td>من سبأ آية 31 إلى الأحزاب آية 73</td></tr>
+                            <tr><td><strong>الثالث والعشرون</strong></td><td>سورة النمل آية (67) - سورة الشعراء آية (183)</td></tr>
+                            <tr><td><strong>الرابع والعشرون</strong></td><td>سورة الشعراء آية (184) - سورة النور آية (10)</td></tr>
+                            <tr><td><strong>الخامس والعشرون</strong></td><td>سورة النور آية (11) - سورة المؤمنون آية (17)</td></tr>
+                            <tr><td><strong>السادس والعشرون</strong></td><td>سورة المؤمنون آية (18) - سورة الحج آية (23)</td></tr>
+                            <tr><td><strong>السابع والعشرون</strong></td><td>سورة الحج آية (24) - سورة الأنبياء آية (35)</td></tr>
+                            <tr><td><strong>الثامن والعشرون</strong></td><td>سورة الأنبياء آية (36) - سورة طه آية (00)</td></tr>
+                            <tr><td><strong>الثلاثون</strong></td><td>سورة مريم آية (37) - سورة الكهف آية (45)</td></tr>
+                            <tr><td><strong>الواحد وثلاثون</strong></td><td>سورة الكهف آية (46) - سورة الإسراء آية (44)</td></tr>
+                            <tr><td><strong>الثاني والثلاثون</strong></td><td>سورة الإسراء آية (45) - سورة النحل آية (27)</td></tr>
+                            <tr><td><strong>الثالث والثلاثون</strong></td><td>سورة النحل آية (28) - سورة النحل آية (110)</td></tr>
+                            <tr><td><strong>الرابع والثلاثون</strong></td><td>سورة النحل آية (111) - سورة إبراهيم عليه السلام آية (18)</td></tr>
+                            <tr><td><strong>الخامس والثلاثون</strong></td><td>سورة إبراهيم عليه السلام آية (19) - سورة الرعد آية (43)</td></tr>
+                            <tr><td><strong>السادس والثلاثون</strong></td><td>سورة يوسف عليه السلام - سورة يوسف عليه السلام آية (86)</td></tr>
+                            <tr><td><strong>السابع والثلاثون</strong></td><td>سورة يوسف عليه السلام آية (87) - سورة هود عليه السلام آية (03)</td></tr>
+                            <tr><td><strong>الثامن والثلاثون</strong></td><td>سورة هود عليه السلام آية (04) - سورة يونس عليه السلام آية (10)</td></tr>
+                            <tr><td><strong>التاسع والثلاثون</strong></td><td>سورة يونس عليه السلام آية (11) - سورة يونس عليه السلام آية (91)</td></tr>
+                            <tr><td><strong>الأربعون</strong></td><td>سورة يونس عليه السلام آية (92) - سورة التوبة آية (04)</td></tr>
+                            <tr><td><strong>الحادي والأربعون</strong></td><td>سورة التوبة آية (05) - سورة التوبة آية (117)</td></tr>
+                            <tr><td><strong>الثاني والأربعون</strong></td><td>سورة التوبة آية (118) - نهاية سورة الأنفال</td></tr>
+                            <tr><td><strong>الثالث والأربعون</strong></td><td>سورة الأعراف</td></tr>
+                            <tr><td><strong>الرابع والأربعون</strong></td><td>سورة الأعراف</td></tr>
+                            <tr><td><strong>الخامس والأربعون</strong></td><td>سورة الأنعام</td></tr>
+                            <tr><td><strong>السادس والأربعون</strong></td><td>سورة الأنعام</td></tr>
+                            <tr><td><strong>السابع والأربعون</strong></td><td>سورة المائدة</td></tr>
+                            <tr><td><strong>الثامن والأربعون</strong></td><td>سورة النساء</td></tr>
+                            <tr><td><strong>التاسع والأربعون</strong></td><td>سورة النساء</td></tr>
+                            <tr><td><strong>الخمسون</strong></td><td>سورة آل عمران</td></tr>
+                            <tr><td><strong>الحادية والخمسون</strong></td><td>سورة آل عمران</td></tr>
+                            <tr><td><strong>الثانية والخمسون</strong></td><td>سورة البقرة</td></tr>
+                            <tr><td><strong>الثالثة والخمسون</strong></td><td>سورة البقرة</td></tr>
+                            <tr><td><strong>الرابعة والخمسون</strong></td><td>سورة البقرة</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 5. مناهج البراعم والبرامج المتنوعة -->
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-child"></i> منهج البراعم والبرامج الفرعية</div>
+                
+                <div class="section-sub-title"><i class="fa-solid fa-shapes"></i> منهج البراعم في المدارس والحلقات النسائية بالجوامع والمساجد ورياحين</div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>السنة</th>
+                                <th>المقرر لكامل العام الدراسي</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>الأولى</strong></td><td>سورة الفاتحة إلى سورة الأعلى</td></tr>
+                            <tr><td><strong>الثانية</strong></td><td>سورة الطارق إلى سورة النبأ</td></tr>
+                            <tr><td><strong>الثالثة</strong></td><td>سورة المرسلات إلى سورة الجن</td></tr>
+                            <tr><td><strong>الرابعة</strong></td><td>سورة نوح إلى سورة الملك</td></tr>
+                            <tr><td><strong>الخامسة</strong></td><td>سورة التحريم إلى سورة الجمعة</td></tr>
+                            <tr><td><strong>السادسة</strong></td><td>سورة الصف إلى سورة المجادلة</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section-sub-title"><i class="fa-solid fa-mosque"></i> البرنامج الأول في الحلقات النسائية في الجوامع والمساجد</div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>السنة</th>
+                                <th>المقرر لكامل العام الدراسي</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>الأولى</strong></td><td>سورة الفاتحة إلى سورة الملك</td></tr>
+                            <tr><td><strong>الثانية</strong></td><td>سورة التحريم إلى سورة الذاريات</td></tr>
+                            <tr><td><strong>الثالثة</strong></td><td>سورة ق إلى سورة الشورى</td></tr>
+                            <tr><td><strong>الرابعة</strong></td><td>سورة فصلت إلى سورة يس</td></tr>
+                            <tr><td><strong>الخامسة</strong></td><td>سورة فاطر إلى سورة الروم</td></tr>
+                            <tr><td><strong>السادسة</strong></td><td>سورة العنكبوت إلى سورة الشعراء</td></tr>
+                            <tr><td><strong>السابعة</strong></td><td>سورة الفرقان إلى سورة الحج</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section-sub-title"><i class="fa-solid fa-star-of-life"></i> البرنامج النوعي (نظام حفظ القرآن كاملاً مسار 5 سنوات)</div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>السنة</th>
+                                <th>المقرر لكامل العام الدراسي</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>السنة الأولى</strong></td><td>سورة الفاتحة إلى سورة المائدة آية 81</td></tr>
+                            <tr><td><strong>السنة الثانية</strong></td><td>سورة المائدة آية 82 إلى سورة يوسف آية 111</td></tr>
+                            <tr><td><strong>السنة الثالثة</strong></td><td>سورة الرعد آية 1 إلى سورة الفرقان آية 77</td></tr>
+                            <tr><td><strong>السنة الرابعة</strong></td><td>سورة الشعراء آية 1 إلى سورة فصلت آية 54</td></tr>
+                            <tr><td><strong>السنة الخامسة</strong></td><td>سورة الشورى آية 1 إلى سورة الناس آية 6</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section-sub-title"><i class="fa-solid fa-clock"></i> نظام حفظ القرآن كاملاً مسار 10 سنوات</div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>السنة</th>
+                                <th>المقرر لكامل العام الدراسي</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>السنة الأولى</strong></td><td>سورة الفاتحة إلى سورة آل عمران آية 92</td></tr>
+                            <tr><td><strong>السنة الثانية</strong></td><td>سورة آل عمران آية 93 إلى سورة المائدة آية 81</td></tr>
+                            <tr><td><strong>السنة الثالثة</strong></td><td>سورة المائدة آية 82 إلى سورة الأنفال آية 75</td></tr>
+                            <tr><td><strong>السنة الرابعة</strong></td><td>سورة التوبة آية 1 إلى سورة يوسف آية 111</td></tr>
+                            <tr><td><strong>السنة الخامسة</strong></td><td>سورة الرعد آية 1 إلى سورة الكهف آية 110</td></tr>
+                            <tr><td><strong>السنة السادسة</strong></td><td>سورة مريم آية 1 إلى سورة الفرقان آية 77</td></tr>
+                            <tr><td><strong>السنة السابعة</strong></td><td>سورة الشعراء آية 1 إلى سورة الأحزاب آية 73</td></tr>
+                            <tr><td><strong>السنة الثامنة</strong></td><td>سورة سبأ آية 1 إلى سورة فصلت آية 54</td></tr>
+                            <tr><td><strong>السنة التاسعة</strong></td><td>سورة الشورى آية 1 إلى سورة الحديد آية 29</td></tr>
+                            <tr><td><strong>السنة العاشرة</strong></td><td>سورة المجادلة آية 1 إلى سورة الناس آية 6</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 6. الروضات وحلقة ترسيخ -->
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-shapes"></i> الروضات وحلقة ترسيخ</div>
+                
+                <div class="grid-2">
+                    <div>
+                        <div class="section-sub-title"><i class="fa-solid fa-shapes"></i> الروضات التعليمية</div>
+                        <p style="font-size: 0.85rem; margin-bottom: 8px; color: var(--text-muted);">
+                            تعتبر خدمة للدارسة وتحفظ فيه الابنة سوراً من القرآن الكريم بنظام التهجئة.
+                        </p>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>السنة</th>
+                                        <th>المقرر لكامل العام الدراسي</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><strong>المستوى الأول</strong></td><td>سورة الفاتحة + سورة الناس إلى سورة القارعة</td></tr>
+                                    <tr><td><strong>المستوى الثاني</strong></td><td>سورة العاديات إلى سورة البلد</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div style="background: var(--light-pink); padding: 15px; border-radius: 8px;">
-                        <h4 style="color: var(--primary-navy);">🌺 الواحات التعليمية المصاحبة</h4>
-                        <ul style="padding-right: 20px; margin-top: 8px; font-size: 0.9rem;">
-                            <li><strong>واحة ربيع أول:</strong> تتبع الموسم 25</li>
-                            <li><strong>واحة جمادى الآخرة:</strong> تتبع الموسم 26</li>
-                            <li><strong>واحة رمضان:</strong> تتبع الموسم 27</li>
-                            <li><strong>واحة ذو الحجة:</strong> تتبع الموسم 28</li>
+
+                    <div>
+                        <div class="section-sub-title"><i class="fa-solid fa-hands-holding-child"></i> الروضات القرآنية</div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>السنة</th>
+                                        <th>المقرر لكامل العام الدراسي</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><strong>الحافظة المبتدئة</strong></td><td>الفاتحة ومن سورة الناس إلى سورة الانفطار</td></tr>
+                                    <tr><td><strong>الحافظة المتقدمة</strong></td><td>من سورة التكوير إلى سورة الجن</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; background: var(--light-pink); padding: 15px; border-radius: 8px; border-right: 4px solid var(--accent-pink);">
+                    <h4 style="color: var(--primary-navy); margin-bottom: 5px;"><i class="fa-solid fa-rotate-left"></i> حلقة ترسيخ</h4>
+                    <p style="font-size: 0.9rem; line-height: 1.7;">
+                        حلقة مراجعة خاصة بالخريجات اللاتي اجتزن امتحان الحافظات ويرغبن في تعاهد محفوظهن في المدارس.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: REGISTRATION & PAYMENT (التسجيل والسداد) -->
+        <section id="registration-payment" class="tab-content">
+            <!-- 1. آلية التسجيل -->
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-user-plus"></i> آلية وخطوات التسجيل الإلكتروني</div>
+                <p style="line-height: 1.8; margin-bottom: 12px;">
+                    يمكن للدارسات التسجيل المباشر واتباع خطوات الاختيار عبر رابط البوابة المخصص:
+                </p>
+                <div style="margin-bottom: 15px;">
+                    <a href="https://qer.me/9aYuXM" target="_blank" class="external-btn badge-pink" style="padding: 8px 18px; font-size: 0.95rem;">
+                        <i class="fa-solid fa-link"></i> رابط واجهة التسجيل المباشر (qer.me/9aYuXM)
+                    </a>
+                </div>
+
+                <div class="grid-2" style="margin-top: 15px;">
+                    <div style="background: rgba(255,255,255,0.9); padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h4 style="color: var(--primary-navy); margin-bottom: 8px;"><i class="fa-solid fa-list-check" style="color: var(--accent-pink);"></i> خطوات البحث والتصفية</h4>
+                        <ol style="padding-right: 20px; font-size: 0.88rem; line-height: 1.8;">
+                            <li>الدخول إلى واجهة التسجيل والنقر على خيار <strong>(البرامج)</strong>.</li>
+                            <li>التصفية بحسب <strong>القسم</strong> (برامج قرآنية، مدارس نسائية، روضات...).</li>
+                            <li>التصفية بحسب <strong>المحافظة أو المركز</strong> (الدمام، الظهران، البيضاء، رأس تنورة...).</li>
+                            <li>التصفية بحسب <strong>الحي</strong> أو <strong>الفئة العمرية</strong> أو الخدمة المطلوبة (حضانة، روضة).</li>
+                            <li>اختيار الموقع المطلوب وقراءة البيانات التفصيلية (الأيام، التوقيت، المقر) ثم النقر على رابط التسجيل الخاص بالموقع.</li>
+                        </ol>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.9); padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h4 style="color: var(--primary-navy); margin-bottom: 8px;"><i class="fa-solid fa-bars-staggered" style="color: var(--accent-pink);"></i> أقسام الواجهة الأخرى</h4>
+                        <ul style="padding-right: 20px; font-size: 0.88rem; line-height: 1.8;">
+                            <li><strong>روابط هامة:</strong> تتضمن التسجيل الحضوري، الافتراضي، دليل المجال، المواعيد الهامة، متجر المشاريع، واختبارات القياس والحافظات.</li>
+                            <li><strong>تواصل معنا:</strong> تتضمن خدمة الواتساب، والرد السريع عبر التليجرام، وقنوات التواصل الاجتماعية الخاصة بالإدارة.</li>
                         </ul>
                     </div>
                 </div>
             </div>
 
+            <!-- 2. نصاب افتتاح الحلقة والأسهم التعليمية -->
             <div class="card">
-                <div class="card-title"><i class="fa-solid fa-cubes"></i> الميادين والمبادرات الافتراضية</div>
-                <div class="grid-3">
-                    <div style="border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.8);">
-                        <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-layer-group" style="color:var(--accent-pink);"></i> الميادين (10 ميادين)</h4>
-                        <p style="font-size: 0.85rem; margin-top: 5px;">الحفظ المكثف (وجهان ونصف)، المخفف (وجه ونصف)، الفتيات، البراعم، التلقين، التلاوة، التجويد، التخريج، القياس، والمسابقات.</p>
+                <div class="card-title"><i class="fa-solid fa-coins"></i> نصاب افتتاح الحلقة والأسهم التعليمية</div>
+                
+                <div style="background: var(--light-pink); padding: 12px 18px; border-radius: 8px; margin-bottom: 15px; border-right: 4px solid var(--accent-pink);">
+                    <h4 style="color: var(--primary-navy); margin: 0;"><i class="fa-solid fa-users-line"></i> نصاب افتتاح الحلقة: <span style="color: var(--accent-pink); font-size: 1.2rem; font-weight: 800;">8 دارسات</span></h4>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>البيان / البرنامج</th>
+                                <th>القيمة شاملة الضريبة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align: right;">المدارس النسائية والفتيات والبراعم والبرامج الأسبوعية (مراجعة - حفظ - تجويد - تلاوة - تلقين - روضات تعليمية - حضانة)</td>
+                                <td><strong>225 ريالاً</strong> للفصل الواحد <span class="date-greg">(إجمالي 450 ريالاً للفصلين)</span></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">حسم الشقيق في الروضات التعليمية والحضانة</td>
+                                <td>الحسم <strong>25 ريالاً</strong> للطفل الثاني في الفصل، فيصبح السهم <strong>200 ريال</strong> للفصل الواحد <span class="date-greg">(إجمالي 400 ريال للفصلين)</span></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">سهم الطفل في الروضات التعليمية والحضانة لأبناء موظفات التحفيظ</td>
+                                <td><strong>150 ريالاً</strong> للفصل الواحد <span class="date-greg">(إجمالي 300 ريال للفصلين)</span></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">الروضات القرآنية</td>
+                                <td>
+                                    • مباني منفصلة: <strong>9200 ريال</strong> (سنوي)<br>
+                                    • مباني مشتركة مع المدرسة: <strong>6900 ريال</strong> (سنوي)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">حسم الشقيق وأبناء الموظفات في الروضات القرآنية</td>
+                                <td>حسم <strong>500 ريال</strong> للفصل الدراسي الأول فقط (ولا يحسم في باقي الفصول الدراسية)</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">حضانة موظفات الروضات القرآنية</td>
+                                <td><strong>750 ريالاً</strong> للفصل الواحد <span class="date-greg">(إجمالي 1500 ريال للفصلين)</span></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">برنامج رياحين</td>
+                                <td><strong>150 ريالاً</strong> للفصل الواحد <span class="date-greg">(إجمالي 300 ريال للفصلين)</span></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">برنامج وتعهدوا</td>
+                                <td><strong>25 ريالاً</strong> لليوم الواحد</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 3. آلية متابعة المساهمة والحساب البنكي -->
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-building-columns"></i> آلية متابعة المساهمة والحساب البنكي المعتمد</div>
+                
+                <div class="grid-2">
+                    <div>
+                        <div class="section-sub-title"><i class="fa-solid fa-list-check"></i> ضوابط وآلية الإبلاغ عن المساهمة</div>
+                        <ul style="padding-right: 20px; line-height: 1.8; font-size: 0.9rem;">
+                            <li>يتم إرسال ملف آلية التحويل عبر الواتساب للدارسات مع التأكيد على التنبيه لرقم الحساب الذي يتم التحويل عليه.</li>
+                            <li>بعد التحويل، تقوم الدارسة بتعبئة رابط الإبلاغ بالمساهمة دون حاجة لإرسال صورة التحويل عبر الواتساب.</li>
+                            <li style="margin-top: 8px;">
+                                <a href="https://qer.me/L3Mmvj" target="_blank" class="external-btn badge-pink">
+                                    <i class="fa-solid fa-file-circle-check"></i> رابط الإبلاغ بالمساهمة (qer.me/L3Mmvj)
+                                </a>
+                            </li>
+                            <li style="margin-top: 10px;">تتابع الإدارية الدارسات بطريقة لبقة عبر مذكرة إياكُنّ بالواتساب.</li>
+                            <li>تسجل الإدارية البيانات وتدوّن أمام اسم الدارسة حالتها في مستند الخارطة بوضع علامة صح أمام اسمها.</li>
+                        </ul>
                     </div>
-                    <div style="border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.8);">
-                        <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-lightbulb" style="color:var(--accent-pink);"></i> المبادرات النوعية</h4>
-                        <p style="font-size: 0.85rem; margin-top: 5px;">التسبيع (مراجعة المصحف في 7 أيام)، مراقي، النظائر، الاتصال الهاتفي، الخاتمات، الوفاء، تصويب عم، تيسير، وإذكاء.</p>
+
+                    <div>
+                        <div class="section-sub-title"><i class="fa-solid fa-credit-card"></i> بيانات الحساب البنكي للمساهمة</div>
+                        <div style="background: var(--light-pink); padding: 18px; border-radius: 10px; border: 2px solid var(--accent-pink); text-align: center;">
+                            <p style="font-weight: 700; color: var(--primary-navy); margin-bottom: 6px;">حساب التحويل في مصرف الراجحي:</p>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">(حساب إدارة الإشراف النسائي بالدمام)</p>
+                            <p style="font-family: monospace; font-size: 1.15rem; font-weight: 800; color: var(--primary-navy); direction: ltr; background: white; padding: 10px; border-radius: 6px; border: 1px solid #ccc; user-select: all;">
+                                SA9780000300608010061684
+                            </p>
+                            <p style="margin-top: 10px; font-size: 0.85rem; color: #c0392b; font-weight: 700;">
+                                <i class="fa-solid fa-circle-exclamation"></i> تنبيه: هذا الحساب مخصص للمساهمات والأسهم وليس حساب العضوية.
+                            </p>
+                        </div>
                     </div>
-                    <div style="border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.8);">
-                        <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-diagram-project" style="color:var(--accent-pink);"></i> المشاريع التعليمية</h4>
-                        <p style="font-size: 0.85rem; margin-top: 5px;">مشروع تعاهد (ل للموظفات)، مشروع العلا، مشروع الأترجة (حفظ في 10 سنوات)، مشروع كررها، ومتكأ.</p>
+                </div>
+            </div>
+
+            <!-- 4. طرق التحويل لسداد الأسهم والمشاريع التعليمية -->
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-money-bill-transfer"></i> طرق التحويل البنكي لسداد الأسهم والمشاريع</div>
+                
+                <div class="grid-2">
+                    <!-- من داخل الراجحي -->
+                    <div style="background: rgba(255,255,255,0.9); padding: 16px; border-radius: 10px; border: 1px solid #e2e8f0; border-top: 4px solid #00833e;">
+                        <h4 style="color: var(--primary-navy); margin-bottom: 10px;"><i class="fa-solid fa-building-columns"></i> 1. التحويل من داخل (تطبيق مصرف الراجحي)</h4>
+                        <ol style="padding-right: 20px; font-size: 0.88rem; line-height: 1.8;">
+                            <li>اختر <strong>(تحويل)</strong> ثم اختر <strong>(خدمات)</strong>.</li>
+                            <li>اختر <strong>(جمعية خيرية)</strong>.</li>
+                            <li>اختر <strong>(الدعوة والإرشاد والتعليم الديني)</strong>.</li>
+                            <li>اختر <strong>(حساب الإشراف النسائي بالدمام)</strong> ثم أكمل السداد.</li>
+                        </ol>
+                    </div>
+
+                    <!-- من بنوك أخرى -->
+                    <div style="background: rgba(255,255,255,0.9); padding: 16px; border-radius: 10px; border: 1px solid #e2e8f0; border-top: 4px solid var(--primary-navy);">
+                        <h4 style="color: var(--primary-navy); margin-bottom: 10px;"><i class="fa-solid fa-building"></i> 2. التحويل من البنوك المحلية الأخرى</h4>
+                        <ol style="padding-right: 20px; font-size: 0.88rem; line-height: 1.8;">
+                            <li>ادخل إلى حسابك المصرفي واختر <strong>(تحويل)</strong> ثم <strong>(إضافة مستفيد)</strong>.</li>
+                            <li>اختر <strong>(بنك محلي)</strong> ثم اختر <strong>(موافق)</strong>.</li>
+                            <li>قم بتعبئة البيانات للمستفيد ثم اختر <strong>(إضافة)</strong> ثم <strong>(تأكيد)</strong>.</li>
+                            <li>اختر <strong>(تفعيل المستفيد)</strong> ثم <strong>(التالي)</strong>.</li>
+                            <li>بعد تفعيل المستفيد، ارجع إلى قائمة التحويل واختر اسم الحساب.</li>
+                            <li>أدخل <strong>(بيانات التحويل)</strong> والمبلغ وأكمل العملية.</li>
+                        </ol>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- TAB 4: FINANCIAL & PAYROLL & SCHEDULES -->
+        <!-- TAB 3: CIRCLE PLAN & WORKFLOW (خطة سير الحلقة) -->
+        <section id="circle-plan" class="tab-content">
+            
+            <!-- سير حلقة الحفظ -->
+            <div class="card" style="border-right: 5px solid var(--accent-pink); background: linear-gradient(180deg, #ffffff 0%, var(--light-pink) 100%);">
+                <div class="card-title"><i class="fa-solid fa-arrows-spin"></i> سير حلقة الحفظ</div>
+                <p style="font-size: 0.95rem; line-height: 1.8; color: var(--primary-navy); margin-bottom: 15px;">
+                    المسار التسلسلي والزمني المنظم لإدارة وقت الحلقة القرآنية وضمان أعلى درجات الإتقان:
+                </p>
+                <div class="grid-2">
+                    <div style="background: rgba(255,255,255,0.95); padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <h4 style="color: var(--primary-navy); margin-bottom: 8px;"><i class="fa-solid fa-circle-play" style="color: var(--accent-pink);"></i> 1. المقدمة والتهيئة (مرحلة أساسية)</h4>
+                        <p style="font-size: 0.88rem; line-height: 1.7;">
+                            افتتاحية الحلقة والالتزام ببدء التسميع والمراجعة، وهي مرحلة أساسية لا يُستغنى عنها في سير الحلقة اليومية.
+                        </p>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.95); padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <h4 style="color: var(--primary-navy); margin-bottom: 8px;"><i class="fa-solid fa-book-bookmark" style="color: var(--accent-pink);"></i> 2. المراجعة الكبرى (30 - 35 دقيقة)</h4>
+                        <p style="font-size: 0.88rem; line-height: 1.7;">
+                            استرجاع المحفوظ السابق كاملاً بدءاً من أول سورة البقرة. يتم التسميع بواقع <strong>وجه لكل جزء</strong> وفق معيار نصاب المراجعة.
+                        </p>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.95); padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <h4 style="color: var(--primary-navy); margin-bottom: 8px;"><i class="fa-solid fa-book-open" style="color: var(--accent-pink);"></i> 3. المراجعة الصغرى (35 - 40 دقيقة)</h4>
+                        <p style="font-size: 0.88rem; line-height: 1.7;">
+                            مراجعة آخر أربعة دروس. تبدأ بتسميع <strong>(الدرس الماضي)</strong> سرداً وفردياً لكل دارسة وتصويب تلاوتها، ثم مراجعة <strong>(الثلاثة دروس السابقة)</strong>.
+                        </p>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.95); padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <h4 style="color: var(--primary-navy); margin-bottom: 8px;"><i class="fa-solid fa-graduation-cap" style="color: var(--accent-pink);"></i> 4. الدرس الجديد والتقييم اليومي</h4>
+                        <p style="font-size: 0.88rem; line-height: 1.7;">
+                            شرح وتدريس الدرس المقرر اليوم وقراءته قراءة نموذجية لتسمعه الدارسات في اللقاء التالي، مع رصد التقييم وفق درجات الإتقان (متقنة - متقنة إلى حد ما - غير متقنة).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- توصيات هامة في المراجع الكبرى -->
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-clipboard-check"></i> توصيات هامة في المراجعة الكبرى</div>
+                <ul style="padding-right: 20px; line-height: 1.8; font-size: 0.92rem;">
+                    <li>المعلمة هي المسؤولة عن توزيع المراجعة الكبرى، مع مراعاة ما يلي:
+                        <ul style="padding-right: 20px; margin-top: 5px;">
+                            <li><strong>تحقيق هدف استرجاع المحفوظ السابق:</strong> ويقصد به من بداية سورة البقرة للمدارس النسائية ومدارس الفتيات، ويكون استكمالاً للسابقة من حيث توقفت في الفصل الأول، ثم تكرر منذ بداية.</li>
+                            <li><strong>توزيع خطة المراجعة:</strong> على جميع أيام الأسبوع ما عدا يوم الجمعة.</li>
+                            <li><strong>مناسبة الجزئيات لمستوى الدارسات:</strong> وقدرتهن على المراجعة بحيث تكون الجزئيات المتقنة كبيرة أما الجزئيات غير المتقنة فتقلل مقاديرها.</li>
+                            <li><strong>الاتفاق على خطة مراجعة واحدة:</strong> بحيث تستفيد الدارسات من التصويب والمراجعة في الحلقة.</li>
+                            <li><strong>إعداد الخطة:</strong> تُعد المعلمة خطة المراجعة وفق النموذج المدرج في مجلد المناهج، وتُكتب بالحاسب وتُرسل للدارسات عبر مجموعة الواتساب.</li>
+                        </ul>
+                    </li>
+                    <li style="margin-top: 10px;">تعتبر مرحلة المقدمة (وتشمل المراجعة الكبرى ثم المراجعة الصغرى) مرحلة أساسية في سير الحلقة ويجب على المعلمة الالتزام بها.</li>
+                    <li>توزع المراجعة الكبرى على أيام الأسبوع (من السبت إلى الخميس) ما عدا يوم الجمعة، بحيث تراجع الدارسة مقداراً معيناً كل يوم من أيام الأسبوع.</li>
+                    <li>تبدأ المراجعة الكبرى من آية 1 من سورة البقرة وذلك لجميع السنوات.</li>
+                    <li>مقدار ما تراجعه الدارسة يومياً لا يقل عن (وجه)، وفي حال وجود استعداد لدى الدارسات لزيادة الكمية فلا بأس مع التأكد من قدرتهن وظروفهن وبما يحقق مصلحة الإتقان واجتياز القياس.</li>
+                    <li>تسمّع المعلمة لدارساتها في الحلقة (يوم الأحد والثلاثاء والأربعاء) بواقع وجه لكل جزء.</li>
+                </ul>
+            </div>
+
+            <!-- جدول نصاب المراجعة ونصاب التسميع -->
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-table-list"></i> معيار نصاب المراجعة الكبرى ونصاب التسميع</div>
+                <p style="font-size: 0.9rem; margin-bottom: 10px;">تسمّع المعلمة لدارساتها بواقع وجه لكل جزء وفق الجدول التالي:</p>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>نصاب المراجعة</th>
+                                <th>المعيار</th>
+                                <th>نصاب التسميع</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>من وجه إلى 7 أوجه تقريباً</td>
+                                <td>الكمية التي تمت مراجعتها أقرب لربع جزء</td>
+                                <td><strong>ربع وجه</strong> <span class="date-greg">(ما يعادل أربعة أسطر تقريباً)</span></td>
+                            </tr>
+                            <tr>
+                                <td>من 8 أوجه إلى 13 وجه تقريباً</td>
+                                <td>الكمية التي تمت مراجعتها أقرب لنصف جزء</td>
+                                <td><strong>نصف وجه</strong> <span class="date-greg">(ما يعادل ثمانية أسطر تقريباً)</span></td>
+                            </tr>
+                            <tr>
+                                <td>من 14 وجه إلى 17 وجه تقريباً</td>
+                                <td>الكمية التي تمت مراجعتها أقرب لثلاثة أرباع الجزء</td>
+                                <td><strong>ثلاثة أرباع الوجه</strong> <span class="date-greg">(ما يعادل إحدى عشر سطراً تقريباً)</span></td>
+                            </tr>
+                            <tr>
+                                <td>من 18 إلى 23 وجه تقريباً</td>
+                                <td>الكمية التي تمت مراجعتها أقرب لجزء</td>
+                                <td><strong>وجه كامل</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- تفصيل زمن وخطوات تسميع المراجعة -->
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-stopwatch"></i> توزيع زمن ووقت المراجعة أثناء وقت الحلقة</div>
+                <div class="grid-2">
+                    <div style="background: rgba(251, 235, 238, 0.5); padding: 16px; border-radius: 10px; border-right: 4px solid var(--accent-pink);">
+                        <h4 style="color: var(--primary-navy); margin-bottom: 8px;"><i class="fa-solid fa-book-bookmark"></i> 1. المراجعة الكبرى</h4>
+                        <p style="font-weight: 700; color: var(--accent-pink); margin-bottom: 8px;">الزمن: 30 – 35 دقيقة</p>
+                        <ul style="padding-right: 18px; font-size: 0.88rem; line-height: 1.7;">
+                            <li>تقوم المعلمة بالتسميع للدارسات وفق معيار التسميع (وجه لكل جزء).</li>
+                            <li><strong>طريقة (أ):</strong> تستثمر الوقت باستماع الدارسات للتصويب والاستفادة من عدة مهارات كأنشطة تعليمية (مثل التقاط الأخطاء والتصويب لبعضهن) وفق عدد معين تسمح به المعلمة ولجنة التحكيم.</li>
+                            <li><strong>طريقة (ب):</strong> تقسمهن لمجموعات أثناء تسميعها الفردي للدارسات ليعملن على التسميع لبعضهن كامل الجزئية مع التصويب وتكرار التسميع حتى انتهاء الوقت لا سيما الجزئيات غير المتقنة.</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: rgba(245, 247, 250, 0.9); padding: 16px; border-radius: 10px; border-right: 4px solid var(--primary-navy);">
+                        <h4 style="color: var(--primary-navy); margin-bottom: 8px;"><i class="fa-solid fa-book-open"></i> 2. المراجعة الصغرى</h4>
+                        <p style="font-weight: 700; color: var(--primary-navy); margin-bottom: 8px;">الزمن: 35 – 40 دقيقة</p>
+                        <ul style="padding-right: 18px; font-size: 0.88rem; line-height: 1.7;">
+                            <li>تقوم المعلمة بالتسميع للدارسات <strong>(الدرس الماضي)</strong> سرداً فرداً لكل دارسة.</li>
+                            <li>تستثمر الوقت باستماع الدارسات للتصويب والاستفادة منه.</li>
+                            <li>أو تقسمهن لمجموعات يسمعن لبعضهن بقية المراجعة الصغرى (الثلاثة دروس الأخيرة قبل الدرس الماضي).</li>
+                            <li>بعد الانتهاء من تسميع الدرس الماضي، تسمع المعلمة للدارسات بقية الثلاثة دروس على هيئة مقاطع وفق الوقت المتاح.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- التقييم اليومي ومعايير الإتقان -->
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-chart-line"></i> التقييم اليومي ومعايير الإتقان</div>
+                
+                <div class="section-sub-title"><i class="fa-solid fa-book-atlas"></i> أولاً: تعريفات الأقسام الرئيسية</div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>المسمى</th>
+                                <th>البيان والتعريف</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>المراجعة الكبرى</strong></td>
+                                <td style="text-align: right;">هو مراجعة ما تم حفظه سابقاً ابتداءً من أول سورة البقرة.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>المراجعة الصغرى</strong></td>
+                                <td style="text-align: right;">هي مراجعة آخر أربعة دروس، وتبدأ بتسميع (الدرس الماضي) أولاً لجميع الدارسات سرداً وبشكل فردي وتصويب تلاوتهن للتأكد من حفظهن له، ثم مراجعة (الثلاثة دروس السابقة له) على هيئة مقاطع، أو سرداً إن كان في الوقت متسع.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>الدرس الجديد</strong></td>
+                                <td style="text-align: right;">هو الدرس الذي تقوم المعلمة بتدريسه اليوم وقراءته قراءة نموذجية لتحفظه الدارسات ثم تسمعه لهن في اللقاء التالي.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="margin: 15px 0; font-size: 0.9rem; line-height: 1.6; background: var(--light-pink); padding: 10px 15px; border-radius: 8px;">
+                    <strong>ملاحظة:</strong> يعتبر التقييم اليومي وسيلة متابعة للأداء ومعرفة حضور أو غياب الدارسات ولا ينبني عليه إشعارات أو اجتياز.
+                </div>
+
+                <div class="section-sub-title"><i class="fa-solid fa-check-double"></i> ثانياً: معيار الإتقان (كما ورد في القياس)</div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>درجة التقييم</th>
+                                <th>الأخطاء المسموح بها</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge" style="background:#28a745;">متقنة</span></td>
+                                <td>لا يوجد خطأ في الوجه</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge" style="background:#ffc107; color:#000;">متقنة إلى حدٍ ما</span></td>
+                                <td>يوجد خطأ واحد أو أربع تنبيهات في الوجه</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge badge-pink">غير متقنة</span></td>
+                                <td>أكثر من خطأ واحد أو أكثر من أربع تنبيهات في الوجه</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- بنود محاسبة الدارسة (الحفظ والتجويد) -->
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-list-check"></i> ما تحاسب عليه الدارسة في التقييم والقياس</div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>البند</th>
+                                <th>تفاصيل وتعريف المحاسبة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>الحفظ</strong></td>
+                                <td style="text-align: right; line-height: 1.8;">
+                                    ومعناه التمكن التام من استظهار الآيات من حيث ما يأتي:
+                                    <ol style="padding-right: 20px; margin-top: 5px;">
+                                        <li>تسلسل الكلمات والآيات ومعرفة أوائلها وأواخرها.</li>
+                                        <li>المحافظة على بناء الكلمة ونطق الحروف مع الحركة أو السكون أو الشدة، بما يوافق رسم المصحف العثماني والرواية.</li>
+                                        <li>المحافظة على سلامة الكلمة من غير نقص، أو زيادة في الحروف.</li>
+                                    </ol>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>التجويد</strong></td>
+                                <td style="text-align: right; line-height: 1.8;">
+                                    ومعناه مراعاة جميع أحكام التجويد التطبيقية المقررة:
+                                    <ol style="padding-right: 20px; margin-top: 5px;">
+                                        <li>مراعاة النطق الصحيح للحروف.</li>
+                                        <li>مراعاة أحكام النون الساكنة والتنوين، والميم الساكنة، والنون والميم المشددتين.</li>
+                                        <li>مراعاة صفات الحروف، كالتفخيم والترقيق والقلقلة.</li>
+                                        <li>توفية مقادير الغنن في مواضعها، والاحتراز من تغنين المظهرات.</li>
+                                        <li>استيفاء مقادير المدود بأنواعها وتساويها حسب وجه الرواية.</li>
+                                    </ol>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: EXAMS & MEASUREMENT (الاختبارات والقياس) -->
+        <section id="exams-measurement" class="tab-content">
+            
+            <!-- بنود التقييم -->
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-list-check"></i> بنود التقييم الشاملة</div>
+                
+                <div class="grid-2">
+                    <div style="background: rgba(255,255,255,0.9); border: 1px solid #e2e8f0; padding: 16px; border-radius: 10px; border-right: 4px solid var(--primary-navy);">
+                        <h4 style="color: var(--primary-navy); margin-bottom: 8px;"><i class="fa-solid fa-brain"></i> 1.0 الحفظ</h4>
+                        <p style="font-size: 0.88rem; line-height: 1.7;">
+                            المقصود به التمكن التام من استظهار النص القرآني من حيث ما يأتي:
+                        </p>
+                        <ul style="padding-right: 20px; margin-top: 6px; font-size: 0.86rem; line-height: 1.7;">
+                            <li><strong>أ.</strong> تسلسل الكلمات والآيات ومعرفة أوائلها وأواخرها.</li>
+                            <li><strong>ب.</strong> المحافظة على بناء الكلمة ونطق الحروف مع الحركة أو السكون أو الشدة، بما يوافق رسم المصحف العثماني والرواية.</li>
+                            <li><strong>ت.</strong> المحافظة على سلامة الكلمة من غير نقص، أو زيادة في الحروف.</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.9); border: 1px solid #e2e8f0; padding: 16px; border-radius: 10px; border-right: 4px solid var(--accent-pink);">
+                        <h4 style="color: var(--primary-navy); margin-bottom: 8px;"><i class="fa-solid fa-microphone-lines"></i> 2.0 الأداء وحسن التلاوة</h4>
+                        <p style="font-size: 0.88rem; line-height: 1.7;">
+                            المقصود به الأداء الجيد للدارسة (لا يقصد به حسن الصوت) من حيث ما يأتي:
+                        </p>
+                        <ul style="padding-right: 20px; margin-top: 6px; font-size: 0.86rem; line-height: 1.7;">
+                            <li><strong>أ.</strong> وثوق الدارسة من نفسها، وعدم التردد والتلعثم، أو التوقف، أو الرجوع إلى الوراء بقصد تذكر الآيات.</li>
+                            <li><strong>ب.</strong> فصاحة القراءة، واسترسال الصوت، والتمكن من السيطرة عليه في حال الرفع والخفض.</li>
+                            <li><strong>ت.</strong> المحافظة على أحكام التجويد ومقاديرها، بما يتماشى مع نمط القراءة.</li>
+                        </ul>
+                        <div style="margin-top: 10px; background: var(--light-pink); padding: 8px 12px; border-radius: 6px; font-size: 0.82rem; color: var(--primary-navy);">
+                            <strong>ملاحظة 2.2.0:</strong> في حال كان الخطأ سمة عامة في التلاوة كالغنّة أو نبر الهمزات فيخصم من الأداء وفق درجة الخطأ واستمراره.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-2" style="margin-top: 20px;">
+                    <div style="background: rgba(255,255,255,0.9); border: 1px solid #e2e8f0; padding: 16px; border-radius: 10px; border-right: 4px solid var(--primary-navy);">
+                        <h4 style="color: var(--primary-navy); margin-bottom: 8px;"><i class="fa-solid fa-book-quran"></i> 3.0 التجويد</h4>
+                        <p style="font-size: 0.88rem; line-height: 1.7;">
+                            المقصود به مراعاة جميع أحكام التجويد التطبيقية المقررة من حيث ما يأتي:
+                        </p>
+                        <ul style="padding-right: 20px; margin-top: 6px; font-size: 0.86rem; line-height: 1.7;">
+                            <li><strong>أ.</strong> أحكام الاستعاذة والبسملة، وأحكام النون الساكنة والتنوين، والميم الساكنة، والنون والميم المشددتين.</li>
+                            <li><strong>ب.</strong> صحة نطق الحروف وفق مخارجها وصفاتها، بالتفخيم والترقيق والقلقلة.</li>
+                            <li><strong>ت.</strong> توفية مقادير الغنن في مواضعها، وبمقدار حركتين.</li>
+                            <li><strong>ث.</strong> مقادير المدود بأنواعها وتساويها في التلاوة حسب وجه الرواية.</li>
+                            <li><strong>ج.</strong> أحكام الوقف والابتداء، كما هو مثبت بالعلامات في مصحف المدينة المنورة.</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.9); border: 1px solid #e2e8f0; padding: 16px; border-radius: 10px; border-right: 4px solid var(--accent-pink);">
+                        <h4 style="color: var(--primary-navy); margin-bottom: 8px;"><i class="fa-solid fa-triangle-exclamation"></i> 4.0 اللحون</h4>
+                        <ul style="padding-right: 15px; font-size: 0.88rem; line-height: 1.8;">
+                            <li><strong>4.1.0 اللحن الجلي:</strong>
+                                <br><span style="font-size: 0.85rem; color: #555;">المقصود به (الخطأ في الحركات، والسكنات، واستبدال حرف بحرف، أو كلمة بكلمة، أو زيادة حرف أو إنقاصه، أو زيادة كلمة أو إنقاصها، أو زيادة آية أو إسقاطها، أو عدم القدرة على المواصلة).</span>
+                            </li>
+                            <li style="margin-top: 10px;"><strong>4.2.0 اللحن الخفي:</strong>
+                                <br><span style="font-size: 0.85rem; color: #555;">المقصود به تطبيق أحكام التجويد مثل (المخارج والصفات، وأحكام النون الساكنة والتنوين، والميم الساكنة، والمدود، واللامات السواكن، والحروف المشددة، وحروف القلقلة، وحروف التفخيم).</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- آلية الحسم -->
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-calculator"></i> آلية الحسم في التقييم والقياس</div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>البند</th>
+                                <th>الحالة والخطأ</th>
+                                <th>مقدار الحسم والإجراء</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>1.6</strong></td>
+                                <td style="text-align: right;">إذا أخطأت الدارسة في الحفظ أو كان الخطأ لحناً جلياً تنبه مرتين:</td>
+                                <td style="text-align: right;">
+                                    • إذا صححت الخطأ من <strong>تنبيه واحد</strong>: يحسم عليها <strong>ربع درجة (0.25)</strong>.<br>
+                                    • إذا صححت من <strong>التنبيه الثاني</strong>: يحسم عليها <strong>نصف درجة (0.50)</strong>.<br>
+                                    • إذا لم تصحح من التنبيه الثاني <strong>يفتح عليها</strong>: وتحسم <strong>درجة واحدة شاملة التنبيهين والفتح</strong>.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>2.6</strong></td>
+                                <td style="text-align: right;">إذا توقفت الدارسة ولم تواصل ويفتح عليها</td>
+                                <td>تحسم <strong>درجة واحدة</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>3.6</strong></td>
+                                <td style="text-align: right;">إذا بلغ مقدار الحسم في السؤال الواحد (4) درجات</td>
+                                <td>يعتبر السؤال <strong>لاغياً</strong> (غير مجتازة فيه) وتحسم <strong>5 درجات</strong>.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>4.6</strong></td>
+                                <td style="text-align: right;">كل خطأ في التجويد (عدم تنبيه)</td>
+                                <td>يحسم <strong>ربع درجة (0.25)</strong> ويستمر الحسم وإن تكرر الخطأ، وليس للسؤال الواحد درجة محددة في التجويد.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- قياس الأجزاء -->
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-chart-pie"></i> ضوابط وأسس قياس الأجزاء</div>
+                <ul style="padding-right: 20px; line-height: 1.8; font-size: 0.9rem;">
+                    <li><strong>8.2.1</strong> يشمل قياس جميع محفوظ الدارسة القديم والجديد.</li>
+                    <li><strong>8.2.2</strong> لا يزيد السؤال عن (7) أسطر من مصحف المدينة المنورة.</li>
+                    <li><strong>8.2.3</strong> عدد الأسئلة المقررة يكون حسب جدول المستويات أدناه، والمستوى الأخير (كامل القرآن) يختبر مع مشرفة القياس المختصة بقياس الحافظات المكلفة من إدارة الإشراف.</li>
+                    <li><strong>8.2.6</strong> يكون الاختبار من قبل مشرفة القياس.</li>
+                    <li><strong>8.2.12</strong> الكسر في المجموع النهائي - مهما كانت قيمته - <strong>يجبر لصالح الدارسة</strong>.</li>
+                    <li><strong>8.2.14 الشهادة:</strong> تحصل الدارسة المجتازة للقياس على شهادة إلكترونية معتمدة من إدارة الإشراف ويبين فيها عدد الأجزاء المجتازة، وأن هذه الشهادة تحجب ما قبلها من الشهادات التي صدرت حتى تاريخها.</li>
+                    <li><strong>8.2.15 اختبار الحافظات:</strong> لا تدخل (المجتازة لااختبار الحافظات) اختبار قياس الأجزاء، وبوسعهم دخول اختبارات التثبيت بدلاً من ذلك.</li>
+                </ul>
+
+                <!-- توزيع الدرجات والتقديرات لقياس الأجزاء -->
+                <div class="grid-2" style="margin-top: 15px;">
+                    <div>
+                        <div class="section-sub-title"><i class="fa-solid fa-percent"></i> 8.2.11 توزيع الدرجات</div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">نوع الدرجة</th>
+                                        <th colspan="3">التوزيع</th>
+                                    </tr>
+                                    <tr>
+                                        <th>الحفظ</th>
+                                        <th>التجويد</th>
+                                        <th>الأداء</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>الدرجة الكبرى (100)</strong></td>
+                                        <td>70</td>
+                                        <td>25</td>
+                                        <td>5</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>الدرجة الصغرى (70)</strong></td>
+                                        <td>50</td>
+                                        <td>15</td>
+                                        <td>10 (مجموع صغرى الحفظ والتجويد 65)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="section-sub-title"><i class="fa-solid fa-ranking-star"></i> 8.2.13 التتقديرات النهائية</div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ممتاز</th>
+                                        <th>جيد جداً</th>
+                                        <th>جيد</th>
+                                        <th>غير مجتازة</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge" style="background:#28a745;">90 - 100</span></td>
+                                        <td><span class="badge" style="background:#17a2b8;">80 - 89</span></td>
+                                        <td><span class="badge" style="background:#ffc107; color:#000;">70 - 79</span></td>
+                                        <td><span class="badge badge-pink">لم تحقق 50 بالحفظ أو 15 بالتجويد</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- جدول مستويات القياس وعدد الأسئلة -->
+                <div class="section-sub-title" style="margin-top: 25px;">
+                    <i class="fa-solid fa-table"></i> 8.2.5 جدول مستويات القياس وعدد الأسئلة المقررة لمسار البدء من سورة البقرة
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>م</th>
+                                <th>عدد الأجزاء</th>
+                                <th>بداية المستوى</th>
+                                <th>الآية</th>
+                                <th>نهاية المستوى</th>
+                                <th>الآية</th>
+                                <th>عدد الأسئلة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>1</td><td>الفاتحة</td><td>1</td><td>البقرة</td><td>141</td><td rowspan="6" style="vertical-align: middle; font-weight: bold; background: var(--light-pink);">6 أسئلة</td></tr>
+                            <tr><td>2</td><td>2</td><td>البقرة</td><td>142</td><td>البقرة</td><td>252</td></tr>
+                            <tr><td>3</td><td>3</td><td>البقرة</td><td>253</td><td>آل عمران</td><td>92</td></tr>
+                            <tr><td>4</td><td>4</td><td>آل عمران</td><td>93</td><td>النساء</td><td>23</td></tr>
+                            <tr><td>5</td><td>5</td><td>النساء</td><td>24</td><td>النساء</td><td>147</td></tr>
+                            <tr><td>6</td><td>6</td><td>النساء</td><td>148</td><td>المائدة</td><td>81</td></tr>
+                            <tr><td>7</td><td>7</td><td>المائدة</td><td>82</td><td>الأنعام</td><td>110</td><td rowspan="4" style="vertical-align: middle; font-weight: bold; background: rgba(226, 232, 240, 0.5);">8 أسئلة</td></tr>
+                            <tr><td>8</td><td>8</td><td>الأنعام</td><td>111</td><td>الأعراف</td><td>87</td></tr>
+                            <tr><td>9</td><td>9</td><td>الأعراف</td><td>88</td><td>الأنفال</td><td>40</td></tr>
+                            <tr><td>10</td><td>10</td><td>الأنفال</td><td>41</td><td>التوبة</td><td>92</td></tr>
+                            <tr><td>11</td><td>12</td><td>التوبة</td><td>93</td><td>يوسف</td><td>52</td><td rowspan="5" style="vertical-align: middle; font-weight: bold; background: var(--light-pink);">10 أسئلة</td></tr>
+                            <tr><td>12</td><td>14</td><td>يوسف</td><td>53</td><td>النحل</td><td>128</td></tr>
+                            <tr><td>13</td><td>16</td><td>الإسراء</td><td>1</td><td>طه</td><td>135</td></tr>
+                            <tr><td>14</td><td>18</td><td>الأننبياء</td><td>1</td><td>الفرقان</td><td>20</td></tr>
+                            <tr><td>15</td><td>20</td><td>الفرقان</td><td>21</td><td>العنكبوت</td><td>45</td></tr>
+                            <tr><td>16</td><td>22</td><td>العنكبوت</td><td>46</td><td>يس</td><td>27</td><td style="font-weight: bold;">12 سؤالاً</td></tr>
+                            <tr><td>17</td><td>24</td><td>يس</td><td>28</td><td>فصلت</td><td>44</td><td rowspan="3" style="vertical-align: middle; font-weight: bold; background: rgba(226, 232, 240, 0.5);">14 سؤالاً</td></tr>
+                            <tr><td>18</td><td>26</td><td>فصلت</td><td>45</td><td>الجاثية</td><td>37</td></tr>
+                            <tr><td>19</td><td>28</td><td>الأحقاف</td><td>1</td><td>التحريم</td><td>12</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- قياس الأحزاب -->
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-shapes"></i> قياس الأحزاب (الفئة العمرية الصغرى)</div>
+                <div class="grid-2">
+                    <div>
+                        <ul style="padding-right: 20px; line-height: 1.8; font-size: 0.9rem;">
+                            <li><strong>8.3.1 الفئة العمرية:</strong> يختص بالفئة العمرية من 3 سنوات إلى ما قبل 12 سنة.</li>
+                            <li><strong>8.3.2 الشمولية:</strong> يشمل قياس جميع محفوظ الدارسة القديم والجديد.</li>
+                            <li><strong>8.3.3 طوال السؤال:</strong> لا يزيد السؤال عن (7) أسطر من مصحف المدينة المنورة.</li>
+                            <li><strong>8.3.4 عدد الأسئلة:</strong> عدد الأسئلة المقررة <strong>(4) أسئلة</strong>.</li>
+                            <li><strong>8.3.7 جهة الفحص:</strong> تجري القياس <strong>معلمة أخرى</strong> وليس معلمة الحلقة.</li>
+                            <li><strong>8.3.12 الكسر:</strong> الكسر في المجموع النهائي يجبر لصالح الدارسة.</li>
+                            <li><strong>8.3.14 الشهادة:</strong> تحصل الدارسة المجتازة للقياس على شهادة إلكترونية معتمدة من إدارة المدرسة ويبين فيها عدد الأحزاب المجتازة.</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <div class="section-sub-title"><i class="fa-solid fa-percent"></i> 8.3.11 توزيع الدرجات والتقديرات الأحزاب</div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>نوع الدرجة</th>
+                                        <th>الحفظ</th>
+                                        <th>التجويد</th>
+                                        <th>الأداء</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>الدرجة الكبرى (100)</strong></td>
+                                        <td>70</td>
+                                        <td>25</td>
+                                        <td>5</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>الدرجة الصغرى (70)</strong></td>
+                                        <td>50</td>
+                                        <td>15</td>
+                                        <td>10</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="table-responsive" style="margin-top: 10px;">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ممتاز</th>
+                                        <th>جيد جداً</th>
+                                        <th>جيد</th>
+                                        <th>غير مجتازة</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>90 - 100</td>
+                                        <td>80 - 89</td>
+                                        <td>70 - 79</td>
+                                        <td>أقل من 50 بالحفظ أو 15 بالتجويد</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- TAB 5: VIRTUAL DOMAIN -->
+        <section id="virtual" class="tab-content">
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-laptop"></i> المواسم والواحات التعليمية لعام 1448هـ</div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>الموسم التعليمي</th>
+                                <th>أشهر الموسم</th>
+                                <th>الواحة التعليمية المصاحبة</th>
+                                <th>شهر الواحة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>الموسم الخامس والعشرون (25)</td>
+                                <td>محرم - صفر</td>
+                                <td>واحة الموسم 25</td>
+                                <td>ربيع أول</td>
+                            </tr>
+                            <tr>
+                                <td>الموسم السادس والعشرون (26)</td>
+                                <td>ربيع ثاني - جمادى الأولى</td>
+                                <td>واحة الموسم 26</td>
+                                <td>جمادى الآخرة</td>
+                            </tr>
+                            <tr>
+                                <td>الموسم السابع والعشرون (27)</td>
+                                <td>رجب - شعبان</td>
+                                <td>واحة الموسم 27</td>
+                                <td>رمضان</td>
+                            </tr>
+                            <tr>
+                                <td>الموسم الثامن والعشرون (28)</td>
+                                <td>شوال - ذو القعدة</td>
+                                <td>واحة الموسم 28</td>
+                                <td>ذو الحجة</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-cubes"></i> الميادين والمبادرات والمشاريع الافتراضية</div>
+                <div class="grid-3">
+                    <div style="border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.8);">
+                        <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-layer-group" style="color:var(--accent-pink);"></i> الميادين (10 ميادين)</h4>
+                        <p style="font-size: 0.85rem; margin-top: 5px;">الحفظ المكثف، المخفف، الفتيات، البراعم، التلقين (صغيرات وكبيرات)، التلاوة، التجويد، التخريج، القياس، المسابقات.</p>
+                    </div>
+                    <div style="border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.8);">
+                        <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-lightbulb" style="color:var(--accent-pink);"></i> المبادرات النوعية</h4>
+                        <p style="font-size: 0.85rem; margin-top: 5px;">التسبيع، مراقي، النظائر، الاتصال الهاتفي، الخاتمات، الوفاء، تصويب جزء عم، تيسير، إذكاء.</p>
+                    </div>
+                    <div style="border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.8);">
+                        <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-diagram-project" style="color:var(--accent-pink);"></i> المشاريع التعليمية</h4>
+                        <p style="font-size: 0.85rem; margin-top: 5px;">مشروع تعاهد، مشروع العلا، مشروع الأترجة، مشروع كررها، مشروع حافظات، مشروع متكأ.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-hand-holding-dollar"></i> المستحقات المالية في الواحات الافتراضية</div>
+                <div class="grid-2">
+                    <div class="value-box"><h4>القيادية</h4><p style="color:var(--accent-pink); font-weight:bold;">45 ريال / فترة</p></div>
+                    <div class="value-box"><h4>المعلمة</h4><p style="color:var(--accent-pink); font-weight:bold;">30 ريال / فترة</p></div>
+                    <div class="value-box"><h4>الإدارية</h4><p style="color:var(--accent-pink); font-weight:bold;">25 ريال / فترة</p></div>
+                    <div class="value-box"><h4>مشرفة الميدان / المستوى</h4><p style="color:var(--primary-navy); font-weight:bold;">عمل تطوعي</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 6: FINANCIAL & PAYROLL & SCHEDULES -->
         <section id="financial" class="tab-content">
             <div class="card">
-                <div class="card-title"><i class="fa-solid fa-money-bill-wave"></i> جدول المستحقات المالية والساعات</div>
-                <p style="margin-bottom: 12px;">تفصيل أجور الساعات واليوميات لجميع العقود الجزئية والمرنة:</p>
+                <div class="card-title"><i class="fa-solid fa-money-bill-wave"></i> جدول المستحقات المالية الشامل 1448هـ</div>
+                <p style="margin-bottom: 12px;">تفصيل أجور الساعات واليوميات لكافة العقود المعتمدة في الإدارة:</p>
                 <div class="table-responsive">
                     <table>
                         <thead>
@@ -930,7 +2042,7 @@
                             </tr>
                             <tr>
                                 <td>عقد جزئي بالساعة (المدارس والبرامج)</td>
-                                <td>الإدارية / الحاضنة / العاملة</td>
+                                <td>الإدارية / الحاضنة / العاملة (مقدمة الخدمات)</td>
                                 <td><strong>38 ريالاً / ساعة</strong></td>
                             </tr>
                             <tr>
@@ -939,43 +2051,43 @@
                                 <td><strong>25 ريالاً / ساعة</strong></td>
                             </tr>
                             <tr>
-                                <td>عقود مرنة (الروضات القرآنية)</td>
+                                <td>عقود مرنة بالساعة (الروضات القرآنية)</td>
                                 <td>القيادية</td>
-                                <td><strong>29.6 ريال / ساعة</strong></td>
+                                <td><strong>29.60 ريال / ساعة</strong></td>
                             </tr>
                             <tr>
-                                <td>عقود مرنة (الروضات القرآنية)</td>
+                                <td>عقود مرنة بالساعة (الروضات القرآنية)</td>
                                 <td>المعلمة (أساسية أو مساعدة)</td>
                                 <td><strong>27.56 ريال / ساعة</strong></td>
                             </tr>
                             <tr>
-                                <td>عقود مرنة (الروضات القرآنية)</td>
+                                <td>عقود مرنة بالساعة (الروضات القرآنية)</td>
                                 <td>الإدارية</td>
                                 <td><strong>20.23 ريال / ساعة</strong></td>
                             </tr>
                             <tr>
-                                <td>عقد باليومية (حلقات الجوامع والمساجد)</td>
+                                <td>عقد جزئي باليومية (حلقات الجوامع والمساجد)</td>
                                 <td>المعلمة</td>
                                 <td><strong>60 ريالاً / اليوم</strong></td>
                             </tr>
                             <tr>
-                                <td>عقد باليومية (حلقات الجوامع والمساجد)</td>
+                                <td>عقد جزئي باليومية (حلقات الجوامع والمساجد)</td>
                                 <td>الإدارية</td>
                                 <td><strong>55 ريالاً / اليوم</strong></td>
                             </tr>
                             <tr>
                                 <td>المجال الافتراضي (واحات المواسم)</td>
                                 <td>قيادية: 45 ريال | معلمة: 30 ريال | إدارية: 25 ريال</td>
-                                <td>حسب الفترة اليومية (أو تطوعي)</td>
+                                <td>حسب الفترة اليومية</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- جدول مواعيد الصرف أ: عقود العمل الجزئي (صفحة 31) -->
+            <!-- جدول مواعيد الصرف أ: عقود العمل الجزئي المحدث بالكامل -->
             <div class="card">
-                <div class="card-title"><i class="fa-solid fa-calendar-days"></i> مواعيد صرف المستحقات المالية (صفحة 31 - 32)</div>
+                <div class="card-title"><i class="fa-solid fa-calendar-days"></i> موعد صرف المستحقات المالية 1448هـ المحدثة بالكامل</div>
                 <div class="section-sub-title">
                     <i class="fa-solid fa-user-gear"></i> أ. الموظفات على عقود العمل الجزئي (نظام قرار التعيين)
                 </div>
@@ -996,25 +2108,85 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>1448 / 1 / 1 هـ</td><td>1448 / 1 / 29 هـ</td><td>1448 / 2 / 18 هـ</td><td>1448 / 3 / 07 هـ</td></tr>
-                            <tr><td>1448 / 2 / 1 هـ</td><td>1448 / 2 / 30 هـ</td><td>1448 / 3 / 19 هـ</td><td>1448 / 4 / 09 هـ</td></tr>
-                            <tr><td>1448 / 3 / 1 هـ</td><td>1448 / 3 / 29 هـ</td><td>1448 / 4 / 20 هـ</td><td>1448 / 5 / 09 هـ</td></tr>
-                            <tr><td>1447 / 4 / 01 هـ</td><td>1448 / 4 / 30 هـ</td><td>1448 / 5 / 21 هـ</td><td>1448 / 6 / 10 هـ</td></tr>
-                            <tr><td>1448 / 5 / 01 هـ</td><td>1448 / 5 / 30 هـ</td><td>1448 / 6 / 21 هـ</td><td>1448 / 7 / 11 هـ</td></tr>
-                            <tr><td>1448 / 6 / 01 هـ</td><td>1448 / 6 / 29 هـ</td><td>1448 / 7 / 23 هـ</td><td>1448 / 8 / 12 هـ</td></tr>
-                            <tr><td>1448 / 7 / 01 هـ</td><td>1448 / 7 / 30 هـ</td><td>1448 / 8 / 24 هـ</td><td>1448 / 9 / 13 هـ</td></tr>
-                            <tr><td>1448 / 8 / 1 هـ</td><td>1447 / 8 / 30 هـ</td><td>1448 / 9 / 22 هـ</td><td>1448 / 10 / 12 هـ</td></tr>
-                            <tr><td>1448 / 9 / 1 هـ</td><td>1448 / 9 / 20 هـ</td><td>1448 / 10 / 24 هـ</td><td>1448 / 11 / 13 هـ</td></tr>
-                            <tr><td>1448 / 9 / 21 هـ</td><td>1448 / 10 / 30 هـ</td><td>1448 / 11 / 24 هـ</td><td>1448 / 12 / 14 هـ</td></tr>
-                            <tr><td>1448 / 11 / 1 هـ</td><td>1448 / 11 / 29 هـ</td><td>1448 / 12 / 21 هـ</td><td>1449 / 1 / 10 هـ</td></tr>
-                            <tr><td>1448 / 12 / 1 هـ</td><td>1448 / 12 / 30 هـ</td><td>1449 / 1 / 26 هـ</td><td>1449 / 2 / 16 هـ</td></tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 01 / 01 هـ</span><span class="date-greg">16 / 06 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 01 / 29 هـ</span><span class="date-greg">14 / 07 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 02 / 18 هـ</span><span class="date-greg">01 / 08 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 03 / 07 هـ</span><span class="date-greg">20 / 08 / 2026 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 02 / 01 هـ</span><span class="date-greg">15 / 07 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 03 / 07 هـ</span><span class="date-greg">20 / 08 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 03 / 19 هـ</span><span class="date-greg">01 / 09 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 04 / 09 هـ</span><span class="date-greg">20 / 09 / 2026 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 03 / 08 هـ</span><span class="date-greg">21 / 08 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 04 / 09 هـ</span><span class="date-greg">20 / 09 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 04 / 20 هـ</span><span class="date-greg">01 / 10 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 05 / 09 هـ</span><span class="date-greg">20 / 10 / 2026 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 04 / 10 هـ</span><span class="date-greg">21 / 09 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 05 / 08 هـ</span><span class="date-greg">19 / 10 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 05 / 21 هـ</span><span class="date-greg">01 / 11 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 06 / 10 هـ</span><span class="date-greg">20 / 11 / 2026 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 05 / 09 هـ</span><span class="date-greg">20 / 10 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 06 / 11 هـ</span><span class="date-greg">21 / 11 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 06 / 21 هـ</span><span class="date-greg">01 / 12 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 07 / 11 هـ</span><span class="date-greg">20 / 12 / 2026 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 06 / 12 هـ</span><span class="date-greg">22 / 11 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 07 / 12 هـ</span><span class="date-greg">21 / 12 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 07 / 23 هـ</span><span class="date-greg">01 / 01 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 08 / 12 هـ</span><span class="date-greg">20 / 01 / 2027 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 07 / 13 هـ</span><span class="date-greg">22 / 12 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 08 / 11 هـ</span><span class="date-greg">19 / 01 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 08 / 24 هـ</span><span class="date-greg">01 / 02 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 09 / 13 هـ</span><span class="date-greg">20 / 02 / 2027 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 08 / 12 هـ</span><span class="date-greg">20 / 01 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 09 / 14 هـ</span><span class="date-greg">21 / 02 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 09 / 22 هـ</span><span class="date-greg">01 / 03 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 10 / 12 هـ</span><span class="date-greg">20 / 03 / 2027 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 09 / 15 هـ</span><span class="date-greg">22 / 02 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 10 / 13 هـ</span><span class="date-greg">21 / 03 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 10 / 24 هـ</span><span class="date-greg">01 / 04 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 11 / 13 هـ</span><span class="date-greg">20 / 04 / 2027 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 10 / 14 هـ</span><span class="date-greg">22 / 03 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 11 / 12 هـ</span><span class="date-greg">19 / 04 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 11 / 24 هـ</span><span class="date-greg">01 / 05 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 12 / 14 هـ</span><span class="date-greg">20 / 05 / 2027 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 11 / 13 هـ</span><span class="date-greg">20 / 04 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 12 / 14 هـ</span><span class="date-greg">20 / 05 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 12 / 26 هـ</span><span class="date-greg">01 / 06 / 2027 م</span></td>
+                                <td><span class="date-hijri">1449 / 01 / 10 هـ</span><span class="date-greg">20 / 06 / 2027 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 12 / 15 هـ</span><span class="date-greg">21 / 05 / 2027 م</span></td>
+                                <td><span class="date-hijri">1449 / 01 / 20 هـ</span><span class="date-greg">20 / 06 / 2027 م</span></td>
+                                <td><span class="date-hijri">1449 / 01 / 21 هـ</span><span class="date-greg">01 / 07 / 2027 م</span></td>
+                                <td><span class="date-hijri">1449 / 02 / 16 هـ</span><span class="date-greg">20 / 07 / 2027 م</span></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- جدول مواعيد الصرف ب: عقود العمل المرنة (صفحة 32) -->
+                <!-- جدول مواعيد الصرف ب: عقود العمل المرنة المحدث بالكامل -->
                 <div class="section-sub-title" style="margin-top: 30px;">
-                    <i class="fa-solid fa-clock-rotate-left"></i> ب. الموظفات على (نظام العقود المرنة)
+                    <i class="fa-solid fa-clock-rotate-left"></i> ب. الموظفات على (نظام العقود المرنة) > موظفات الروضات القرآنية والحراس
                 </div>
                 <p style="margin-bottom: 10px; font-size: 0.9rem;">تشمل: موظفات الروضات القرآنية والحراس.</p>
                 
@@ -1033,80 +2205,286 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>1447 / 12 / 1 هـ</td><td>1448 / 1 / 5 هـ</td><td>1447 / 1 / 12 هـ</td><td>1448 / 1 / 18 هـ</td></tr>
-                            <tr><td>1448 / 1 / 6 هـ</td><td>1447 / 2 / 8 هـ</td><td>1448 / 2 / 18 هـ</td><td>1447 / 2 / 25 هـ</td></tr>
-                            <tr><td>1447 / 2 / 9 هـ</td><td>1448 / 3 / 10 هـ</td><td>1448 / 3 / 21 هـ</td><td>1448 / 3 / 29 هـ</td></tr>
-                            <tr><td>1448 / 3 / 11 هـ</td><td>1448 / 4 / 11 هـ</td><td>1448 / 4 / 22 هـ</td><td>1448 / 5 / 1 هـ</td></tr>
-                            <tr><td>1448 / 4 / 12 هـ</td><td>1448 / 5 / 14 هـ</td><td>1448 / 5 / 24 هـ</td><td>1448 / 6 / 3 هـ</td></tr>
-                            <tr><td>1448 / 5 / 15 هـ</td><td>1448 / 6 / 15 هـ</td><td>1448 / 6 / 25 هـ</td><td>1448 / 7 / 4 هـ</td></tr>
-                            <tr><td>1448 / 6 / 16 هـ</td><td>1448 / 7 / 16 هـ</td><td>1448 / 7 / 28 هـ</td><td>1448 / 8 / 8 هـ</td></tr>
-                            <tr><td>1448 / 7 / 17 هـ</td><td>1448 / 8 / 19 هـ</td><td>1448 / 8 / 29 هـ</td><td>1448 / 9 / 10 هـ</td></tr>
-                            <tr><td>1448 / 8 / 20 هـ</td><td>1448 / 9 / 20 هـ</td><td>1448 / 9 / 28 هـ</td><td>1448 / 10 / 11 هـ</td></tr>
-                            <tr><td>1448 / 9 / 21 هـ</td><td>1448 / 10 / 20 هـ</td><td>1448 / 10 / 27 هـ</td><td>1448 / 11 / 07 هـ</td></tr>
-                            <tr><td>1448 / 10 / 21 هـ</td><td>1448 / 11 / 22 هـ</td><td>1448 / 12 / 2 هـ</td><td>1448 / 12 / 12 هـ</td></tr>
-                            <tr><td>1448 / 11 / 23 هـ</td><td>1448 / 12 / 23 هـ</td><td>1449 / 1 / 4 هـ</td><td>1449 / 1 / 14 هـ</td></tr>
-                            <tr><td>1448 / 12 / 24 هـ</td><td>1449 / 1 / 22 هـ</td><td>1449 / 2 / 2 هـ</td><td>1449 / 2 / 12 هـ</td></tr>
+                            <tr>
+                                <td><span class="date-hijri">1447 / 12 / 01 هـ</span><span class="date-greg">18 / 05 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 01 / 03 هـ</span><span class="date-greg">18 / 06 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 01 / 13 هـ</span><span class="date-greg">28 / 06 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 01 / 17 هـ</span><span class="date-greg">02 / 07 / 2026 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 01 / 04 هـ</span><span class="date-greg">19 / 06 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 02 / 02 هـ</span><span class="date-greg">16 / 07 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 02 / 13 هـ</span><span class="date-greg">27 / 07 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 02 / 19 هـ</span><span class="date-greg">02 / 08 / 2026 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 02 / 03 هـ</span><span class="date-greg">17 / 07 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 03 / 05 هـ</span><span class="date-greg">18 / 08 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 03 / 14 هـ</span><span class="date-greg">27 / 08 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 03 / 20 هـ</span><span class="date-greg">02 / 09 / 2026 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 03 / 06 هـ</span><span class="date-greg">19 / 08 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 04 / 05 هـ</span><span class="date-greg">16 / 09 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 04 / 16 هـ</span><span class="date-greg">27 / 09 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 04 / 19 هـ</span><span class="date-greg">30 / 09 / 2026 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 04 / 06 هـ</span><span class="date-greg">17 / 09 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 05 / 07 هـ</span><span class="date-greg">18 / 10 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 05 / 16 هـ</span><span class="date-greg">27 / 10 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 05 / 21 هـ</span><span class="date-greg">01 / 11 / 2026 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 05 / 08 هـ</span><span class="date-greg">19 / 10 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 06 / 08 هـ</span><span class="date-greg">18 / 11 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 06 / 18 هـ</span><span class="date-greg">28 / 11 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 06 / 22 هـ</span><span class="date-greg">02 / 12 / 2026 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 06 / 09 هـ</span><span class="date-greg">19 / 11 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 07 / 07 هـ</span><span class="date-greg">16 / 12 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 07 / 18 هـ</span><span class="date-greg">27 / 12 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 07 / 22 هـ</span><span class="date-greg">31 / 12 / 2026 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 07 / 08 هـ</span><span class="date-greg">17 / 12 / 2026 م</span></td>
+                                <td><span class="date-hijri">1448 / 08 / 10 هـ</span><span class="date-greg">18 / 01 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 08 / 19 هـ</span><span class="date-greg">27 / 01 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 08 / 23 هـ</span><span class="date-greg">31 / 01 / 2027 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 08 / 11 هـ</span><span class="date-greg">19 / 01 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 09 / 10 هـ</span><span class="date-greg">17 / 02 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 09 / 20 هـ</span><span class="date-greg">27 / 02 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 09 / 24 هـ</span><span class="date-greg">03 / 03 / 2027 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 09 / 11 هـ</span><span class="date-greg">18 / 02 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 10 / 09 هـ</span><span class="date-greg">17 / 03 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 10 / 19 هـ</span><span class="date-greg">27 / 03 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 10 / 23 هـ</span><span class="date-greg">31 / 03 / 2027 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 11 / 12 هـ</span><span class="date-greg">19 / 04 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 12 / 12 هـ</span><span class="date-greg">18 / 05 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 12 / 21 هـ</span><span class="date-greg">27 / 05 / 2027 م</span></td>
+                                <td><span class="date-hijri">1448 / 12 / 25 هـ</span><span class="date-greg">31 / 05 / 2027 م</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="date-hijri">1448 / 12 / 13 هـ</span><span class="date-greg">19 / 05 / 2027 م</span></td>
+                                <td><span class="date-hijri">1449 / 01 / 11 هـ</span><span class="date-greg">16 / 06 / 2027 م</span></td>
+                                <td><span class="date-hijri">1449 / 01 / 22 هـ</span><span class="date-greg">27 / 06 / 2027 م</span></td>
+                                <td><span class="date-hijri">1449 / 01 / 26 هـ</span><span class="date-greg">01 / 07 / 2027 م</span></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- ملاحظات هامة في أسفل جدول المواعيد -->
+                <!-- ملاحظات هامة -->
                 <div style="background: var(--light-pink); padding: 15px; border-radius: 8px; margin-top: 15px; border-right: 4px solid var(--accent-pink);">
-                    <h5 style="color: var(--primary-navy); margin-bottom: 6px;"><i class="fa-solid fa-circle-exclamation"></i> ملاحظات مالية هامة:</h5>
+                    <h5 style="color: var(--primary-navy); margin-bottom: 6px;"><i class="fa-solid fa-circle-exclamation"></i> ملاحظة هامة:</h5>
                     <ul style="padding-right: 20px; font-size: 0.88rem; line-height: 1.7;">
-                        <li><strong>البرامج والمبادرات الإضافية:</strong> (مثل برنامج وتعهّدوا، إحكام وما شابه) يتم صرفها وفق مواعيد الصرف الأساس الموضحة أعلاه وليس بعد انتهاء البرنامج مباشرة.</li>
-                        <li><strong>الإجازات الرسمية:</strong> في حال صادف يوم الدوام يوم إجازة رسمية من الدولة (كاليوم الوطني، يوم التأسيس، العيدين)، يعتبر اليوم إجازة ولكن لا يتم صرف مكافأة مالية لنظام قرارات التعيين والعقود المرنة، لارتباط المكافأة بالدوام الفعلي.</li>
+                        <li><strong>البرامج والمبادرات الإضافية:</strong> (مثل برنامج وتعهّدوا وإحكام وما شابه)، يتم صرفها وفق مواعيد الصرف الأساس وليس بعد انتهاء البرنامج مباشرة.</li>
+                        <li><strong>الإجازات الرسمية:</strong> في حال صادف يوم الدوام يوم إجازة رسمية من الدولة "كاليوم الوطني، يوم التأسيس، العيدين"، يعتبر اليوم إجازة ولكن لا يتم صرف مكافأة مالية لنظام قرارات التعيين والعقود المرنة، لارتباط المكافأة بالدوام الفعلي.</li>
                     </ul>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-title"><i class="fa-solid fa-receipt"></i> ضوابط الصرف والفواتير والمقهى</div>
+                <div class="card-title"><i class="fa-solid fa-receipt"></i> ضوابط الفواتير والمقهى التعليمي</div>
                 <ul style="padding-right: 20px; line-height: 1.8;">
                     <li><strong>الفواتير الرسمية:</strong> يجب أن تكون الفواتير إلكترونية ومكتوبة باللغة العربية ومفصلة، مع إضافة الرقم الضريبي للجمعية <code>310046488200003</code>.</li>
-                    <li><strong>المقهى التعليمي:</strong> يتم اعتماد اسم "مقهى" بدلاً من "مقصف"، وتتولى الإدارية البيع مع عدم الصرف مطلقاً من الإيراد اليومي نهائياً وتسليمه بالظرف المخصص.</li>
-                    <li><strong>ملاحظات المكافآت:</strong> في حال وجود أي نقص أو زيادة في المكافأة يتم التواصل مباشرة عبر قناة الموظفات.</li>
+                    <li><strong>المقهى التعليمي:</strong> يعتمد مسمى "مقهى" بدلاً من مقصف، وتتولى الإدارية البيع مع عدم الصرف مطلقاً من الإيراد اليومي وتسليمه بالظرف المخصص.</li>
                 </ul>
             </div>
         </section>
 
-        <!-- TAB 5: REWARDS & VOLUNTEERING -->
+        <!-- TAB 7: REWARDS & VOLUNTEERING (المحفزات والتطوع) -->
         <section id="rewards" class="tab-content">
+            <!-- 1. محفزات الموظفات اللاتي على رأس العمل خلال العام الدراسي -->
             <div class="card">
-                <div class="card-title"><i class="fa-solid fa-trophy"></i> محفزات ودروع التميز للموظفات</div>
-                <div class="grid-2">
-                    <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: rgba(255,255,255,0.8);">
-                        <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-medal" style="color:var(--accent-pink);"></i> وسام القياس</h4>
-                        <p style="font-size: 0.88rem; margin-top: 5px;">تمنح للموظفة التي تقيس 10 أجزاء جديدة خلال العام الدراسي وتسلم في ملتقى الأحبة أو ملتقى نور يتجدد.</p>
-                    </div>
-                    <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: rgba(255,255,255,0.8);">
-                        <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-award" style="color:var(--accent-pink);"></i> درع الإنجاز (نسبة 100%)</h4>
-                        <p style="font-size: 0.88rem; margin-top: 5px;">للمعلمات اللاتي حققت حلقاتهن نسبة 100% في دخول القياس أو النجاح أو التقويم المستمر.</p>
-                    </div>
-                    <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: rgba(255,255,255,0.8);">
-                        <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-hands-holding-child" style="color:var(--accent-pink);"></i> درع العطاء التطوعي</h4>
-                        <p style="font-size: 0.88rem; margin-top: 5px;">للمتطوعات اللاتي حققن 400 ساعة تطوعية فأكثر دون مقابل مالي خلال العام.</p>
-                    </div>
-                    <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: rgba(255,255,255,0.8);">
-                        <h4 style="color: var(--primary-navy);"><i class="fa-solid fa-star" style="color:var(--accent-pink);"></i> شهادة شكر الانضباط</h4>
-                        <p style="font-size: 0.88rem; margin-top: 5px;">تمنح شهادة معتمدة إلكترونياً للموظفات اللاتي حضرن جميع أيام العمل دون غياب.</p>
-                    </div>
+                <div class="card-title"><i class="fa-solid fa-trophy"></i> محفزات الموظفات اللاتي على رأس العمل خلال العام الدراسي</div>
+                
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>نوع المحفز / التكريم</th>
+                                <th>الفئة المستهدفة</th>
+                                <th>شرح المحفز وآلية التكريم</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>وسام القياس</strong></td>
+                                <td style="text-align: right;">للموظفات اللاتي قسن 10 أجزاء جديدة خلال العام الدراسي فقط.</td>
+                                <td style="text-align: right;">وسام للموظفة مع إهداء تستحقه في ملتقى الأحبة إن أنجزت قبل موعده، أو ملتقى نور يتجدد إن تأخر إنجازها حتى 30 / 12 من العام الهجري.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>شهادة فخرية</strong></td>
+                                <td style="text-align: right;">للموظفة التي تجتاز امتحان الحافظات خلال العام الدراسي.</td>
+                                <td style="text-align: right;">شهادة إلكترونية معتمدة من إدارة الإشراف.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>شهادة تطوع</strong></td>
+                                <td style="text-align: right;">للموظفات اللاتي عملن تطوعاً دون مقابل مالي.</td>
+                                <td style="text-align: right;">شهادة إلكترونية معتمدة من إدارة الإشراف تحصل عليها الموظفة بعد انتهاء العمل التطوعي عبر المجلد.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>حفل عطاء</strong></td>
+                                <td style="text-align: right;">للموظفات اللاتي عملن تطوعاً دون مقابل مالي.</td>
+                                <td style="text-align: right;">حفل في نهاية العام الهجري للمتطوعات في شهر ذي الحجة.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>درع العطاء</strong></td>
+                                <td style="text-align: right;">للموظفات اللاتي عملن تطوعاً دون مقابل مالي وحققن 400 ساعة تطوعية فأكثر ابتداءً من أول العام الهجري وحتى موعد حفل عطاء.</td>
+                                <td style="text-align: right;">درع تستلمه المكرمة في حفل عطاء.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>حفل التميز المهني</strong></td>
+                                <td style="text-align: right;">لجميع الموظفات سواء اللاتي على رأس العمل أو المنقطعات.</td>
+                                <td style="text-align: right;">لقاء وعشاء للموظفات وتكريم اللاتي حققن مراكز في التميز المهني.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>درع التدريب</strong></td>
+                                <td style="text-align: right;">للمدربات المساهمات بتقديم الدورات والبرامج التدريبية خلال العام التدريبي.</td>
+                                <td style="text-align: right;">درع تستلمه المكرمة في حفل التميز المهني.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>شهادة شكر</strong></td>
+                                <td style="text-align: right;">لموظفات المدارس والمشاريع والروضات القرآنية والحلقات النسائية لمن حضرت كامل أيام العمل.</td>
+                                <td style="text-align: right;">شهادة إلكترونية معتمدة من إدارة الإشراف.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>درع التخريج</strong></td>
+                                <td style="text-align: right;">للمدارس أو البرامج القرآنية الأكثر تخريجاً خلال العام الهجري.</td>
+                                <td style="text-align: right;">درع يهدى للمدرسة أو البرامج القرآنية، يسلم في ملتقى الأحبة.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>درع تكريمي</strong></td>
+                                <td style="text-align: right;">للموظفين والموظفات القائمات بأعمال الأمن والحراسة والصيانات خلال العام الهجري.</td>
+                                <td style="text-align: right;">درع يهدى للموظف أو الموظفة.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>درع شكر</strong></td>
+                                <td style="text-align: right;">للإداريات اللاتي حققن نسبة 100% ضمن مهام التعزيز خلال العام الهجري.</td>
+                                <td style="text-align: right;">درع تستلمه المكرمة في ملتقى الأحبة.</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
+            <!-- 2. درع الإنجاز وشروط الاستحقاق تفصيلياً -->
             <div class="card">
-                <div class="card-title"><i class="fa-solid fa-heart-circle-check"></i> توثيق الساعات عبر المنصة الوطنية للعمل التطوعي</div>
-                <p style="line-height: 1.8;">يمكنكِ توثيق كافة ساعاتك التطوعية واعتماد شهاداتك الرسمية بإشراف رئيسة الموارد البشرية ومنسقة التطوع <strong>مريم الحربي (0500359742)</strong> متبعة الخطوات التالية:</p>
-                <ol style="padding-right: 25px; margin-top: 10px; line-height: 1.8;">
-                    <li>تسجيل الدخول في <a href="https://nvg.gov.sa/Account/Login" target="_blank">المنصة الوطنية للعمل التطوعي (nvg.gov.sa)</a>.</li>
-                    <li>البحث عن الفرصة التطوعية المتاحة للجمعية والتقديم عليها.</li>
-                    <li>تسجيل الحضور اليومي عبر رابط التحضير أولاً بأول.</li>
-                    <li>بعد انتهاء الفرصة وتقييمها تظهر الشهادة في ملف المتطوع مباشرة.</li>
+                <div class="card-title"><i class="fa-solid fa-award"></i> درع الإنجاز ومعايير استحقاق المعلمة (نسبة 100%)</div>
+                
+                <div style="background: var(--light-pink); padding: 14px; border-radius: 8px; margin-bottom: 15px; border-right: 4px solid var(--accent-pink);">
+                    <h4 style="color: var(--primary-navy); margin-bottom: 6px;"><i class="fa-solid fa-list-check"></i> معيار الإحصاء لدرع الإنجاز وينطبق على المعلمات وفق التالي:</h4>
+                    <ul style="padding-right: 20px; font-size: 0.9rem; line-height: 1.8;">
+                        <li>مستمرة خلال الفصل الدراسي الأول والثاني أو الموسم التعليمي الثاني والثالث.</li>
+                        <li>ثابتة في حلقتها دون تغيير.</li>
+                        <li>القياس أو الاختبار لمقرر السنة أو الموسم الحالي وليس المواءمة.</li>
+                    </ul>
+                </div>
+
+                <div class="section-sub-title"><i class="fa-solid fa-school"></i> شروط استحقاق المعلمة بحسب القطاع والمسار:</div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span><i class="fa-solid fa-book-quran"></i> 1. البرامج القرآنية والمدارس والروضات القرآنية</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-body">
+                        <ul>
+                            <li><strong>معلمات الحفظ:</strong> اللاتي حققت حلقاتهن نسبة 100% في دخول القياس.</li>
+                            <li><strong>معلمات التلقين:</strong> اللاتي حققت حلقاتهن نسبة 100% في الإتقان في التقويم المستمر.</li>
+                            <li><strong>معلمات التجويد:</strong> اللاتي حققت حلقاتهن نسبة 100% في دخول الفترات التقييمية الثلاث.</li>
+                            <li><strong>معلمات الترسيخ:</strong> اللاتي حققت حلقاتهن نسبة 100% في النجاح في اختبار التثبيت.</li>
+                            <li><strong>معلمات التخريج:</strong> اللاتي حققت حلقاتهن نسبة 100% في دخول امتحان الحافظات.</li>
+                            <li><strong>معلمات التلاوة:</strong> اللاتي حققت حلقاتهن نسبة 100% في النجاح.</li>
+                            <li><strong>معلمات مدارس البراعم:</strong> اللاتي حققت حلقاتهن نسبة 100% في دخول قياس الأحزاب.</li>
+                            <li><strong>معلمات الرياحين:</strong> اللاتي حققت حلقاتهن نسبة 100% في النجاح في اختبار التثبيت.</li>
+                            <li><strong>معلمات الروضات القرآنية:</strong> اللاتي حققت حلقاتهن نسبة 100% في دخول قياس الأحزاب.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span><i class="fa-solid fa-mosque"></i> 2. الحلقات النسائية في الجوامع والمساجد</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-body">
+                        <ul>
+                            <li><strong>معلمات البرنامج النوعي:</strong> اللاتي حققت حلقاتهن نسبة 100% في دخول القياس.</li>
+                            <li><strong>معلمات التلقين:</strong> اللاتي حققت حلقاتهن نسبة 100% في الإتقان في التقويم المستمر.</li>
+                            <li><strong>معلمات الحفظ والبراعم والأجزاء والسور:</strong> اللاتي حققت حلقاتهن نسبة 100% في النجاح في اختبار التثبيت.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span><i class="fa-solid fa-laptop-house"></i> 3. المجال الافتراضي وميدان القياس</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-body">
+                        <ul>
+                            <li><strong>معلمات غير التلقين:</strong> اللاتي حققت حلقاتهن نسبة 100% في النجاح.</li>
+                            <li><strong>معلمات التلقين:</strong> اللاتي حققت حلقاتهن نسبة 100% في الإتقان في التقويم المستمر.</li>
+                            <li><strong>معلمات ميدان القياس:</strong> اللاتي حققت حلقاتهن نسبة 100% في دخول القياس.</li>
+                            <li><strong>معلمات التخريج:</strong> اللاتي حققت حلقاتهن نسبة 100% في دخول امتحان الحافظات.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="margin-top: 15px; background: rgba(255,255,255,0.9); padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <p style="font-size: 0.9rem; color: var(--primary-navy);">
+                        <strong>شرح المحفز:</strong> تستحقه الموظفة في ملتقى الأحبة إن أنجزت قبل موعده، أو ملتقى نور يتجدد إن تأخر إنجازها حتى 30 / 12 من العام الهجري.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 3. آلية توثيق ساعات التطوع عبر المنصة الوطنية -->
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-hands-holding-child"></i> آلية توثيق ساعات التطوع عبر المنصة الوطنية للعمل التطوعي</div>
+                
+                <p style="line-height: 1.8;">
+                    بوسع من ترغب في العمل كمتطوعة دون أجر مادي احتساباً للأجر من الله تعالى الحصول على <strong>شهادة شكر من إدارة الإشراف</strong>. وفي حال رغبتها بتوثيق ساعات تطوعها عبر المنصة الوطنية للعمل التطوعي، فعليها القيام بالتالي:
+                </p>
+
+                <ol style="padding-right: 25px; margin-top: 12px; line-height: 1.9; font-size: 0.92rem;">
+                    <li>تقوم المتطوعة بالتسجيل في المنصة الوطنية للعمل التطوعي (في حال لم يسبق لها التسجيل) عبر الرابط المباشر: <a href="https://nvg.gov.sa/Account/Login" target="_blank" style="color: var(--accent-pink); font-weight: bold;">nvg.gov.sa/Account/Login</a></li>
+                    <li>يتم احتساب ساعات تطوعها وفق ساعات العمل ورفعها عن طريق إدارة الإشراف.</li>
+                    <li>بعد انتهاء فترة الفرصة التطوعية وتقييم المتطوعة للفرصة التطوعية، ستنزل الشهادة في الحساب الخاص بالمتطوعة في منصة العمل التطوعي.</li>
                 </ol>
+
+                <div style="margin-top: 15px; background: var(--light-pink); padding: 14px; border-radius: 8px; border: 1px solid rgba(216, 137, 142, 0.4);">
+                    <p style="font-size: 0.9rem; font-weight: 700; color: var(--primary-navy);">
+                        <i class="fa-solid fa-lightbulb" style="color: var(--accent-pink);"></i> ملاحظة تشجيعية:
+                    </p>
+                    <p style="font-size: 0.88rem; margin-top: 4px; line-height: 1.7;">
+                        من الجميل المشاركة في منصة العمل التطوعي حتى لو لم تكوني راغبة بالنقاط، لأن هذا مما يرفع تقييم جمعيتنا الغالية.
+                    </p>
+                    <p style="font-size: 0.85rem; margin-top: 6px; color: var(--text-muted);">
+                        <strong>التواصل والتنسيق:</strong> الموارد البشرية ومنسقة التطوع مريم الحربي (0500359742).
+                    </p>
+                </div>
+            </div>
+
+            <!-- 4. ملاحظات وضوابط تسليم المكافآت والشكر -->
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-triangle-exclamation"></i> ملاحظات وضوابط هامة بشأن التكريم</div>
+                <ul style="padding-right: 20px; line-height: 1.8; font-size: 0.9rem;">
+                    <li><strong>تسليم الجوائز والدروع:</strong> تستلم مستحقة التكريم الوسام أو الدرع في وقت إقامة الملتقى أو الحفل، أو تنوّب عنها كالإدارية أو زميلتها في المنشأة التي تعمل فيها بالمدارس، ولا يتم إرساله لها لاحقاً.</li>
+                    <li><strong>بطاقات الشكر القيادية:</strong> للقيادية منح بطاقات وملصقات الشكر للموظفات، وليس شهادات شكر.</li>
+                </ul>
             </div>
         </section>
 
-        <!-- TAB 6: POLICIES -->
+        <!-- TAB 8: POLICIES -->
         <section id="policies" class="tab-content">
             <div class="card">
                 <div class="card-title"><i class="fa-solid fa-file-contract"></i> الإقرار بالعلم بالسياسات واللوائح (13 وثيقة)</div>
@@ -1132,16 +2510,16 @@
                 </div>
                 <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
                     <a href="https://drive.google.com/file/d/1AGa9eIRU2ZLYQd4cUqcIPSr5pSDqX_IW/view?usp=sharing" target="_blank" class="external-btn">
-                        <i class="fa-solid fa-download"></i> تحميل ملف السياسات الكامل
+                        <i class="fa-solid fa-download"></i> تحميل مجلد السياسات الكامل
                     </a>
                     <a href="https://forms.gle/JTDf3JxEgM95vzwAA" target="_blank" class="external-btn badge-pink">
-                        <i class="fa-solid fa-signature"></i> رابط الإقرار بالعلم (اختر إدارة 12)
+                        <i class="fa-solid fa-signature"></i> رابط الإقرار بالعلم (اختر إدارة 12: إشراف الدمام)
                     </a>
                 </div>
             </div>
         </section>
 
-        <!-- TAB 7: JOB DESCRIPTIONS -->
+        <!-- TAB 9: JOB DESCRIPTIONS -->
         <section id="jobs" class="tab-content">
             <div class="card">
                 <div class="card-title"><i class="fa-solid fa-clipboard-list"></i> ملحق الأوصاف الوظيفية التفصيلية (الصفحات 52 - 65)</div>
@@ -1149,9 +2527,10 @@
                 
                 <!-- أولاً: المجال الحضوري -->
                 <div class="section-sub-title">
-                    <i class="fa-solid fa-building"></i> أولاً: الوصف الوظيفي للمجال الحضوري (ص 53 - 61)
+                    <i class="fa-solid fa-building"></i> أولاً: الوصف الوظيفي للمجال الحضوري
                 </div>
 
+                <!-- 1. القيادية -->
                 <div class="accordion-item">
                     <div class="accordion-header" onclick="toggleAccordion(this)">
                         <span><i class="fa-solid fa-user-tie"></i> 1. القيادية (المرجعية: إدارة الإشراف)</span>
@@ -1159,7 +2538,7 @@
                     </div>
                     <div class="accordion-body">
                         <ul>
-                            <li>إدارة أعمال المدرسة بكفاءة وفاعلية بما يحقق أهدافها وأهداف الجمعية.</li>
+                            <li>إدارة أعمال المدرسة بكفاءة وفعالية بما يحقق أهدافها وأهداف الجمعية.</li>
                             <li>تحليل الوضع الحالي والاستشراف المستقبلي.</li>
                             <li>اعتماد ومراجعة الخطط التنفيذية للمدرسة.</li>
                             <li>اعتماد الصرف حسب الصلاحية ومتابعة الموازنة المالية للمدرسة.</li>
@@ -1175,6 +2554,7 @@
                     </div>
                 </div>
 
+                <!-- 2. إدارية المستندات -->
                 <div class="accordion-item">
                     <div class="accordion-header" onclick="toggleAccordion(this)">
                         <span><i class="fa-solid fa-file-invoice"></i> 2. إدارية المستندات</span>
@@ -1190,16 +2570,22 @@
                             <li>تعبئة التقرير الشامل وتحديث بياناته دورياً.</li>
                             <li>متابعة رابط تحضير الموظفات والتأكد من تعبئته من قبل جميع الحاضرات.</li>
                             <li>التحقق من تسجيل دقائق الحضور اليومية للموظفات في ورقة المسير في مستند العمل.</li>
-                            <li>المشاركة بالمناوبة اليومية والحرص على أمن وسلامة الدارسات والتزامهن بالنظام العام.</li>
+                            <li>المشاركة بالمناوبة اليومية والحرص على أمن وسلامة الدارسات والتزامهم بالنظام العام.</li>
                             <li>متابعة تسديد الدارسات للسهم التعليمي وتذكيرهن بذلك عن طريق الخارطة.</li>
-                            <li>ملاحظة مهمة: يراعي أن تكون جميع الأعمال وما يتم كتابته وحفظه كمحاضر الاجتماع وما شابه إلكترونياً ولا يتم طباعة شيء.</li>
+                            <li>حضور الاجتماعات واللقاءات التي تنظمها إدارة المدرسة للعاملات والمساهمة فيها بفاعلية.</li>
+                            <li>حضور الاجتماعات والملتقيات التي تنظمها إدارة الإشراف والاستفادة مما يطرح وتطبيقه.</li>
+                            <li>القيام بأي مهام أخرى تسند إليها من قبل الرئيسة المباشرة.</li>
                         </ul>
+                        <div style="margin-top: 10px; background: var(--light-pink); padding: 10px; border-radius: 6px; font-size: 0.85rem; color: var(--primary-navy);">
+                            <strong>ملاحظة:</strong> يراعي أن تكون جميع الأعمال وما يتم كتابته وحفظه كمحاضر الاجتماع وما شابه إلكترونياً ولا يتم طباعة شيء.
+                        </div>
                     </div>
                 </div>
 
+                <!-- 3. الإدارية -->
                 <div class="accordion-item">
                     <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <span><i class="fa-solid fa-folder-open"></i> 3. الإدارية (المهام العامة والمقهى)</span>
+                        <span><i class="fa-solid fa-folder-open"></i> 3. الإدارية</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="accordion-body">
@@ -1207,41 +2593,107 @@
                             <li>متابعة التزام الدارسات بالنظام وعدم مخالفته سواء في التعامل أو إحضار الممنوعات أو السمت العام.</li>
                             <li>إرشاد الدارسات لحلقهن في بداية العام الدراسي.</li>
                             <li>متابعة الدارسات في معرفة أسباب الغياب وتعبئة الرابط الخاص بذلك.</li>
-                            <li>استلام المواد الواردة للمخزن والتأكد من عددها وسلامتها، ونقلها ووضعها في أماكنها وفق الترتيب المتفق عليه، وتسليم المواد الخارجة من المخزن.</li>
+                            <li>استلام المواد الواردة للمخزن والتأكد من عددها وسلامتها، ونقلها ووضعها في أمكنها وفق الترتيب المتفق عليه.</li>
+                            <li>تسليم المواد الخارجة من المخزن.</li>
                             <li>متابعة محافظة الدارسات على نظافة المواقع (الممرات، الفناء، الفصول وغيرها).</li>
                             <li>متابعة دخول المعلمات إلى الحلق وسرعة التبليغ عن الغائبات وتسجيل تأخر المعلمات عن الحلق أو خروجهن منها أثناء زمن الحلقة وكذلك إنهاؤهن للحلقة قبل قرع الجرس وتوجيههن للالتزام بالزمن.</li>
                             <li>التأكد من انضباط الدارسات في الحضور والانصراف وفق آلية الاستئذان المعتمدة.</li>
+                            <li>قرع الجرس وفق الجدول المحدد.</li>
                             <li>التنبه لدخول أي زائرة للمدرسة والتعرف على المجهولات وعدم السماح لهن بالتجول إلا بإذن الإدارة.</li>
-                            <li>ضبط النظام والهدوء والمحافظة عليه خصوصاً أيام القياس.</li>
+                            <li>ضبط النظام والهدوء والمحافظة عليه وخصوصاً أيام القياس.</li>
                             <li>رفع مشكلات الدارسات للرئيسة المباشرة واقتراح الحلول لها.</li>
                             <li>تسجيل أعمالها وإنجازاتها وأهم الوقائع في مستندها الإلكتروني.</li>
                             <li>استقبال المنسوبات لدى البوابة ومتابعة الأمن والسلامة العامة وعدم إحضار زائرات أو مرافقات والأطفال.</li>
-                            <li><strong>أعمال الإدارية في المقهى:</strong> التزام بسياسة البيع والشراء، الحفاظ على النظافة، تفحص سلامة المنتجات الغذائية، ترتيب الأغذية، متابعة الصلاحية، إعداد وتجهيز موقع البيع، جرد البضاعة المتبقية في نهاية العام، إحصاء المبلغ اليومي وتجسيله بالمستند الإلكتروني وتسليم الإيراد اليومي ظهراً.</li>
+                            <li>متابعة محافظة الدارسات على المواقع وعدم ترك حاجياتهن الشخصية أو استخدام حاجيات الآخرين.</li>
+                            <li>المشاركة بالمناوبة اليومية والحرص على أمن وسلامة الدارسات والتزامهم بالنظام العام.</li>
+                            <li>حضور الاجتماعات واللقاءات التي تنظمها إدارة المدرسة للعاملات والمساهمة فيها بفاعلية.</li>
+                            <li>حضور الاجتماعات والملتقيات التي تنظمها إدارة الإشراف والاستفادة مما يطرح وتطبيقه.</li>
+                            <li>القيام بأي مهام أخرى تسند إليها من قبل الرئيسة المباشرة.</li>
                         </ul>
                     </div>
                 </div>
 
+                <!-- 4. أعمال الإدارية في المقهى -->
                 <div class="accordion-item">
                     <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <span><i class="fa-solid fa-child-reaching"></i> 4. معلمة رياض الأطفال</span>
+                        <span><i class="fa-solid fa-mug-hot"></i> 4. أعمال الإدارية في المقهى</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="accordion-body">
                         <ul>
-                            <li>تحفيظ الأطفال القرآن الكريم وفق المقرر اليومي المعتمد من إدارة الإشراف بكفاءة وفاعلية.</li>
-                            <li>تقييم الأطفال بدقة والعمل على تحسين أدائهم.</li>
-                            <li>الإشراف المباشر واللصيق أثناء تناول الوجبات الغذائية للأطفال.</li>
-                            <li>الحفاظ على البيئة الصحية والنظيفة لرعاية الطفل والحفاظ على صحته ونظافته ومنع العدوى.</li>
-                            <li>الإشراف والمحافظة على انضباط الأطفال وسلامتهم.</li>
-                            <li>الإشراف المباشر على الأطفال عند وجودهم خارج الصف.</li>
-                            <li>المشاركة في المناوبات وحضور الاجتماعات واللقاءات.</li>
+                            <li>الالتزام بسياسة البيع والشراء الخاصة بالمدرسة باتباع التعليمات الموجهة لها.</li>
+                            <li>الحفاظ على نظافة المقهى وجميع الأدوات والمعدات الموجودة.</li>
+                            <li>تفحص سلامة المنتجات الغذائية.</li>
+                            <li>ترتيب الأغذية حسب أنواعها.</li>
+                            <li>بيع المواد الغذائية على الدارسات.</li>
+                            <li>متابعة صلاحية البضائع.</li>
+                            <li>تجديد العرض من فترة إلى أخرى عن طريق وضع أصناف جديدة.</li>
+                            <li>إعداد وتجهيز موقع البيع وما يحتاجه من ترتيب وتنسيق.</li>
+                            <li>المساهمة في توفير البضائع للمقهى والتأكد من نوعيتها وصلاحيتها بشكل دوري.</li>
+                            <li>القيام ببرد البضاعة المتبقية في نهاية العام والعمل على تصريفها.</li>
+                            <li>إحصاء المبلغ اليومي وتسجيله في المستند الإلكتروني الخاص بالدخل اليومي.</li>
+                            <li>تسليم الإيراد اليومي.</li>
+                            <li>الحرص على متطلبات السلامة والأمان في المقهى.</li>
+                            <li>حضور الاجتماعات واللقاءات التي تنظمها إدارة المدرسة للعاملات والمساهمة فيها بفاعلية.</li>
+                            <li>حضور الاجتماعات والملتقيات التي تنظمها إدارة الإشراف والاستفادة مما يطرح وتطبيقه.</li>
+                            <li>القيام بأي مهام أخرى تسند إليها من قبل الرئيسة المباشرة.</li>
                         </ul>
                     </div>
                 </div>
 
+                <!-- 5. المعلمة -->
                 <div class="accordion-item">
                     <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <span><i class="fa-solid fa-baby-carriage"></i> 5. الحاضنة</span>
+                        <span><i class="fa-solid fa-chalkboard-user"></i> 5. المعلمة</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-body">
+                        <ul>
+                            <li>تدريس النصاب المقرر من المنهج كاملاً، وإثبات ذلك من خلال وضع علامة صح على ما تم دراسته في المستند.</li>
+                            <li>التسميع اليومي للدارسات (حفظ - مراجعة) ومتابعتها الدائمة لهن.</li>
+                            <li>تقسيم المراجعة الكبرى وفق التوجيهات الصادرة عن إدارة الإشراف.</li>
+                            <li>متابعة الدارسات المقصرات في الحفظ أو المراجعة وتقديم المساندة اللازمة لتحسين أدائهن.</li>
+                            <li>التقويم اليومي للدارسات في مستند المعلمة الإلكتروني.</li>
+                            <li>توجيه وتحفيز وإعداد دارسات الحلقة لدخول القياس وامتحان الحافظات بعد إتمام الحفظ.</li>
+                            <li>التحضير اليومي لدارسات الحلقة في مستند المعلمة الإلكتروني.</li>
+                            <li>توجيه الدارسات للسلوكيات الحسنة التي ينبغي أن تتحلى بها حافظة القرآن.</li>
+                            <li>المشاركة بالمناوبة اليومية والحرص على أمن وسلامة الدارسات والتزامهم بالنظام العام.</li>
+                            <li>حضور الاجتماعات واللقاءات التي تنظمها إدارة المدرسة للعاملات والمساهمة فيها بفاعلية.</li>
+                            <li>حضور الاجتماعات والملتقيات التي تنظمها إدارة الإشراف والاستفادة مما يطرح وتطبيقه.</li>
+                            <li>القيام بأي مهام أخرى تسند إليها من قبل الرئيسة المباشرة.</li>
+                        </ul>
+                        <div style="margin-top: 10px; background: var(--light-pink); padding: 10px; border-radius: 6px; font-size: 0.85rem; color: var(--primary-navy);">
+                            <strong>ملاحظة:</strong> تراعي المعلمة المرجعية عند الحاجة للسؤال والاستفسار، بحيث تعود لقيادية المدرسة فيما يشكل عليها من أمور.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. معلمة رياض الأطفال -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span><i class="fa-solid fa-child-reaching"></i> 6. معلمة رياض الأطفال</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-body">
+                        <ul>
+                            <li>تحفيظ الأطفال القرآن الكريم وفق المقرر اليومي المعتمد من إدارة الإشراف بكفاءة وفاعلية والاستعداد له على الوجه الأكمل.</li>
+                            <li>تقييم الأطفال بدقة والعمل على تحسين أدائهم.</li>
+                            <li>الإشراف المباشر واللصيق أثناء تناول الوجبات الغذائية للأطفال.</li>
+                            <li>الحفاظ على البيئة الصحية والنظيفة لرعاية الطفل والحفاظ على صحته ونظافته ومنع العدوى بين الأطفال.</li>
+                            <li>الإشراف والمحافظة على انضباط الأطفال وسلامتهم.</li>
+                            <li>الإشراف المباشر على الأطفال عند وجودهم خارج الصف.</li>
+                            <li>المشاركة في المناوبات.</li>
+                            <li>حضور الاجتماعات واللقاءات التي تنظمها إدارة المدرسة للعاملات والمساهمة فيها بفاعلية.</li>
+                            <li>حضور الاجتماعات والملتقيات التي تنظمها إدارة الإشراف والاستفادة مما يطرح وتطبيقه.</li>
+                            <li>القيام بأي مهام أخرى تسند إليها من قبل الرئيسة المباشرة.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 7. الحاضنة -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span><i class="fa-solid fa-baby-carriage"></i> 7. الحاضنة</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="accordion-body">
@@ -1253,18 +2705,21 @@
                             <li>رعاية سلوكيات الأطفال والعمل على علاج السلوكيات غير المقبولة ومنع انتشارها.</li>
                             <li>الإشراف المباشر طوال فترة وجودهم في الحضانة.</li>
                             <li>تأمين جو إيجابي للأطفال وتقديم العناية لهم طوال الوقت.</li>
-                            <li><strong>عدم ترك الأطفال بمفرداتهم بأي حال من الأحوال إلا بعد إبلاغ الرئيسة المباشرة وحضور البديلة</strong>.</li>
+                            <li>عدم ترك الأطفال بمفردهم بأي حال من الأحوال إلا بعد إبلاغ الرئيسة المباشرة وحضور البديلة.</li>
+                            <li>حضور الاجتماعات واللقاءات التي تنظمها إدارة المدرسة للعاملات والمساهمة فيها بفاعلية.</li>
+                            <li>حضور الاجتماعات والملتقيات التي تنظمها إدارة الإشراف والاستفادة مما يطرح وتطبيقه.</li>
+                            <li>القيام بأي مهام أخرى تسند إليها من قبل الرئيسة المباشرة.</li>
                         </ul>
                     </div>
                 </div>
 
+                <!-- 8. مشرفة القياس -->
                 <div class="accordion-item">
                     <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <span><i class="fa-solid fa-square-poll-vertical"></i> 6. مشرفة القياس</span>
+                        <span><i class="fa-solid fa-square-poll-vertical"></i> 8. مشرفة القياس (المرجعية: رئيسة وحدة القياس والتقويم)</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="accordion-body">
-                        <p><strong>المرجعية:</strong> رئيسة وحدة القياس والتقويم</p>
                         <ul>
                             <li>امتحان المستفيدات اللاتي يرغبن بالقياس.</li>
                             <li>إعداد نماذج أسئلة قياس الأجزاء وتحديثها.</li>
@@ -1274,39 +2729,41 @@
                     </div>
                 </div>
 
+                <!-- 9. الحارس/ة -->
                 <div class="accordion-item">
                     <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <span><i class="fa-solid fa-shield-cat"></i> 7. الحارس / الحارسة</span>
+                        <span><i class="fa-solid fa-shield-cat"></i> 9. الحارس/ة (المرجعية: القيادية)</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="accordion-body">
-                        <p><strong>المرجعية:</strong> القيادية</p>
                         <ul>
-                            <li>فتح الباب بداية الدوام وفتح الأنوار والتكييف أو الكهرباء قبل الدوام.</li>
-                            <li>حراسة المبنى ومراقبته والتأكد من سلامته وملازمة الموقع طوال فترة الدوام.</li>
+                            <li>فتح الباب بداية الدوام.</li>
+                            <li>فتح الأنوار والتكييف أو الكهرباء قبل الدوام.</li>
+                            <li>حراسة المبنى ومراقبته والتأكد من سلامته.</li>
                             <li>متابعة عملية دخول وخروج المنسوبات أثناء الدوام الرسمي.</li>
+                            <li>ملازمة الموقع طوال فترة الدوام.</li>
                             <li>تنظيم ازدحام السيارات ومنع وجود الرجال لدى الباب (إن كان الحارس رجلاً).</li>
-                            <li>تسليم واستلام ما يرد من حاجيات خلال وقت الدوام.</li>
+                            <li>تسليم واستلام ما ورد من حاجيات خلال وقت الدوام.</li>
                             <li>الحفاظ على أمن وسلامة الأطفال وتسليمهم لأولياء الأمور.</li>
                             <li>التأكد من قفل الأبواب والنوافذ والكهرباء بعد انصراف المنسوبات.</li>
                         </ul>
                     </div>
                 </div>
 
+                <!-- 10. مقدمة الخدمات -->
                 <div class="accordion-item">
                     <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <span><i class="fa-solid fa-broom"></i> 8. مقدمة الخدمات (عاملة النظافة)</span>
+                        <span><i class="fa-solid fa-broom"></i> 10. مقدمة الخدمات (المرجعية: القيادية)</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="accordion-body">
-                        <p><strong>المرجعية:</strong> القيادية</p>
                         <ul>
-                            <li>القيام بجميع أعمال النظافة للمدرسة.</li>
+                            <li>القيام بجميع أعمال النظافة.</li>
                             <li>القيام بتهيئة وترتيب المكاتب والفصول.</li>
-                            <li>المساهمة في ترتيب وتنظيم المرافق وفق توجيهات المسؤولية عن المرفق كالأرشيف والمخازن وغيرها.</li>
+                            <li>المساهمة في ترتيب وتنظيم المرافق وفق توجيهات المسؤولة عن المرفق كالأرشيف والمخازن وغيرها.</li>
                             <li>جلب الأغراض من خارج المدرسة.</li>
                             <li>المساهمة في إعداد وتنظيم المواقع للمناشط التي تقيمها المدرسة.</li>
-                            <li>المشاركة في جدول المناوبة.</li>
+                            <li>المشاركة في المناوبة.</li>
                             <li>القيام بأي مهام أخرى تكلف بها من قبل المديرة.</li>
                         </ul>
                     </div>
@@ -1314,83 +2771,99 @@
 
                 <!-- ثانياً: المجال الافتراضي -->
                 <div class="section-sub-title">
-                    <i class="fa-solid fa-laptop-code"></i> ثانياً: الوصف الوظيفي للمجال الافتراضي (ص 62 - 65)
+                    <i class="fa-solid fa-laptop-code"></i> ثانياً: الوصف الوظيفي للمجال الافتراضي
                 </div>
 
+                <!-- 1. مشرفة الميدان -->
                 <div class="accordion-item">
                     <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <span><i class="fa-solid fa-head-side-virus"></i> 1. مشرفة الميدان الافتراضي</span>
+                        <span><i class="fa-solid fa-head-side-virus"></i> 1. مشرفة الميدان</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="accordion-body">
                         <ul>
-                            <li>متابعة جميع الأعمال الإدارية (أعمال التسجيل وافتتاح الحلقات وانتظامها واستكمال النصاب وتعبئة الاستبيانات وغيرها في ميدانها).</li>
-                            <li>السعي لزيادة الأعداد وبذل الأسباب المحققة لذلك من خلال متابعة التسجيل وطلب تنشيط الإعلان ومعرفة أسباب تسرب الدارسات.</li>
-                            <li>الإشراف على الانضباط في الدوام وانعقاد الحلقات واكتمال الأنصبة في ميدانها.</li>
+                            <li>متابعة جميع الأعمال الإدارية (أعمال التسجيل وافتتاح الحلقات وانتظامها واستكمال النصاب وتعبئة الاستبانات وغيرها من المهام الإدارية في ميدانها).</li>
+                            <li>السعي لزيادة الأعداد وبذل الأسباب المحققة لذلك من خلال متابعة التسجيل وطلب تنشيط الإعلان ومعرفة أسباب تسرب الدارسات وغير ذلك.</li>
+                            <li>الإشراف على الانضباط في الدوام، وانعقاد الحلقات واكتمال الأنصبة في ميدانها.</li>
                             <li>الحضور للمعلمات والتأكد من جودة المخرجات وتحقيق المستهدفات في ميدانها.</li>
-                            <li>متابعة التواصل الفاعل بين مشرفات المستويات وبين المعلمات وجودة إشرافهم وتحفيزهم وقيامهم بالتوجيه.</li>
-                            <li>متابعة وجود التحفيز للدارسات عموماً والتنوع فيه ومناسبة المستوى.</li>
+                            <li>متابعة التواصل الفاعل بين مشرفات المستويات وبين المعلمات وجودة إشرافهم وتحفيزهم وقيامهم بالتوجيه والمتابعة.</li>
+                            <li>متابعة وجود التحفيز للدارسات عموماً والتنويع فيه ومناسبة المستوى.</li>
                             <li>التأكد من استخدام الجميع لهوية الموسم.</li>
                             <li>متابعة اكتمال وتنظيم المستندات ودقة الإدارية في العمل.</li>
-                            <li>متابعة إعداد واعتماد مسيرات مكافآت المعلمات والإداريات.</li>
-                            <li>متابعة المستحقات المعنوية كالإفادات واعتماد الاختبارات عن بعد.</li>
-                            <li>متابعة تسجيل بيانات الحلقة في مستند التقرير وعلاج المشكلات الطارئة.</li>
+                            <li>متابعة إعداد واعتمد مسيرات مكافآت المعلمات والإداريات.</li>
+                            <li>متابعة المستحقات المعنوية كالإفادات واعتمد الاختبارات عن بعد.</li>
+                            <li>متابعة تسجيل بيانات الحلقة في مستند التقرير.</li>
+                            <li>علاج المشكلات الطارئة.</li>
+                            <li>القيام بأي أعمال أخرى يتم تكليفها بها من قبل إدارة الإشراف.</li>
                         </ul>
                     </div>
                 </div>
 
+                <!-- 2. مشرفة المستوى -->
                 <div class="accordion-item">
                     <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <span><i class="fa-solid fa-sitemap"></i> 2. مشرفة المستوى الافتراضي</span>
+                        <span><i class="fa-solid fa-sitemap"></i> 2. مشرفة المستوى</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="accordion-body">
                         <ul>
-                            <li>متابعة جميع الأعمال الإدارية (التسجيل، افتتاح الحلقات، انتظامها، استكمال النصاب، تعبئة الاستبيانات في مستواها).</li>
-                            <li>الإشراف على الانضباط في الدوام وانعقاد الحلقات واكتمال الأنصبة في مستواها وميدانها.</li>
+                            <li>متابعة جميع الأعمال الإدارية (أعمال التسجيل وافتتاح الحلقات وانتظامها واستكمال النصاب وتعبئة الاستبانات وغيرها من المهام الإدارية في مستواها).</li>
+                            <li>الإشراف على الانضباط في الدوام وانعقاد الحلقات واكتمال الأنصبة في مستواها.</li>
+                            <li>الإشراف على الانضباط في الدوام وانعقاد الحلقات واكتمال الأنصبة في ميدانها.</li>
                             <li>الحضور لجميع المعلمات والتأكد من جودة المخرجات وتحقيق المستهدفات في مستواها.</li>
-                            <li>اعتماد ما يتم نشره من عروض أو بطاقات والاطلاع عليها قبل استخدامها والتأكد من سلامتها وخلوها من الملاحظات ومناسبة مستواها وتنسيقها.</li>
+                            <li>اعتماد ما يتم نشره من عروض أو بطاقات والاطلاع عليها قبل استخدامها والتأكد من سلامتها وخلوها من الملاحظات إضافة لمناسبة مستواها وتنسيقها.</li>
                             <li>متابعة التواصل الفاعل بين المعلمات والدارسات داخل وخارج الحلقة عبر مجموعات الواتساب وجودة تواصلهم وتحفيزهم وتفقدهم.</li>
-                            <li>متابعة تحفيز المعلمات للدارسات ومناسبة المستوى والتنوع فيه بما يحفز على الإتقان والإنجاز وعلاج المشكلات كالتأخر عن الحضور.</li>
-                            <li>متابعة اكتمال وتنظيم المستندات والتأكد من استخدام هوية الموسم في البطاقات والعروض والصور الرمزية.</li>
+                            <li>متابعة تحفيز المعلمات للدارسات ومناسبة المستوى والتنويع فيه بما يحفز على الإتقان والإنجاز من جانب ويعالج المشكلات من جانب آخر كالتأخر عن الحضور وعدم الإتقان.</li>
+                            <li>متابعة اكتمال وتنظيم المستندات ودقة الإدارية في العمل.</li>
+                            <li>التأكد من استخدام الجميع لهوية الموسم في البطاقات والعروض والصور الرمزية للمجموعات.</li>
+                            <li>علاج المشكلات الطارئة.</li>
+                            <li>القيام بأي أعمال أخرى يتم تكليفها بها من قبل المشرفة الإدارية للميدان.</li>
                         </ul>
                     </div>
                 </div>
 
+                <!-- 3. الإدارية -->
                 <div class="accordion-item">
                     <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <span><i class="fa-solid fa-desktop"></i> 3. الإدارية الافتراضية</span>
+                        <span><i class="fa-solid fa-desktop"></i> 3. الإدارية</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="accordion-body">
                         <ul>
-                            <li>القيام بأعمال التسجيل وافتتاح الحلقات وانتظامها واستكمال النصاب وتعبئة الاستبيانات وغيرها.</li>
+                            <li>القيام بأعمال التسجيل وافتتاح الحلقات وانتظامها واستكمال النصاب وتعبئة الاستبانات وغيرها من المهام الإدارية.</li>
                             <li>متابعة الدوام وانعقاد الحلقات من خلال الدخول للحلقة والتأكد من بدئها.</li>
                             <li>التأكد من سلامة الخارطة واكتمالها ومطابقة بيانات الدارسات.</li>
                             <li>متابعة اكتمال المستندات وتقييم المعلمات للدارسات.</li>
                             <li>القيام بأعمال الاختبار عن بعد ورصد الدرجات والتأكد من استلام الدارسات للإشعارات.</li>
-                            <li>متابعة سلامة مسيرات مكافآت المعلمات والإداريات وتسجيل بيانات الحلقة في مستند التقرير.</li>
-                            <li>المساهمة في إعداد الملصقات والبطاقات والعروض والتأكد من استخدام هوية الموسم.</li>
-                            <li>سحب نماذج العمل التي يحتاجها الميدان بناء على توجيهات المشرفة من رابط نماذج العمل.</li>
-                            <li>إرسال إشعارات الاختبارات للدارسات بعد أخذها من رابط الإشعارات والشهادات، وعلاج المشكلات الطارئة بالعودة للمشرفة.</li>
+                            <li>متابعة سلامة مسيرات مكافآت المعلمات والإداريات.</li>
+                            <li>تسجيل بيانات الحلقة في مستند التقرير.</li>
+                            <li>المساهمة في إعداد الملصقات والبطاقات والعروض.</li>
+                            <li>التأكد من استخدام الجميع لهوية الموسم في البطاقات والعروض والصور الرمزية للمجموعات.</li>
+                            <li>سحب نماذج العمل التي يحتاجها الميدان -بناء على توجيهات المشرفة- من رابط نماذج العمل.</li>
+                            <li>إرسال إشعارات الاختبارات للدارسات بعد أخذها من رابط الإشعارات والشهادات.</li>
+                            <li>علاج المشكلات الطارئة بالعودة لمشرفتها الإدارية.</li>
+                            <li>متابعة جميع الأعمال في حال عدم وجود مشرفة إدارية.</li>
+                            <li>القيام بأي أعمال أخرى يتم تكليفها بها من قبل المشرفة الإدارية.</li>
                         </ul>
                     </div>
                 </div>
 
+                <!-- 4. معلمة الحلقة -->
                 <div class="accordion-item">
                     <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <span><i class="fa-solid fa-circle-play"></i> 4. معلمة الحلقة الافتراضية</span>
+                        <span><i class="fa-solid fa-circle-play"></i> 4. معلمة الحلقة</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="accordion-body">
                         <ul>
-                            <li>تعليم وتحفيظ الدارسات كتاب الله بإتقان.</li>
+                            <li>تعليم وتحفيز الدارسات كتاب الله بإتقان.</li>
                             <li>الحفاظ على الحلقة من حيث الالتزام بمواعيد الحضور والانصراف وعدم وجود ما يخالف المنهجية والضوابط العامة.</li>
                             <li>إعداد العروض الخاصة بالدرس، والملصقات التحفيزية والبطاقات.</li>
                             <li>التواصل الفاعل مع الدارسات داخل وخارج الحلقة عبر مجموعات الواتساب وتحفيزهم وتفقدهم.</li>
-                            <li>تحفيز الدارسات والتنوع في ذلك بما يحفز على الإتقان والإنجاز من جانب ويعالج المشكلات من جانب آخر كالتأخر عن الحضور وعدم الإتقان.</li>
+                            <li>تحفيز الدارسات والتنويع في ذلك بما يحفز على الإتقان والإنجاز من جانب ويعالج المشكلات من جانب آخر كالتأخر عن الحضور وعدم الإتقان.</li>
                             <li>الحرص على استخدام هوية الموسم في البطاقات والعروض والصور الرمزية للمجموعات.</li>
-                            <li>تذليل الصعاب للدارسات والمتابعة المستمرة ورصد الحضور والغياب والتقييم في المستند.</li>
+                            <li>تذليل الصعاب للدارسات.</li>
+                            <li>المتابعة المستمرة للدارسات ورصد حضور وغياب الدارسات وتقييمهن في المستند.</li>
                             <li>تحديد مواعيد لاختبار الدارسات وإبلاغ الإدارية المشرفة على الحلقة.</li>
                         </ul>
                     </div>
@@ -1399,74 +2872,44 @@
             </div>
         </section>
 
-        <!-- TAB 8: LINKS & TELEGRAM -->
+        <!-- TAB 10: LINKS & TELEGRAM -->
         <section id="links" class="tab-content">
 
-            <!-- كارت دليل الموظفة المضاف حديثاً -->
             <div class="card" style="border-right-color: var(--accent-pink); background: var(--light-pink);">
                 <div class="card-title"><i class="fa-solid fa-book-open" style="color:var(--accent-pink);"></i> دليل الموظفة الرسمي</div>
-                <p style="line-height: 1.7; margin-bottom: 12px;">يمكنكِ فتح واستعراض النسخة الرسمية المعتمدة من دليل الموظفة عبر القناة الرسمية:</p>
-                <a href="https://t.me/quran_dm/3005" target="_blank" class="external-btn badge-pink" style="padding: 8px 18px; font-size: 0.95rem;">
+                <p style="line-height: 1.7; margin-bottom: 12px;">فتح واستعراض النسخة الرسمية المعتمدة من دليل الموظفة:</p>
+                <a href="https://t.me/quran_dm/3034" target="_blank" class="external-btn badge-pink" style="padding: 8px 18px; font-size: 0.95rem;">
                     <i class="fa-brands fa-telegram"></i> فتح دليل الموظفة (Telegram)
                 </a>
             </div>
 
-            <!-- كارت دليل المجال الحضوري المضاف حديثاً -->
             <div class="card" style="border-right-color: var(--primary-navy);">
-                <div class="card-title"><i class="fa-solid fa-file-pdf" style="color:var(--primary-navy);"></i> دليل المجال الحضوري</div>
-                <p style="line-height: 1.7; margin-bottom: 12px;">يمكنكِ الاطلاع على التنظيمات الخاصة بالمجال الحضوري عبر المستند المرفق:</p>
-                <a href="https://drive.google.com/file/d/15x0dXLWQ-dGSnUP_vxfilOSSUuvh7r84/view?usp=sharing" target="_blank" class="external-btn" style="padding: 8px 18px; font-size: 0.95rem;">
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i> استعراض دليل المجال الحضوري (Drive)
-                </a>
-            </div>
-
-            <!-- كارت واجهة التسجيل للدارسات المجال الحضوري المضاف حديثاً -->
-            <div class="card" style="border-right-color: var(--sheets-green); background: rgba(240, 249, 244, 0.95);">
-                <div class="card-title"><i class="fa-solid fa-user-plus" style="color:var(--sheets-green);"></i> واجهة التسجيل للدارسات (المجال الحضوري)</div>
-                <p style="line-height: 1.7; margin-bottom: 12px;">رابط مباشر لتسجيل الدارسات الراغبات في الالتحاق بالمجال الحضوري:</p>
-                <a href="https://qer.me/9aYuXM" target="_blank" class="external-btn" style="background: var(--sheets-green); color: white; padding: 8px 18px; font-size: 0.95rem;">
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i> الانتقال لواجهة تسجيل الدارسات
+                <div class="card-title"><i class="fa-solid fa-user-plus" style="color:var(--primary-navy);"></i> رابط الرغبة بالعمل والاعتذار الوظيفي 1448هـ</div>
+                <p style="line-height: 1.7; margin-bottom: 12px;">الرابط الرسمي المعتمد لتحديث الرغبة بالعمل أو تقديم الاعتذار الوظيفي:</p>
+                <a href="https://qer.me/CtsW2r" target="_blank" class="external-btn" style="padding: 8px 18px; font-size: 0.95rem;">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> الانتقال لرابط الرغبة والاعتذار
                 </a>
             </div>
 
             <div class="card" style="border-right-color: var(--sheets-green); background: rgba(240, 249, 244, 0.95);">
-                <div class="card-title"><i class="fa-solid fa-file-excel" style="color:var(--sheets-green);"></i> جداول بيانات جوجل (Google Sheets)</div>
-                <p style="line-height: 1.7; margin-bottom: 12px;">يمكنكِ الانتقال المباشر لفتح جداول البيانات والمستندات الإلكترونية المعتمدة:</p>
-                <a href="https://docs.google.com/spreadsheets" target="_blank" class="external-btn" style="background: var(--sheets-green); color: white; padding: 8px 18px; font-size: 0.95rem;">
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i> فتح جداول البيانات
-                </a>
-            </div>
-
-            <div class="card" style="border-right-color: var(--accent-pink); background: var(--light-pink);">
-                <div class="card-title"><i class="fa-solid fa-calendar-star" style="color:var(--accent-pink);"></i> موقع المواعيد والأحداث الهامة</div>
-                <p style="line-height: 1.7; margin-bottom: 12px;">يمكنكِ الاطلاع على كافة المواعيد والجدول الزمني المحدث عبر الرابط التالي:</p>
-                <a href="https://qer.me/d8GV4g" target="_blank" class="external-btn badge-pink" style="padding: 8px 18px; font-size: 0.95rem;">
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i> الانتقال لموقع المواعيد الهامة
-                </a>
-            </div>
-
-            <div class="card" style="border-right-color: var(--accent-pink); background: var(--light-pink);">
-                <div class="card-title"><i class="fa-solid fa-calendar-days" style="color:var(--accent-pink);"></i> التقويم الهجري لعام 1448هـ</div>
-                <p style="line-height: 1.7; margin-bottom: 12px;">يمكنكِ الاطلاع على التقويم الهجري الكامل والجدول الزمني المعتمد لعام 1448هـ عبر الرابط التالي:</p>
-                <a href="https://qer.me/t4NMo7" target="_blank" class="external-btn badge-pink" style="padding: 8px 18px; font-size: 0.95rem;">
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i> الانتقال للتقويم الهجري 1448هـ
-                </a>
-            </div>
-
-            <div class="card" style="border-right-color: var(--primary-navy);">
-                <div class="card-title"><i class="fa-solid fa-user-plus" style="color:var(--primary-navy);"></i> نموذج الرغبة بالعمل</div>
-                <p style="line-height: 1.7; margin-bottom: 12px;">تسجيل الرغبة بالعمل والانضمام لكوادر المدارس والحلقات القرآنية:</p>
-                <a href="https://sites.google.com/view/quran-dm-emp/" target="_blank" class="external-btn" style="padding: 8px 18px; font-size: 0.95rem;">
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i> فتح موقع الرغبة بالعمل
+                <div class="card-title"><i class="fa-solid fa-hand-holding-dollar" style="color:var(--sheets-green);"></i> برنامج العضوية وسهم القياس</div>
+                <p style="line-height: 1.7; margin-bottom: 12px;">الاشتراك في باقات العضوية المعتمدة (بلاتيني، ماسي، ذهبي، فضي، برونزي) وسهم القياس (100 ريال):</p>
+                <a href="https://forms.gle/dU2XKctGjPqmhZ2R6" target="_blank" class="external-btn" style="background: var(--sheets-green); color: white; padding: 8px 18px; font-size: 0.95rem;">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> رابط الاشتراك في العضوية
                 </a>
             </div>
 
             <div class="card">
-                <div class="card-title"><i class="fa-solid fa-paper-plane"></i> قنوات التليجرام والروابط الرسمية</div>
+                <div class="card-title"><i class="fa-solid fa-paper-plane"></i> قنوات التليجرام والبوتات الرسمية</div>
                 <div class="grid-2">
                     <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: rgba(255,255,255,0.8);">
-                        <h4><i class="fa-brands fa-telegram" style="color: #0088cc;"></i> موظفات التحفيظ (هام جداً)</h4>
-                        <p style="font-size: 0.85rem; margin-top: 4px;">للتواصل المباشر والاستفسارات المالية.</p>
+                        <h4><i class="fa-brands fa-telegram" style="color: #0088cc;"></i> بوت التواصل</h4>
+                        <p style="font-size: 0.85rem; margin-top: 4px;">بوت آلي خاص بطلبات التغيير والتعديل الوظيفي والاستفسارات.</p>
+                        <a href="https://t.me/qurandm_bot" target="_blank" class="external-btn">فتح البوت</a>
+                    </div>
+                    <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: rgba(255,255,255,0.8);">
+                        <h4><i class="fa-brands fa-telegram" style="color: #0088cc;"></i> موظفات التحفيظ وملاحظات المكافآت</h4>
+                        <p style="font-size: 0.85rem; margin-top: 4px;">للتواصل المباشر والاستفسارات المالية والنتائج.</p>
                         <a href="https://t.me/quran_dm" target="_blank" class="external-btn">انضمي للقناة</a>
                     </div>
                     <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: rgba(255,255,255,0.8);">
@@ -1475,19 +2918,9 @@
                         <a href="https://t.me/About_quran_dm" target="_blank" class="external-btn">انضمي للقناة</a>
                     </div>
                     <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: rgba(255,255,255,0.8);">
-                        <h4><i class="fa-solid fa-graduation-cap" style="color: var(--accent-pink);"></i> برنامج التميز المهني</h4>
-                        <p style="font-size: 0.85rem; margin-top: 4px;">لمتابعة برامج ومسارات التميز والتطوير المهني.</p>
-                        <a href="https://qer.me/VzSmO5" target="_blank" class="external-btn badge-pink">انتقلي للبرنامج</a>
-                    </div>
-                    <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: rgba(255,255,255,0.8);">
-                        <h4><i class="fa-brands fa-telegram" style="color: #0088cc;"></i> قناة نماء (التميز المهني)</h4>
-                        <p style="font-size: 0.85rem; margin-top: 4px;">لمتابعة الدورات التدريبية والتسجيل بها.</p>
-                        <a href="https://t.me/joinchat/AAAAAEKRmeVVW3fahOKonA" target="_blank" class="external-btn">انضمي للقناة</a>
-                    </div>
-                    <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: rgba(255,255,255,0.8);">
-                        <h4><i class="fa-brands fa-telegram" style="color: #0088cc;"></i> قناة بشراكم (الاختبارات)</h4>
-                        <p style="font-size: 0.85rem; margin-top: 4px;">خاصة بنتائج الاختبارات والقياس.</p>
-                        <a href="https://t.me/+VxnApiM6GYcwOGNK" target="_blank" class="external-btn">انضمي للقناة</a>
+                        <h4><i class="fa-solid fa-comment-dots" style="color: var(--accent-pink);"></i> مشاركة الرأي والاقتراحات</h4>
+                        <p style="font-size: 0.85rem; margin-top: 4px;">نموذج استقبال المرئيات والملاحظات.</p>
+                        <a href="https://qer.me/G1d0xO" target="_blank" class="external-btn badge-pink">تقديم اقتراح</a>
                     </div>
                 </div>
             </div>
@@ -1495,8 +2928,9 @@
             <div class="card">
                 <div class="card-title"><i class="fa-solid fa-headset"></i> التواصل المباشر ورقم الجوال</div>
                 <p><strong>جوال وحدة الموارد البشرية:</strong> <span class="badge badge-pink" style="font-size: 1rem;">0555903248</span></p>
-                <p style="margin-top: 8px;"><strong>رابط طلب التعريف وشهادة الخبرة:</strong> <a href="https://forms.gle/kEFBCvjG8drmgAV38" target="_blank">forms.gle/kEFBCvjG8drmgAV38</a></p>
-                <p style="margin-top: 8px;"><strong>رابط التقييم والاستبيان:</strong> <a href="https://qer.me/G1d0xO" target="_blank">qer.me/G1d0xO</a></p>
+                <p style="margin-top: 8px;"><strong>جوال قناة موظفات التحفيظ:</strong> <span class="badge" style="font-size: 1rem;">0501713491</span></p>
+                <p style="margin-top: 8px;"><strong>منسقة التطوع (مريم الحربي):</strong> <span class="badge badge-pink" style="font-size: 1rem;">0500359742</span></p>
+                <p style="margin-top: 12px;"><strong>رابط طلب التعريف وشهادة الخبرة:</strong> <a href="https://forms.gle/kEFBCvjG8drmgAV38" target="_blank">forms.gle/kEFBCvjG8drmgAV38</a></p>
             </div>
         </section>
 
@@ -1509,11 +2943,9 @@
                 يمكنكِ تثبيت هذا الدليل كتطبيق مستقل على هاتفكِ أو تحميل ملف الأندرويد المباشر (APK) لتثبيته فوراً:
             </p>
             <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                <!-- زر التثبيت الذكي عبر PWA -->
                 <button id="installAppBtn" onclick="installPWAApp()" class="btn-action badge-pink" style="display: none; padding: 10px 20px; font-size: 0.95rem; border: none; cursor: pointer;">
                     <i class="fa-solid fa-download"></i> تثبيت التطبيق على شاشة الهاتف
                 </button>
-                <!-- زر التحميل المباشر لملف الـ APK -->
                 <a href="daleel-app.apk" download class="btn-action" style="padding: 10px 20px; font-size: 0.95rem; text-decoration: none; background-color: var(--primary-navy);">
                     <i class="fa-solid fa-cloud-arrow-down"></i> تحميل ملف الـ APK مباشرة
                 </a>
@@ -1538,12 +2970,20 @@
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
             
-            document.getElementById(tabId).classList.add('active');
-            if (element) element.classList.add('active');
+            const targetTab = document.getElementById(tabId);
+            if (targetTab) targetTab.classList.add('active');
+
+            if (element) {
+                element.classList.add('active');
+            } else {
+                const navLink = document.querySelector(`.nav-link[onclick*="'${tabId}'"]`);
+                if (navLink) navLink.classList.add('active');
+            }
 
             // Close sidebar on mobile after selection
             if (window.innerWidth <= 992) {
-                document.getElementById('sidebar').classList.remove('open');
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar) sidebar.classList.remove('open');
             }
         }
 
@@ -1559,27 +2999,128 @@
             
             if (body.style.display === "block") {
                 body.style.display = "none";
-                icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                if (icon) icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
             } else {
                 body.style.display = "block";
-                icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                if (icon) icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
             }
         }
 
-        // Live Search Filter
+        // ----------------------------------------------------
+        // نظام البحث الشامل والتنقل اللحظي (Global Search & Navigation)
+        // ----------------------------------------------------
         function searchGuide() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
-            let cards = document.querySelectorAll('.card, .accordion-item');
-            
-            cards.forEach(card => {
-                let text = card.textContent.toLowerCase();
-                if (text.includes(input)) {
-                    card.style.display = "";
-                } else {
-                    card.style.display = "none";
-                }
+            const input = document.getElementById('searchInput').value.trim().toLowerCase();
+            const resultsContainer = document.getElementById('searchResults');
+            resultsContainer.innerHTML = '';
+
+            if (!input || input.length < 2) {
+                resultsContainer.classList.remove('active');
+                return;
+            }
+
+            const tabs = document.querySelectorAll('.tab-content');
+            let matches = [];
+
+            tabs.forEach(tab => {
+                const tabId = tab.id;
+                const navLink = document.querySelector(`.nav-link[onclick*="'${tabId}'"]`);
+                const tabName = navLink ? navLink.textContent.trim() : tabId;
+
+                // البحث في البطاقات والأكورديون والعناوين والصفوف
+                const elements = tab.querySelectorAll('.card, .accordion-item, tr, .section-sub-title');
+
+                elements.forEach(el => {
+                    const text = el.textContent.toLowerCase();
+                    if (text.includes(input)) {
+                        // استخراج عنوان للنتيجة
+                        let title = '';
+                        let cardTitle = el.querySelector('.card-title, .accordion-header, th, .section-sub-title');
+                        if (cardTitle) {
+                            title = cardTitle.textContent.trim();
+                        } else {
+                            title = el.textContent.trim().substring(0, 45) + '...';
+                        }
+
+                        // إيجاد مقتطع نصي يوضح السياق
+                        let idx = text.indexOf(input);
+                        let start = Math.max(0, idx - 15);
+                        let end = Math.min(el.textContent.length, idx + 45);
+                        let snippet = '...' + el.textContent.substring(start, end).replace(/\s+/g, ' ') + '...';
+
+                        matches.push({
+                            tabId: tabId,
+                            tabName: tabName,
+                            title: title,
+                            snippet: snippet,
+                            targetEl: el
+                        });
+                    }
+                });
             });
+
+            if (matches.length === 0) {
+                resultsContainer.innerHTML = '<div class="search-result-item" style="cursor:default; text-align:center; color:var(--text-muted);">لا توجد نتائج مطابقة</div>';
+            } else {
+                // استعراض أول 15 نتيجة مطابقة
+                matches.slice(0, 15).forEach(match => {
+                    const item = document.createElement('div');
+                    item.className = 'search-result-item';
+                    item.innerHTML = `
+                        <span class="search-result-tab-badge">${match.tabName}</span>
+                        <div class="search-result-title">${match.title}</div>
+                        <div class="search-result-snippet">${match.snippet}</div>
+                    `;
+                    item.onclick = () => navigateToResult(match.tabId, match.targetEl);
+                    resultsContainer.appendChild(item);
+                });
+            }
+
+            resultsContainer.classList.add('active');
         }
+
+        // الانتقال للنتيجة المحددة وفتح العناصر المنسدلة تلقائياً
+        function navigateToResult(tabId, element) {
+            // 1. إخفاء قائمة النتائج
+            document.getElementById('searchResults').classList.remove('active');
+
+            // 2. الانتقال إلى التبويب المناسب
+            showTab(tabId);
+
+            // 3. فتح الأكورديون في حال كانت النتيجة بداخل كارت مطوي
+            const accordionBody = element.closest('.accordion-body');
+            if (accordionBody) {
+                accordionBody.style.display = 'block';
+                const accordionHeader = accordionBody.previousElementSibling;
+                if (accordionHeader) {
+                    const icon = accordionHeader.querySelector('.fa-chevron-down');
+                    if (icon) icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                }
+            } else if (element.classList.contains('accordion-item')) {
+                const body = element.querySelector('.accordion-body');
+                if (body) body.style.display = 'block';
+                const icon = element.querySelector('.fa-chevron-down');
+                if (icon) icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+            }
+
+            // 4. التمرير السلس إلى موقع العنصر مع وميض تمييز للعين
+            setTimeout(() => {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                element.classList.add('highlight-flash');
+                setTimeout(() => {
+                    element.classList.remove('highlight-flash');
+                }, 2000);
+            }, 100);
+        }
+
+        // إغلاق قائمة البحث فور النقر خارج صندوق البحث
+        document.addEventListener('click', (e) => {
+            const searchBox = document.querySelector('.search-box');
+            if (searchBox && !searchBox.contains(e.target)) {
+                const dropdown = document.getElementById('searchResults');
+                if (dropdown) dropdown.classList.remove('active');
+            }
+        });
 
         // PWA Installation Handling & Service Worker
         let deferredPrompt;
